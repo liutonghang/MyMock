@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                 ">
+
+		<!-- 广西北部湾银行的个性化 -->
+	<bean id="bbwSynService" class="grp.pb.branch.beibuwan.service.impl.BBWSynServiceImpl">
+			<property name="pbUserService" ref="pb.common.impl.pbUserService" />
+			<property name="netWorkService" ref="pb.common.impl.NetworkService" />
+			<property name="baseDao" ref="baseDAO" />
+			<property name="pbUserDao" ref="pb.common.pbUserDAO"></property>
+	</bean>
+</beans>

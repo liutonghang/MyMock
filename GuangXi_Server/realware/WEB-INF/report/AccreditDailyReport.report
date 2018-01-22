@@ -1,0 +1,1035 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="091" id="8236" name="财政报表" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="0" isUnion="0"><DataSources><DataSource name="" is_subDataSource="False" memoryName="241"><QuerySql>select 
+(case when sum(t.pay_amount)&gt;0 then '财政授权支付日报'
+when sum(t.pay_amount)&lt;0 then '财政授权支付退款日报' end) as 表头,
+d.pay_daily_code as 单号,
+       to_char(d.create_date, 'yyyy') as 年,
+       to_char(d.create_date, 'mm') as 月,
+       to_char(d.create_date, 'dd') as 日,
+       d.fund_type_name as 资金性质,
+       p.bgt_type_name as 预算类型,
+       p.agency_code as 基层单位编码,
+       p.agency_name as 基层单位名称,
+       p.exp_func_code1 as 类编码,
+       p.exp_func_code2 as 款编码,
+       p.exp_func_code3 as 项编码,
+       p.exp_func_name as 功能分类项级名称,
+       sum(t.pay_amount) as 金额
+/*       p.remark as 摘要,*/
+  from pb_pay_request       t,
+       pb_pay_voucher       p,
+       pb_pay_daily         d,
+pb_pay_clear_voucher c
+       
+ where 
+ t.pay_clear_voucher_id = c.pay_clear_voucher_id
+   and t.pay_daily_id = d.pay_daily_id
+   and t.pay_voucher_id = p.pay_voucher_id
+ and d.pay_daily_id in (select t1.pay_daily_id from pb_pay_request t1)
+[? and d.create_date&gt;=#date_begin#?][? and d.create_date&lt;=#date_end#?] 
+[? and d.pay_daily_code like '%#code#%'?] 
+ group by d.pay_daily_code ,
+                   to_char(d.create_date, 'yyyy'),
+          to_char(d.create_date, 'mm'),
+          to_char(d.create_date, 'dd'),
+          d.fund_type_name,
+          p.bgt_type_name,
+          p.exp_func_code1,
+          p.exp_func_code2,
+          p.exp_func_code3,
+          p.exp_func_name,
+          p.agency_code,
+          p.agency_name
+ order by d.pay_daily_code,
+          to_char(d.create_date, 'yyyy'),
+          to_char(d.create_date, 'mm'),
+          to_char(d.create_date, 'dd'),
+          d.fund_type_name,
+          p.bgt_type_name,
+          p.agency_code,
+          p.agency_name,
+          p.exp_func_code1,
+          p.exp_func_code2,
+          p.exp_func_code3,
+          p.exp_func_name
+
+
+
+</QuerySql><Fields><Field name = "表头" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "单号" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "年" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "月" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "日" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "资金性质" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "预算类型" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "基层单位编码" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "基层单位名称" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "类编码" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "款编码" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "项编码" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "功能分类项级名称" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "金额" cnname="" fieldType="2" object_code="" tablename="" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.6'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+	End
+	Object DetailGrid
+		AppendBlankRow=T
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='表头'
+				End
+				Item
+					Name='单号'
+				End
+				Item
+					Name='年'
+				End
+				Item
+					Name='月'
+				End
+				Item
+					Name='日'
+				End
+				Item
+					Name='资金性质'
+				End
+				Item
+					Name='预算类型'
+				End
+				Item
+					Name='基层单位编码'
+				End
+				Item
+					Name='基层单位名称'
+				End
+				Item
+					Name='类编码'
+				End
+				Item
+					Name='款编码'
+				End
+				Item
+					Name='项编码'
+				End
+				Item
+					Name='功能分类项级名称'
+				End
+				Item
+					Name='金额'
+					Type=Float
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column2'
+				Width=8.78417
+			End
+			Item
+				Name='Column3'
+				Width=7.96396
+			End
+			Item
+				Name='Column5'
+				Width=5.63563
+			End
+			Item
+				Name='Column6'
+				Width=2.38125
+			End
+		End
+		Object ColumnContent
+			Height=0.396875
+			AdjustRowHeight=F
+			RowsPerPage=35
+			Items ColumnContentCell
+				Item
+					Column='Column2'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox2'
+							BorderWidth=0.4
+							Left=-0.0264583
+							Width=1.79917
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							TextAlign=MiddleCenter
+							Text='[#基层单位编码#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox3'
+							BorderWidth=0.4
+							BorderStyles=[DrawLeft]
+							Left=1.74625
+							Width=7.06438
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+							Text='[#基层单位名称#]'
+						End
+					End
+				End
+				Item
+					Column='Column3'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox35'
+							BorderWidth=0.4
+							BorderStyles=[DrawRight]
+							Width=0.767292
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+							Text='[#类编码#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox36'
+							Left=0.740833
+							Width=0.635
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+							Text='[#款编码#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox37'
+							BorderWidth=0.4
+							BorderStyles=[DrawLeft]
+							Left=1.37583
+							Width=0.635
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+							Text='[#项编码#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox38'
+							BorderWidth=0.4
+							BorderStyles=[DrawLeft|DrawRight]
+							Left=1.98438
+							Width=5.97958
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+							Text='[#功能分类项级名称#]'
+						End
+					End
+				End
+				Item
+					Column='Column5'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox39'
+							Left=-0.0264583
+							Width=5.66208
+							Height=0.37
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleRight
+							Text='[#金额:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column6'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox43'
+							Width=2.27542
+							Height=0.37
+							ShrinkFontToFit=T
+							WordWrap=T
+							TextAlign=MiddleCenter
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=1.40229
+			RepeatStyle=OnGroupHeader
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column2'
+					FreeCell=T
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox18'
+							BorderStyles=[DrawRight|DrawBottom]
+							Width=8.78417
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='预算单位'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox19'
+							BorderStyles=[DrawTop|DrawRight|DrawBottom]
+							Top=0.582083
+							Width=1.77271
+							Height=0.873125
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='编码'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox20'
+							BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+							Left=1.74625
+							Top=0.582083
+							Width=7.03792
+							Height=0.873125
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='预算单位名称'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column3'
+					FreeCell=T
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox23'
+							BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+							Left=3.99521
+							Top=-1.98438
+							Width=7.99042
+							Height=0.582083
+							TextAlign=MiddleCenter
+							Text='财政直接支付'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox79'
+							BorderStyles=[DrawRight|DrawBottom]
+							Width=7.99042
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='预算科目'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox80'
+							BorderStyles=[DrawRight|DrawBottom]
+							Top=0.608542
+							Width=2.01083
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='编  码'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox81'
+							BorderStyles=[DrawRight|DrawBottom]
+							Top=1.00542
+							Width=0.79375
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='类'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox82'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=0.767292
+							Top=1.00542
+							Width=0.635
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='款'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox83'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=1.37583
+							Top=1.00542
+							Width=0.635
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='项'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox84'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=1.98438
+							Top=0.608542
+							Width=5.97958
+							Height=0.846667
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='名  称'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column5'
+					TextAlign=MiddleCenter
+					Text='财政授权支付'
+				End
+				Item
+					GroupTitle=F
+					Column='Column6'
+					TextAlign=MiddleCenter
+					Text='备注'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				ByFields='单号'
+				Object GroupHeader
+					Height=1.5875
+					NewPage=Before
+					PrintGridBorder=F
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox68'
+							Left=10.6098
+							Top=0.635
+							Width=1.98438
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='资金性质：'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox69'
+							Left=10.6098
+							Top=1.00542
+							Width=1.79917
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='预算类型：'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox46'
+							Left=12.5942
+							Top=0.661458
+							Width=4.81542
+							Height=0.343958
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#资金性质#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox47'
+							Left=12.5942
+							Top=1.00542
+							Width=5.00063
+							Height=0.423333
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#预算类型#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox63'
+							Left=19.8702
+							Top=0.555625
+							Width=0.396875
+							Height=0.582083
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='第'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox64'
+							Left=21.4577
+							Top=0.555625
+							Width=1.21708
+							Height=0.582083
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='页/共'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox65'
+							Left=23.7067
+							Top=0.502708
+							Width=0.582083
+							Height=0.608542
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='页'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox59'
+							Left=20.2671
+							Top=0.555625
+							Width=1.19063
+							Height=0.582083
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='[#SystemVar(Group1PageNumber)#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox60'
+							Left=22.4631
+							Top=0.555625
+							Width=1.21708
+							Height=0.582083
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							TextAlign=MiddleCenter
+							Text='[#SystemVar(Group1PageCount)#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox103'
+							Left=0.79375
+							Top=1.00542
+							Width=7.01146
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='代理银行（签章）：中国建设银行吉林省分行'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox104'
+							Left=20.7963
+							Top=1.11125
+							Width=3.30729
+							Height=0.3175
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='金额单位：元'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox31'
+							Left=12.409
+							Top=0.15875
+							Width=1.29646
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#月#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox72'
+							Left=8.59896
+							Top=0.15875
+							Width=0.79375
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='（'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox73'
+							Left=17.4096
+							Top=0.15875
+							Width=0.608542
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='）'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox74'
+							Left=13.8113
+							Top=0.15875
+							Width=0.582083
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='月'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox76'
+							Left=11.4035
+							Top=0.15875
+							Width=1.00542
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='年'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox33'
+							Left=9.60438
+							Top=0.15875
+							Width=1.5875
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#年#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox77'
+							Left=16.0073
+							Top=0.15875
+							Width=1.40229
+							Height=0.396875
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='报表'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox78'
+							Left=15.3988
+							Top=0.105833
+							Width=0.608542
+							Height=0.582083
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='日'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox34'
+							Left=14.3933
+							Top=0.105833
+							Width=0.79375
+							Height=0.529167
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#日#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox107'
+							Left=19.6585
+							Top=0.211667
+							Width=1.37583
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='编号:'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox61'
+							Left=20.5846
+							Top=0.185208
+							Width=3.30729
+							Height=0.449792
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#单号#]'
+						End
+					End
+					RepeatOnPage=T
+				End
+				Object GroupFooter
+					Height=0.01
+					PrintGridBorder=F
+				End
+			End
+			Item
+				Name='Group2'
+				PageGroup=T
+				Object GroupHeader
+					Height=0
+				End
+				Object GroupFooter
+					Height=0.608542
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox87'
+							BorderStyles=[DrawRight]
+							Width=16.6952
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='本页小计'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox42'
+							BorderStyles=[DrawRight]
+							Left=16.6688
+							Width=5.63563
+							Height=0.608542
+							TextAlign=MiddleRight
+							Text='[#Sum(金额):#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox44'
+							BorderStyles=[DrawRight]
+							Left=22.4102
+							Top=-0.0264583
+							Width=2.40771
+							Height=0.608542
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='task_id'
+		End
+		Item
+			Name='Parameter1'
+		End
+		Item
+			Name='Parameter2'
+		End
+		Item
+			Name='Parameter3'
+		End
+		Item
+			Name='date_begin'
+		End
+		Item
+			Name='date_end'
+		End
+		Item
+			Name='Parameter4'
+		End
+		Item
+			Name='Parameter5'
+		End
+		Item
+			Name='Parameter6'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=0.79375
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox36'
+					Left=0.79375
+					Top=8.20208
+					Width=4.57729
+					Height=0.582083
+					Text='编报单位：'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox62'
+					Left=8.18
+					Top=0.08
+					Width=8.39
+					Height=0.58
+					Object Font
+						Name='宋体'
+						Size=180000,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='[#表头#]'
+				End
+			End
+			RepeatOnPage=T
+		End
+		Item
+			Type=ReportFooter
+			Name='ReportFooter1'
+			Height=1.40229
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox99'
+					BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+					Width=4.52438
+					Height=0.555625
+					Object Font
+						Name='宋体'
+						Size=105000,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=BottomCenter
+					Text='合计（小写）'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox100'
+					Left=3.20146
+					Top=0.608542
+					Width=2.4
+					Height=0.396875
+					Text='负责人'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox101'
+					Left=7.99042
+					Top=0.608542
+					Width=2.59292
+					Height=0.396875
+					Text='复核人'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox102'
+					Left=14.2081
+					Top=0.608542
+					Width=2.19604
+					Height=0.396875
+					Text='制表人'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox54'
+					BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+					Left=13.9965
+					Width=8.30792
+					Height=0.555625
+					TextAlign=MiddleRight
+					Text='[#Sum(金额):#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox55'
+					BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+					Left=22.2779
+					Width=2.43417
+					Height=0.555625
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox56'
+					BorderStyles=[DrawBottom]
+					Left=4.55083
+					Width=9.44563
+					Height=0.555625
+					TextAlign=MiddleCenter
+					Text='[#Sum(金额):$$#]'
+				End
+			End
+			RepeatOnPage=T
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="起始时间" para_name="DATE_BEGIN" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="截止日期" para_name="DATE_END" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="日报单号" para_name="CODE" object_code="" is_showOnQueryPanel="True" control_type="0" enum_value="授权日报-006-002162" condition_type="2">
+<values object_field_name="">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

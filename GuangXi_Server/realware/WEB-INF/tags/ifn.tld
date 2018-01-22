@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	
+	<tlib-version>1.0</tlib-version>
+	<short-name>ifn</short-name>
+	
+	<function>
+		<description>pojo对象形成json字符串</description>
+		<name>objToJson</name>
+		<function-class>grp.pt.pb.util.JstlUtils</function-class>
+		<function-signature>java.lang.String objToJson(java.lang.Object)</function-signature>
+		<example>${ifn:objToJson(obj)}</example>
+	</function>
+	
+	<function>
+		<description>map对象形成json字符串</description>
+		<name>mapToJson</name>
+		<function-class>grp.pt.pb.util.JstlUtils</function-class>
+		<function-signature>java.lang.String mapToJson(java.util.Map)</function-signature>
+		<example>${ifn:mapToJson(map)}</example>
+	</function>
+	
+	<function>
+		<description>list对象形成json字符串</description>
+		<name>listToJson</name>
+		<function-class>grp.pt.pb.util.JstlUtils</function-class>
+		<function-signature>java.lang.String listToJson(java.util.List)</function-signature>
+		<example>${ifn:listToJson(list)}</example>
+	</function>
+	
+</taglib>

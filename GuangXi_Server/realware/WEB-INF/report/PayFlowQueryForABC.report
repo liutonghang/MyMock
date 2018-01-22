@@ -1,0 +1,565 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="123456" id="5621" name="1111" type="5" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="0" isUnion="0"><DataSources><DataSource name="11" is_subDataSource="False" memoryName=""><QuerySql>select lg.voucher_no,
+		voucher.PAY_AMOUNT,
+		lg.pay_account_no,
+		lg.accthost_seqId,
+		lg.user_code,
+		lg.create_date,
+		'交易成功' trans_result,
+		bank.bank_name ||'电子交易清单' detailOfBank,
+		voucher.PAYEE_ACCOUNT_NO,
+		smt.sum_amt,
+		smt.sum_amt_da
+ from pb_trans_log lg,VW_PB_BANKNETZ bank,pb_pay_voucher voucher ,(
+ 		select sum(trans_amount) sum_amt,sum(trans_amount) sum_amt_da from pb_trans_log lgg, VW_PB_BANKNETZ b2, pb_pay_voucher v2 where lgg.TRANS_SUCC_FLAG = 1 and b2.bank_code = lgg.bank_code and lgg.VOUCHER_NO = v2.PAY_VOUCHER_CODE and v2.PAY_AMOUNT > 0
+ 		[? and lgg.create_date = #create_date#?]
+  	[? and lgg.bank_code = #bank_code#?]
+         [? and lgg.admdiv_code = #admdiv_code#?]) smt
+ where lg.TRANS_SUCC_FLAG = 1 and bank.bank_code = lg.bank_code and lg.VOUCHER_NO = voucher.PAY_VOUCHER_CODE
+        and  voucher.PAY_AMOUNT&gt;0 
+ [? and lg.create_date = #create_date#?]
+  	[? and lg.bank_code = #bank_code#?]
+         [? and lg.admdiv_code = #admdiv_code#?]</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='6.0.0.2'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='voucher_no'
+				End
+				Item
+					Name='agency_name'
+				End
+				Item
+					Name='pay_amount'
+					Type=Float
+					Format='#,##0.00'
+				End
+				Item
+					Name='payee_account_no'
+				End
+				Item
+					Name='accthost_seqId'
+				End
+				Item
+					Name='trans_result'
+				End
+				Item
+					Name='create_date'
+					Format='yyyy年MM月dd日'
+				End
+				Item
+					Name='user_code'
+				End
+				Item
+					Name='pay_account_no'
+				End
+				Item
+					Name='detailOfBank'
+				End
+				Item
+					Name='Field1'
+				End
+				Item
+					Name='sum_amt'
+					Type=Float
+					Format='#,##0.00'
+				End
+				Item
+					Name='sum_amt_da'
+					Type=Float
+					Format='$$'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='序号'
+				Width=1.16417
+			End
+			Item
+				Name='支付令号'
+				Width=2.19604
+			End
+			Item
+				Name='金额'
+				Width=2.40771
+			End
+			Item
+				Name='付款人全称'
+				Width=2.98979
+			End
+			Item
+				Name='收款人账号'
+				Width=2.38125
+			End
+			Item
+				Name='收款人开户行'
+				Width=1.79917
+			End
+			Item
+				Name='交易状态'
+				Width=1.40229
+			End
+			Item
+				Name='Column1'
+				Width=1.5875
+			End
+		End
+		Object ColumnContent
+			Height=0.608542
+			RowsPerPage=30
+			Items ColumnContentCell
+				Item
+					Column='序号'
+					FreeCell=T
+					Items Control
+						Item
+							Type=SystemVarBox
+							Name='SystemVarBox1'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							Dock=Fill
+							TextAlign=MiddleCenter
+							SystemVar=RowNo
+						End
+					End
+				End
+				Item
+					Column='支付令号'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					DataField='voucher_no'
+				End
+				Item
+					Column='金额'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					TextAlign=MiddleRight
+					DataField='pay_amount'
+				End
+				Item
+					Column='付款人全称'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					DataField='pay_account_no'
+				End
+				Item
+					Column='收款人账号'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					DataField='payee_account_no'
+				End
+				Item
+					Column='收款人开户行'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					DataField='accthost_seqId'
+				End
+				Item
+					Column='交易状态'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					DataField='user_code'
+				End
+				Item
+					Column='Column1'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					DataField='trans_result'
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.582083
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='序号'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='序号'
+				End
+				Item
+					GroupTitle=F
+					Column='支付令号'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='支付令号'
+				End
+				Item
+					GroupTitle=F
+					Column='金额'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='金额'
+				End
+				Item
+					GroupTitle=F
+					Column='付款人全称'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					TextAlign=MiddleCenter
+					Text='付款人账号'
+				End
+				Item
+					GroupTitle=F
+					Column='收款人账号'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='收款人账号'
+				End
+				Item
+					GroupTitle=F
+					Column='收款人开户行'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='核心日志号'
+				End
+				Item
+					GroupTitle=F
+					Column='交易状态'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='柜员号'
+				End
+				Item
+					GroupTitle=F
+					Column='Column1'
+					Object Font
+						Name='宋体'
+						Size=75000,0
+						Weight=400
+						Charset=134
+					End
+					Text='交易状态'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				PageGroup=T
+				Object GroupHeader
+					Height=2.40771
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox1'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Bold=T
+								Charset=134
+							End
+							Top=1.19063
+							Width=16.0073
+							Height=0.396875
+							TextAlign=MiddleCenter
+							DataField='create_date'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox2'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Bold=T
+								Charset=134
+							End
+							Top=0.211667
+							Width=16.0073
+							Height=0.79375
+							TextAlign=MiddleCenter
+							DataField='detailOfBank'
+						End
+					End
+				End
+				Object GroupFooter
+					Height=1.5875
+					Items Control
+						Item
+							Type=SummaryBox
+							Name='SummaryBox2'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[]
+							AlignColumn='金额'
+							Left=3.33375
+							Width=2.43417
+							Height=0.79375
+							TextAlign=MiddleRight
+							DataField='pay_amount'
+							Format='#,##0.00'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox6'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumnSide=Right
+							AlignColumn='支付令号'
+							Left=-0.396875
+							Width=3.78354
+							Height=0.79375
+							TextAlign=MiddleRight
+							Text='本页小计:'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox7'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							BorderStyles=[DrawTop|DrawRight]
+							AlignColumn='支付令号'
+							AlignColumnEx='序号'
+							Top=0.79375
+							Width=3.36021
+							Height=0.79375
+							TextAlign=MiddleRight
+							Text='合计(大写):'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox3'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							BorderStyles=[DrawTop|DrawRight]
+							Left=3.41313
+							Top=0.79375
+							Width=7.77875
+							Height=0.79375
+							WordWrap=T
+							TextAlign=MiddleCenter
+							DataField='sum_amt_da'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox8'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							BorderStyles=[DrawTop|DrawRight]
+							Left=11.1919
+							Top=0.79375
+							Width=1.79917
+							Height=0.79375
+							Text='合计(小写):'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox4'
+							Object Font
+								Name='宋体'
+								Size=75000,0
+								Weight=400
+								Charset=134
+							End
+							BorderStyles=[DrawTop]
+							Left=12.991
+							Top=0.79375
+							Width=2.96
+							Height=0.79
+							WordWrap=T
+							TextAlign=MiddleRight
+							DataField='sum_amt'
+						End
+					End
+				End
+			End
+			Item
+				Name='Group2'
+				PageGroup=T
+				Object GroupHeader
+					Height=0
+				End
+				Object GroupFooter
+					Height=1.00542
+					PrintGridBorder=F
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox1'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Top=0.211667
+							Width=16.0073
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='第-[#SystemVar(PageNumber)#]-页/共[#SystemVar(PageCount)#]页'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='create_date'
+		End
+		Item
+			Name='bank_code'
+		End
+		Item
+			Name='CREATE_DATE'
+		End
+		Item
+			Name='BANK_CODE'
+		End
+		Item
+			Name='CREATE_DATE'
+		End
+		Item
+			Name='BANK_CODE'
+		End
+		Item
+			Name='CREATE_DATE'
+		End
+		Item
+			Name='BANK_CODE'
+		End
+		Item
+			Name='CREATE_DATE'
+		End
+		Item
+			Name='BANK_CODE'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=0
+		End
+		Item
+			Type=ReportFooter
+			Height=1.19063
+			Items Control
+				Item
+					Type=SummaryBox
+					Name='SummaryBox1'
+					Left=0.79375
+					Top=-0.978958
+					Width=2.59292
+					Height=0.608542
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="" para_name="CREATE_DATE" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="银行" para_name="BANK_CODE" object_code="BANK" is_showOnQueryPanel="False" control_type="TREEASSIST_CONTROL" enum_value="" condition_type="1">
+<values object_field_name="CODE">
+</values></QueryCondition><QueryCondition cnname="" para_name="CREATE_DATE" object_code="" is_showOnQueryPanel="False" control_type="INPUT_CONTROL" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="银行" para_name="BANK_CODE" object_code="BANK" is_showOnQueryPanel="False" control_type="TREEASSIST_CONTROL" enum_value="" condition_type="1">
+<values object_field_name="CODE">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

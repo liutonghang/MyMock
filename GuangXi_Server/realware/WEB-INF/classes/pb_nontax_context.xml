@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                 ">
+	 
+	<bean id="nontaxService" class="grp.pt.pb.nontax.impl.NontaxServiceImpl">
+		<property name="billEngine" ref="bill.engine.billengineimpl" />
+		<property name="payCommonService" ref = "payCommonService"></property>
+		<property name="bankAccountService" ref = "pb.common.BankAccountService"></property>
+		<property name="baseBizService" ref = "pb.common.baseBizService"></property>
+		<property name="logService" ref="pb.common.pbLogService"/>
+		<property name="smallTrans" ref="smallTranService"></property>
+		<property name="transService" ref = "pb.trans.TransService"></property>
+		<property name="configService" ref = "pb.common.pbConfigService"></property>
+	</bean>	
+	<bean id="adapterService" class="grp.pt.pb.nontax.adapter.impl.AdapaterServiceImpl">	
+	</bean>
+	<bean id="nontaxConnectService" class="grp.pt.pb.nontax.impl.NontaxConnectServiceImpl">
+		<property name="baseBizService" ref="baseService" />
+		<property name="smallTrans" ref="smallTranService" />
+		<property name="baseDao" ref="baseDAO" />
+		<property name="finService" ref="pb.common.impl.FinService"></property>
+	</bean>
+	<bean id="baseService" class="grp.pt.pb.nontax.impl.BaseBizServiceImpl">
+		<property name="adapterService" ref="adapterService" />
+	</bean>
+	
+	<bean id="nontaxPayableService" class="grp.pt.pb.nontax.impl.NontaxPayableServiceImpl">
+	    <property name="billEngine" ref="bill.engine.billengineimpl" />
+		<property name="payCommonService" ref = "payCommonService"></property>
+		<property name="bizService" ref = "baseService"></property>
+		<property name="smallTrans" ref="smallTranService"></property>
+		<property name="logService" ref="pb.common.pbLogService"/>
+		<property name="transService" ref = "pb.trans.TransService"></property>
+	</bean>
+	
+	<bean id="nontaxInterlineService" class="grp.pt.pb.nontax.impl.NontaxInterlineServiceImpl">
+	    <property name="smalTrans" ref="smallTranService"></property>
+	    <property name="billEngine" ref="bill.engine.billengineimpl" />
+	    <property name="payCommonService" ref = "payCommonService"></property>
+	    <property name="transService" ref = "pb.trans.TransService"></property>
+	    <property name="baseService" ref = "baseService"></property>
+	    <property name="daoSupport" ref="bill.daosupport.daosupportimpl"/>
+	    <property name="logService" ref="pb.common.pbLogService"/>
+	</bean>
+	<bean id="check2555Service" class="grp.pt.pb.nontax.impl.NontaxCheck2555Impl">
+	<property name="billEngine" ref="bill.engine.billengineimpl" />
+	<property name="baseDao" ref="baseDAO" />
+	<property name="bizService" ref="baseService" />
+	<property name="smalTrans" ref="smallTranService"></property>
+	<property name="payCommonService" ref = "payCommonService"></property>
+	</bean>	
+	<bean id="check2557Service" class="grp.pt.pb.nontax.impl.NontaxCheck2557Impl">
+		<property name="billEngine" ref="bill.engine.billengineimpl" />
+		<property name="baseDao" ref="baseDAO" />
+		<property name="bizService" ref="baseService" />
+		<property name="smalTrans" ref="smallTranService"></property>
+		<property name="payCommonService" ref = "payCommonService"></property>
+	</bean>
+
+    <bean id="nontaxStatementService" class="grp.pt.pb.nontax.impl.NontaxStatementsServiceImpl">
+		<property name="smalTrans" ref="smallTranService"></property>
+		<property name="baseDao" ref="baseDAO" />
+		<property name="billEngine" ref="bill.engine.billengineimpl" />
+	</bean>
+	
+	<bean id="nontaxAcctChangeService" class="grp.pt.pb.nontax.impl.NontaxAcctChangeServiceImpl">
+		<property name="baseDao" ref="baseDAO" />
+		<property name="smalTrans" ref="smallTranService"></property>
+		<property name="billEngine" ref="bill.engine.billengineimpl" />
+		<property name="finService" ref="pb.common.impl.FinService"></property>
+		<property name="payCommonService" ref = "payCommonService"></property>
+		<property name="baseBizService" ref="baseService" />
+		<property name="bankAccountService" ref = "pb.common.BankAccountService"></property>
+	</bean>                               
+	
+</beans>

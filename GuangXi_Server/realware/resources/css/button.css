@@ -1,0 +1,115 @@
+@CHARSET "UTF-8";
+.close{
+	background-image: url(../images/close.png) !important;
+}
+.delete{
+    background-image: url(../images/delete.png) !important;
+}
+.add{
+    background-image: url(../images/add.png) !important;
+}
+.addbankno{
+    background-image: url(../images/add.png);
+    background-repeat: no-repeat;
+    background-position:center;
+}
+.edit{
+    background-image: url(../images/edit.png) !important;
+}	
+.role{
+	background-image: url(../images/role.png) !important;
+}
+.refresh{
+	background-image: url(../images/refeach.png) !important;
+}
+.audit{
+	background-image: url(../images/audit.png) !important;
+}
+.send{
+	background-image: url(../images/pay_daily_create.png) !important;
+}
+.again{
+	background-image: url(../images/audit.png) !important;
+}
+.unaudit{
+	background-image: url(../images/unedit.png) !important;
+}
+.back{
+	background-image: url(../images/back.png) !important;
+}
+.log{
+	background-image: url(../images/log.png) !important;
+}
+.look{
+	background-image: url(../images/query.png) !important;
+}
+.pay{
+	background-image: url(../images/pay.png) !important;
+}
+.sign{
+	background-image: url(../images/sign.png) !important;
+}
+.invalid{
+	background-image: url(../images/invalid.png) !important;
+}
+.print{
+	background-image: url(../images/print.png) !important;
+}
+.login {
+	background-image: url(../images/login.gif) !important;
+}
+
+.logout {
+	background-image: url(../images/logout.png) !important;
+}
+.home {
+	background-image: url(../images/home.png) !important;
+}
+.bg_td {
+	background:url(../images/header_right.jpg) no-repeat;
+} 
+.load {
+	background:url(../images/pay.png) no-repeat;
+}
+.input {
+	background:url(../images/input.png) no-repeat;
+}
+.cancle {
+	background:url(../images/cancle.png) no-repeat;
+}
+.enabled{
+	background:url(../images/huanfu.png) no-repeat;
+}
+.import{
+	background:url(../images/import.png) no-repeat;
+}
+.export{
+	background:url(../images/export.gif) no-repeat;
+}
+.save{
+	background:url(../images/save.png) no-repeat;
+}
+.top{
+	background:url(../images/top.png) no-repeat;
+}
+
+.low{
+	background:url(../images/low.png) no-repeat;
+}
+
+.query{
+	background:url(../images/query.png) no-repeat;
+}
+.to_top{
+	background:url(../images/to_top.png) no-repeat;
+}
+.to_bottom{
+	background:url(../images/to_bottom.png) no-repeat;
+}
+.network{
+	background:url(../images/network.gif) !important;
+}
+.x-selectable,.x-selectable * {
+	  -moz-user-select: text! important ;   
+       -khtml-user-select: text! important ;   
+}

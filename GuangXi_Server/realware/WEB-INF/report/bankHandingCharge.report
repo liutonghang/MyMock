@@ -1,0 +1,1745 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="w3200001" id="124" name="汇款手续费" type="5" org_id="0" group_id="92" sys_id="110" monetary_unit="1" job_id="0" enable="1" isUnion="0"><DataSources><DataSource name="sxf" is_subDataSource="False" memoryName=""><QuerySql>SELECT   print_date,end_date,
+        sum(ysn1wje) AS pl_pay_amount_nei1,--预算内1w以下金额
+        sum(ysn1wbs) AS pl_pay_count_nei1,--预算内1w以下笔数
+        5*sum(ysn1wbs) AS pl_sxf_amount_nei1,--预算内1w以下手续费
+        sum(ysn10wje) AS pl_pay_amount_nei2,--预算内10w以下金额
+        sum(ysn10wbs) AS pl_pay_count_nei2,--预算内10w以下笔数
+        10*sum(ysn10wbs) AS pl_sxf_amount_nei2,--预算内10w以下手续费
+        sum(ysn50wje) AS pl_pay_amount_nei3,--预算内50w以下金额
+        sum(ysn50wbs) AS pl_pay_count_nei3,--预算内50w以下笔数
+        15*sum(ysn50wbs) AS pl_sxf_amount_nei3,--预算内50w以下手续费
+        sum(ysn100wje) AS pl_pay_amount_nei4,--预算内100w以下金额
+        sum(ysn100wbs) AS pl_pay_count_nei4,--预算内100w以下笔数
+        20*sum(ysn100wbs) AS pl_sxf_amount_nei4,--预算内100w以下手续费
+        sum(ysn1000wje) AS pl_pay_amount_nei5,--预算内1000w以下金额
+        sum(ysn1000wbs) AS pl_pay_count_nei5,--预算内1000w以下笔数
+        sum(ysn100wje*0.00002) AS pl_sxf_amount_nei5,--预算内1000w以下手续费
+        sum(ysndy1000wje) AS pl_pay_amount_nei6,--预算内1000w以上金额
+        sum(ysndy1000wbs) AS pl_pay_count_nei6,--预算内1000w以上笔数
+        200*sum(ysndy1000wbs) AS pl_sxf_amount_nei6,--预算内1000w以上手续费
+        sum(ysn1wje + ysn10wje + ysn50wje + ysn100wje + ysn1000wje + ysndy1000wje) AS sumAmtysn,--预算内小计金额
+        sum(ysn1wbs + ysn10wbs + ysn50wbs + ysn100wbs + ysn1000wbs + ysndy1000wbs) AS sumCountysn,--预算内小计笔数
+        5*sum(ysn1wbs) + 10*sum(ysn10wbs)+15*sum(ysn50wbs)+20*sum(ysn100wbs)+sum(ysn100wje*0.00002)+200*sum(ysndy1000wbs) AS sumsxfysn，--预算内小计手续费
+      
+        sum(ysw1wje) AS pl_pay_amount_wai1,--预算外1w以下金额
+        sum(ysw1wbs) AS pl_pay_count_wai1,--预算外1w以下笔数
+        5*sum(ysw1wbs) AS pl_sxf_amount_wai1,--预算外1w以下手续费
+        sum(ysw10wje) AS pl_pay_amount_wai2,--预算外10w以下金额
+        sum(ysw10wbs) AS pl_pay_count_wai2,--预算外10w以下笔数
+        10*sum(ysw10wbs) AS pl_sxf_amount_wai2,--预算外10w以下手续费
+        sum(ysw50wje) AS pl_pay_amount_wai3,--预算外50w以下金额
+        sum(ysw50wbs) AS pl_pay_count_wai3,--预算外50w以下笔数
+        15*sum(ysw50wbs) AS pl_sxf_amount_wai3,--预算外50w以下手续费
+        sum(ysw100wje) AS pl_pay_amount_wai4,--预算外100w以下金额
+        sum(ysw100wbs) AS pl_pay_count_wai4,--预算外100w以下笔数
+        20*sum(ysw100wbs) AS pl_sxf_amount_wai4,--预算外100w以下手续费
+        sum(ysw1000wje) AS pl_pay_amount_wai5,--预算外1000w以下金额
+        sum(ysw1000wbs) AS pl_pay_count_wai5,--预算外1000w以下笔数
+        sum(ysw100wje*0.00002) AS pl_sxf_amount_wai5,--预算外1000w以下手续费
+        sum(yswdy1000wje) AS pl_pay_amount_wai6,--预算外1000w以上金额
+        sum(yswdy1000wbs) AS pl_pay_count_wai6,--预算外1000w以上笔数
+        200*sum(yswdy1000wbs) AS pl_sxf_amount_wai6,--预算外1000w以上手续费
+        sum(ysw1wje + ysw10wje + ysw50wje + ysw100wje + ysw1000wje + yswdy1000wje) AS sumAmtysw,--预算外小计金额
+        sum(ysw1wbs + ysw10wbs + ysw50wbs + ysw100wbs + ysw1000wbs + yswdy1000wbs) AS sumCountysw,--预算外小计笔数
+        5*sum(ysw1wbs) + 10*sum(ysw10wbs)+15*sum(ysw50wbs)+20*sum(ysw100wbs)+sum(ysw100wje*0.00002)+200*sum(yswdy1000wbs) AS sumsxfysw,--预算外小计手续费
+    
+        sum(ysn1wje) + sum(ysw1wje) AS pl_pay_amount1,--1w以下金额
+        sum(ysn1wbs) + sum(ysw1wbs) AS pl_pay_count1,--1w以下笔数
+        5*sum(ysn1wbs) + 5*sum(ysw1wbs) AS pl_sxf_amount1,--1w以下手续费
+        sum(ysn10wje) + sum(ysw10wje) AS pl_pay_amount2,--10w以下金额
+        sum(ysn10wbs) + sum(ysw10wbs) AS pl_pay_count2,--10w以下笔数
+        10*sum(ysn10wbs) + 10*sum(ysw10wbs) AS pl_sxf_amount_2,--10w以下手续费
+        sum(ysn50wje) + sum(ysw50wje) AS pl_pay_amount3,--50w以下金额
+        sum(ysn50wbs) + sum(ysw50wbs) AS pl_pay_count3,--50w以下笔数
+        15*sum(ysn50wbs) + 15*sum(ysw50wbs) AS pl_sxf_amount3,--50w以下手续费
+        sum(ysn100wje) + sum(ysw100wje) AS pl_pay_amount4,--100w以下金额
+        sum(ysn100wbs) + sum(ysw100wbs) AS pl_pay_count4,--100w以下笔数
+        20*sum(ysn100wbs) + 20*sum(ysw100wbs) AS pl_sxf_amount4,--100w以下手续费
+        sum(ysn1000wje) + sum(ysw1000wje) AS pl_pay_amount5,--1000w以下金额
+        sum(ysn1000wbs) + sum(ysw1000wbs) AS pl_pay_count5,--1000w以下笔数
+        sum(ysn100wje*0.00002) + sum(ysw100wje*0.00002) AS pl_sxf_amount5,--1000w以下手续费
+        sum(ysndy1000wje) + sum(yswdy1000wje) AS pl_pay_amount6,--1000w以上金额
+        sum(ysndy1000wbs) + sum(yswdy1000wbs) AS pl_pay_count6,--1000w以上笔数
+        200*sum(ysndy1000wbs) + 200*sum(yswdy1000wbs) AS pl_sxf_amount6,--1000w以上手续费
+        sum(ysn1wje + ysn10wje + ysn50wje + ysn100wje + ysn1000wje + ysndy1000wje + ysw1wje + ysw10wje + ysw50wje + ysw100wje + ysw1000wje + yswdy1000wje) AS sumAmt,-- 小计金额
+        sum(ysn1wbs + ysn10wbs + ysn50wbs + ysn100wbs + ysn1000wbs + ysndy1000wbs + ysw1wbs + ysw10wbs + ysw50wbs + ysw100wbs + ysw1000wbs + yswdy1000wbs) AS  sumCount,--小计笔数
+        5*sum(ysn1wbs + ysw1wbs) + 10*sum(ysn10wbs + ysw10wbs)+15*sum(ysn50wbs + ysw50wbs)+20*sum(ysn100wbs + ysw100wbs)+sum(ysn100wje*0.00002 +  ysw100wje*0.00002)+200*sum(ysndy1000wbs + yswdy1000wbs) AS sumsxf--小计手续费
+         
+        from (
+select [?#print_date#?] print_date,[?#end_date#?] end_date,
+ (CASE WHEN  fund_type_code ='1'and pay_amount&lt;=10000  and pay_type_code='11'  then pay_amount ELSE 0 END ) ysn1wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&lt;=10000 and pay_type_code='11'  then 1 ELSE 0 END )ysn1wbs,           
+       (CASE WHEN  fund_type_code ='1'and pay_amount&gt;10000 and pay_amount&lt;=100000 and pay_type_code='11'  then  pay_amount ELSE 0 END )ysn10wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&gt;10000 and pay_amount&lt;=100000 and pay_type_code='11'  then 1  ELSE 0 END )ysn10wbs,     
+       (CASE WHEN  fund_type_code ='1'and pay_amount&gt;100000 and pay_amount&lt;=500000 and pay_type_code='11'  then  pay_amount ELSE 0 END )ysn50wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&gt;100000 and pay_amount&lt;=500000 and pay_type_code='11'  then  1 ELSE 0 END )ysn50wbs,     
+       (CASE WHEN  fund_type_code ='1'and pay_amount&gt;500000 and pay_amount&lt;=1000000 and pay_type_code='11'   then pay_amount ELSE 0 END )ysn100wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&gt;500000 and pay_amount&lt;=1000000 and pay_type_code='11'  then  1 ELSE 0 END )ysn100wbs,  
+       (CASE WHEN  fund_type_code ='1'and pay_amount&gt;1000000 and pay_amount&lt;=10000000  then pay_amount ELSE 0 END )ysn1000wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&gt;1000000 and pay_amount&lt;=10000000 and pay_type_code='11'   then 1 ELSE 0 END )ysn1000wbs,
+       (CASE WHEN  fund_type_code ='1'and pay_amount&gt;10000000 and pay_type_code='11'  then pay_amount ELSE 0  END )ysndy1000wje,
+       (CASE WHEN fund_type_code ='1'and pay_amount&gt;10000000 and pay_type_code='11'  then 1 ELSE 0 END ) ysndy1000wbs，
+       
+       (CASE WHEN  fund_type_code ='2'and pay_amount&lt;=10000 and pay_type_code='11'  then pay_amount ELSE 0 END  )ysw1wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&lt;=10000 and pay_type_code='11'  then 1 ELSE 0 END )ysw1wbs,           
+       (CASE WHEN  fund_type_code ='2'and pay_amount&gt;10000 and pay_amount&lt;=100000 and pay_type_code='11'  then  pay_amount ELSE 0 END )ysw10wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&gt;10000 and pay_amount&lt;=100000 and pay_type_code='11'  then 1  ELSE 0 END )ysw10wbs,     
+       (CASE WHEN  fund_type_code ='2'and pay_amount&gt;100000 and pay_amount&lt;=500000 and pay_type_code='11'  then  pay_amount ELSE 0 END )ysw50wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&gt;100000 and pay_amount&lt;=500000 and pay_type_code='11'  then  1 ELSE 0 END )ysw50wbs,     
+       (CASE WHEN  fund_type_code ='2'and pay_amount&gt;500000 and pay_amount&lt;=1000000 and pay_type_code='11'   then pay_amount ELSE 0 END )ysw100wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&gt;500000 and pay_amount&lt;=1000000 and pay_type_code='11'  then  1 ELSE 0 END )ysw100wbs,  
+       (CASE WHEN  fund_type_code ='2'and pay_amount&gt;1000000 and pay_amount&lt;=10000000 and pay_type_code='11'   then pay_amount ELSE 0 END )ysw1000wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&gt;1000000 and pay_amount&lt;=10000000 and pay_type_code='11'   then 1 ELSE 0 END )ysw1000wbs,
+       (CASE WHEN  fund_type_code ='2'and pay_amount&gt;10000000 and pay_type_code='11' then pay_amount ELSE 0  END )yswdy1000wje,
+       (CASE WHEN fund_type_code ='2'and pay_amount&gt;10000000 and pay_type_code='11'  then 1 ELSE 0 END ) yswdy1000wbs
+  from (
+	select c.* from
+	(
+	select m.pay_clear_voucher_id,m.fund_type_code,m.pay_type_code,m.pay_amount from pb_pay_voucher m
+
+	where m.pay_clear_voucher_id&gt;0 and m.pay_amount&gt;0 and m.admdiv_code= [?#ADMDIV_CODE#?] and m.pay_type_code='11'
+
+	and exists
+
+		(
+		select 1 from pb_pay_clear_voucher cv where cv.admdiv_code = [?#ADMDIV_CODE#?] and cv.pay_type_code='11'
+
+		and cv.vou_date&gt;=[?#print_date#?] and cv.vou_date&lt;=[?#end_date#?]
+		)
+	)c
+)
+)v 
+group by 
+print_date,end_date</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.6.0.0'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='支付日期'
+					DBFieldName='pay_date'
+				End
+				Item
+					Name='打印日期'
+					DBFieldName='print_date'
+				End
+				Item
+					Name='预算内1w以下金额'
+					DBFieldName='pl_pay_amount_nei1'
+				End
+				Item
+					Name='预算内1w以下笔数'
+					DBFieldName='pl_pay_count_nei1'
+				End
+				Item
+					Name='预算内1w以下手续费'
+					DBFieldName='pl_sxf_amount_nei1'
+				End
+				Item
+					Name='预算内10w以下金额'
+					DBFieldName='pl_pay_amount_nei2'
+				End
+				Item
+					Name='预算内10w以下笔数'
+					DBFieldName='pl_pay_count_nei2'
+				End
+				Item
+					Name='预算内10w以下手续费'
+					DBFieldName='pl_sxf_amount_nei2'
+				End
+				Item
+					Name='预算内50w以下金额'
+					DBFieldName='pl_pay_amount_nei3'
+				End
+				Item
+					Name='预算内50w以下笔数'
+					DBFieldName='pl_pay_count_nei3'
+				End
+				Item
+					Name='预算内50w以下手续费'
+					DBFieldName='pl_sxf_amount_nei3'
+				End
+				Item
+					Name='预算内100w以下金额'
+					DBFieldName='pl_pay_amount_nei4'
+				End
+				Item
+					Name='预算内100w以下笔数'
+					DBFieldName='pl_pay_count_nei4'
+				End
+				Item
+					Name='预算内100w以下手续费'
+					DBFieldName='pl_sxf_amount_nei4'
+				End
+				Item
+					Name='预算内1000w以下金额'
+					DBFieldName='pl_pay_amount_nei5'
+				End
+				Item
+					Name='预算内1000w以下笔数'
+					DBFieldName='pl_pay_count_nei5'
+				End
+				Item
+					Name='预算内1000w以下手续费'
+					DBFieldName='pl_sxf_amount_nei5'
+				End
+				Item
+					Name='预算内1000w以上金额'
+					DBFieldName='pl_pay_amount_nei6'
+				End
+				Item
+					Name='预算内1000w以上笔数'
+					DBFieldName='pl_pay_count_nei6'
+				End
+				Item
+					Name='预算内1000w以上手续费'
+					DBFieldName='pl_sxf_amount_nei6'
+				End
+				Item
+					Name='预算内小计金额'
+					DBFieldName='sumAmtysn'
+				End
+				Item
+					Name='预算内小计笔数'
+					DBFieldName='sumCountysn'
+				End
+				Item
+					Name='预算内小计手续费'
+					DBFieldName='sumsxfysn'
+				End
+				Item
+					Name='预算外1w以下金额'
+					DBFieldName='pl_pay_amount_wai1'
+				End
+				Item
+					Name='预算外1w以下笔数'
+					DBFieldName='pl_pay_count_wai1'
+				End
+				Item
+					Name='预算外1w以下手续费'
+					DBFieldName='pl_sxf_amount_wai1'
+				End
+				Item
+					Name='预算外10w以下金额'
+					DBFieldName='pl_pay_amount_wai2'
+				End
+				Item
+					Name='预算外10w以下笔数'
+					DBFieldName='pl_pay_count_wai2'
+				End
+				Item
+					Name='预算外10w以下手续费'
+					DBFieldName='pl_sxf_amount_wai2'
+				End
+				Item
+					Name='预算外50w以下金额'
+					DBFieldName='pl_pay_amount_wai3'
+				End
+				Item
+					Name='预算外50w以下笔数'
+					DBFieldName='pl_pay_count_wai3'
+				End
+				Item
+					Name='预算外50w以下手续费'
+					DBFieldName='pl_sxf_amount_wai3'
+				End
+				Item
+					Name='预算外100w以下金额'
+					DBFieldName='pl_pay_amount_wai4'
+				End
+				Item
+					Name='预算外100w以下笔数'
+					DBFieldName='pl_pay_count_wai4'
+				End
+				Item
+					Name='预算外100w以下手续费'
+					DBFieldName='pl_sxf_amount_wai4'
+				End
+				Item
+					Name='预算外1000w以下金额'
+					DBFieldName='pl_pay_amount_wai5'
+				End
+				Item
+					Name='预算外1000w以下笔数'
+					DBFieldName='pl_pay_count_wai5'
+				End
+				Item
+					Name='预算外1000w以下手续费'
+					DBFieldName='pl_sxf_amount_wai5'
+				End
+				Item
+					Name='预算外1000w以上金额'
+					DBFieldName='pl_pay_amount_wai6'
+				End
+				Item
+					Name='预算外1000w以上笔数'
+					DBFieldName='pl_pay_count_wai6'
+				End
+				Item
+					Name='预算外1000w以上手续费'
+					DBFieldName='pl_sxf_amount_wai6'
+				End
+				Item
+					Name='预算外小计金额'
+					DBFieldName='sumAmtysw'
+				End
+				Item
+					Name='预算外小计笔数'
+					DBFieldName='sumCountysw'
+				End
+				Item
+					Name='预算外小计手续费'
+					DBFieldName='sumsxfysw'
+				End
+				Item
+					Name='1w以下金额'
+					DBFieldName='pl_pay_amount1'
+				End
+				Item
+					Name='1w以下笔数'
+					DBFieldName='pl_pay_count1'
+				End
+				Item
+					Name='1w以下手续费'
+					DBFieldName='pl_sxf_amount1'
+				End
+				Item
+					Name='10w以下金额'
+					DBFieldName='pl_pay_amount2'
+				End
+				Item
+					Name='10w以下笔数'
+					DBFieldName='pl_pay_count2'
+				End
+				Item
+					Name='10w以下手续费'
+					DBFieldName='pl_sxf_amount_2'
+				End
+				Item
+					Name='50w以下金额'
+					DBFieldName='pl_pay_amount3'
+				End
+				Item
+					Name='50w以下笔数'
+					DBFieldName='pl_pay_count3'
+				End
+				Item
+					Name='50w以下手续费'
+					DBFieldName='pl_sxf_amount3'
+				End
+				Item
+					Name='100w以下金额'
+					DBFieldName='pl_pay_amount4'
+				End
+				Item
+					Name='100w以下笔数'
+					DBFieldName='pl_pay_count4'
+				End
+				Item
+					Name='100w以下手续费'
+					DBFieldName='pl_sxf_amount4'
+				End
+				Item
+					Name='1000w以下金额'
+					DBFieldName='pl_pay_amount5'
+				End
+				Item
+					Name='1000w以下笔数'
+					DBFieldName='pl_pay_count5'
+				End
+				Item
+					Name='1000w以下手续费'
+					DBFieldName='pl_sxf_amount5'
+				End
+				Item
+					Name='1000w以上笔数'
+					DBFieldName='pl_pay_count6'
+				End
+				Item
+					Name='1000w以上手续费'
+					DBFieldName='pl_sxf_amount6'
+				End
+				Item
+					Name='小计金额'
+					DBFieldName='sumAmt'
+				End
+				Item
+					Name='小计笔数'
+					DBFieldName='sumCount'
+				End
+				Item
+					Name='小计手续费'
+					DBFieldName='sumsxf'
+				End
+				Item
+					Name='1000w以上金额'
+					DBFieldName='pl_pay_amount6'
+				End
+				Item
+					Name='结束日期'
+					DBFieldName='end_date'
+				End
+			End
+		End
+		Object ColumnContent
+		End
+		Object ColumnTitle
+		End
+	End
+	Items Parameter
+		Item
+			Name='Parameter1'
+		End
+		Item
+			Name='print_date'
+		End
+		Item
+			Name='admdiv_code'
+		End
+		Item
+			Name='END_DATE'
+		End
+		Item
+			Name='END_DATE'
+		End
+		Item
+			Name='Parameter2'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=14.7902
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Object Font
+						Name='微软雅黑'
+						Size=157500,0
+						Weight=400
+						Charset=134
+					End
+					Left=6.79979
+					Top=0.211667
+					Width=11.3771
+					Height=0.79375
+					Text='江苏省财政厅财政支付局汇款凭证汇总清单'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox1'
+					Left=14.605
+					Top=1.19063
+					Width=2.59292
+					Height=0.608542
+					Text='交易日期'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox2'
+					Left=14.605
+					Top=1.79917
+					Width=2.59292
+					Height=0.608542
+					Text='打印时间'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox2'
+					Left=0.79375
+					Top=1.40229
+					Width=2.59292
+					Height=0.608542
+					Text='（银行盖章）'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox3'
+					Left=10.0013
+					Top=2.98979
+					Width=2.98979
+					Height=0.608542
+					Text='预    算    内'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox29'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.72521
+					Top=3.57188
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1万以下(含1万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox30'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4565
+					Top=3.57188
+					Width=2.9
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='50-100万(含100万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox31'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3669
+					Top=3.57188
+					Width=2.83104
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='100万-1000万'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox32'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.529167
+					Top=3.57188
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='项  目'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox33'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.70479
+					Top=3.57188
+					Width=2.75
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='10-50万(含50万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox34'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.529167
+					Top=4.18042
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='笔  数'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox35'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.529167
+					Top=4.7625
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇总金额'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox36'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=0.529167
+					Top=5.37104
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇款手续费'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox37'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2
+					Top=3.57
+					Width=3
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1000万以上'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox39'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2
+					Top=3.57
+					Width=3.62479
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='合计'
+				End
+				Item
+					Type=MemoBox
+					Name='1'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.72521
+					Top=4.18042
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内1w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='pl_pay_amout_nei1'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.72521
+					Top=4.7625
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内1w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox48'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2
+					Top=4.18
+					Width=3
+					Height=0.608542
+					Text='[#预算内1000w以上笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox49'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3669
+					Top=4.18042
+					Width=2.83
+					Height=0.608542
+					Text='[#预算内1000w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox50'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4565
+					Top=4.18042
+					Width=2.9
+					Height=0.608542
+					Text='[#预算内100w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox51'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.70479
+					Top=4.18042
+					Width=2.75
+					Height=0.608542
+					Text='[#预算内50w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox52'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=2.72521
+					Top=5.37104
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内1w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox53'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.70479
+					Top=4.7625
+					Width=2.75
+					Height=0.608542
+					Text='[#预算内50w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox54'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3669
+					Top=4.7625
+					Width=2.83
+					Height=0.608542
+					Text='[#预算内1000w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox55'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4565
+					Top=4.7625
+					Width=2.9
+					Height=0.608542
+					Text='[#预算内100w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox56'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2
+					Top=4.76
+					Width=3
+					Height=0.608542
+					Text='[#预算内1000w以上金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox58'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2
+					Top=4.18
+					Width=3.62
+					Height=0.608542
+					Text='[#预算内小计笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox59'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2
+					Top=4.76
+					Width=3.62
+					Height=0.608542
+					Text='[#预算内小计金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox60'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=8.70479
+					Top=5.37104
+					Width=2.75
+					Height=0.608542
+					Text='[#预算内50w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox61'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=11.4565
+					Top=5.37104
+					Width=2.9
+					Height=0.608542
+					Text='[#预算内100w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox62'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=14.3669
+					Top=5.37104
+					Width=2.83
+					Height=0.608542
+					Text='[#预算内1000w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox63'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=17.2
+					Top=5.37
+					Width=3
+					Height=0.608542
+					Text='[#预算内1000w以上手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox65'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+					Left=20.2
+					Top=5.36
+					Width=3.62
+					Height=0.61
+					Text='[#预算内小计手续费#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox53'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.715
+					Top=3.57188
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1-10万(含10万)'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox90'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.715
+					Top=4.18042
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内10w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox91'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.715
+					Top=4.76
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内10w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox92'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=5.715
+					Top=5.37
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算内10w以下手续费#]'
+				End
+				Item
+					Type=FieldBox
+					Name='FieldBox2'
+					Left=17.4096
+					Top=1.79917
+					Width=2.59292
+					Height=0.608542
+					DataField='结束日期'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox54'
+					Left=9.60438
+					Top=6.58813
+					Width=2.98979
+					Height=0.608542
+					Text='预    算    外'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox55'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.75167
+					Top=7.17021
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1万以下(含1万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox56'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4829
+					Top=7.17021
+					Width=2.9
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='50-100万(含100万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox57'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3933
+					Top=7.17021
+					Width=2.83104
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='100万-1000万'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox58'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.555625
+					Top=7.17021
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='项  目'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox59'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.73125
+					Top=7.17021
+					Width=2.75
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='10-50万(含50万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox60'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.555625
+					Top=7.77875
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='笔  数'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox61'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.555625
+					Top=8.36083
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇总金额'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox62'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=0.555625
+					Top=8.96938
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇款手续费'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox63'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2244
+					Top=7.17021
+					Width=3
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1000万以上'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox64'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2142
+					Top=7.17021
+					Width=3.62479
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='合计'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox93'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.75167
+					Top=7.77875
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外1w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox94'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.75167
+					Top=8.36083
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外1w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox95'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2244
+					Top=7.77875
+					Width=3
+					Height=0.608542
+					Text='[#预算外1000w以上笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox96'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3933
+					Top=7.77875
+					Width=2.83
+					Height=0.608542
+					Text='[#预算外1000w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox97'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4829
+					Top=7.77875
+					Width=2.9
+					Height=0.608542
+					Text='[#预算外100w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox98'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.73125
+					Top=7.77875
+					Width=2.75
+					Height=0.608542
+					Text='[#预算外50w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox99'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=2.75167
+					Top=8.96938
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外1w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox100'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.73125
+					Top=8.36083
+					Width=2.75
+					Height=0.608542
+					Text='[#预算外50w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox101'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3933
+					Top=8.36083
+					Width=2.83
+					Height=0.608542
+					Text='[#预算外1000w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox102'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.4829
+					Top=8.36083
+					Width=2.9
+					Height=0.608542
+					Text='[#预算外100w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox103'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.2244
+					Top=8.36083
+					Width=3
+					Height=0.608542
+					Text='[#预算外1000w以上金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox104'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2142
+					Top=7.77875
+					Width=3.62
+					Height=0.608542
+					Text='[#预算外小计笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox105'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.2142
+					Top=8.36083
+					Width=3.62
+					Height=0.608542
+					Text='[#预算外小计金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox106'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=8.73125
+					Top=8.97
+					Width=2.75
+					Height=0.608542
+					Text='[#预算外50w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox107'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=11.4829
+					Top=8.96938
+					Width=2.9
+					Height=0.608542
+					Text='[#预算外100w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox108'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=14.3933
+					Top=8.96938
+					Width=2.83
+					Height=0.608542
+					Text='[#预算外1000w以下手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox109'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=17.2244
+					Top=8.96938
+					Width=3
+					Height=0.608542
+					Text='[#预算外1000w以上手续费#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox110'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+					Left=20.2142
+					Top=8.96938
+					Width=3.62479
+					Height=0.608542
+					Text='[#预算外小计手续费#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox65'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.74146
+					Top=7.17021
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1-10万(含10万)'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox111'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.74146
+					Top=7.77875
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外10w以下笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox112'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.74146
+					Top=8.36083
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外10w以下金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox113'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=5.74146
+					Top=8.96938
+					Width=2.98979
+					Height=0.608542
+					Text='[#预算外10w以下手续费#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox66'
+					Left=10.0013
+					Top=10.3981
+					Width=2.01083
+					Height=0.608542
+					Text='合    计'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox67'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.69875
+					Top=11.1919
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1万以下(含1万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox68'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.43
+					Top=11.1919
+					Width=2.9
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='50-100万(含100万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox69'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3404
+					Top=11.1919
+					Width=2.83104
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='100万-1000万'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox70'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.502708
+					Top=11.1919
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='项  目'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox71'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.67833
+					Top=11.1919
+					Width=2.75
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='10-50万(含50万)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox72'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.502708
+					Top=11.8004
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='笔  数'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox73'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=0.502708
+					Top=12.3825
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇总金额'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox74'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=0.502708
+					Top=12.991
+					Width=2.19604
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='汇款手续费'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox75'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.1715
+					Top=11.1919
+					Width=3
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1000万以上'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox76'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.1613
+					Top=11.1919
+					Width=3.62479
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='合计'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox114'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.69875
+					Top=11.8004
+					Width=2.98979
+					Height=0.608542
+					Text='[#[1w以下笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox115'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.69875
+					Top=12.3825
+					Width=2.98979
+					Height=0.608542
+					Text='[#[1w以下金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox116'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.1715
+					Top=11.8004
+					Width=3
+					Height=0.608542
+					Text='[#[1000w以上笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox117'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3404
+					Top=11.8004
+					Width=2.83
+					Height=0.608542
+					Text='[#[1000w以下笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox118'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.43
+					Top=11.8004
+					Width=2.9
+					Height=0.608542
+					Text='[#[100w以下笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox119'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.67833
+					Top=11.8004
+					Width=2.75
+					Height=0.608542
+					Text='[#[50w以下笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox120'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=2.69875
+					Top=12.991
+					Width=2.98979
+					Height=0.608542
+					Text='[#[1w以下手续费]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox121'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=8.67833
+					Top=12.3825
+					Width=2.75
+					Height=0.608542
+					Text='[#[50w以下金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox122'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=14.3404
+					Top=12.3825
+					Width=2.83
+					Height=0.608542
+					Text='[#[1000w以下金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox123'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=11.43
+					Top=12.3825
+					Width=2.9
+					Height=0.608542
+					Text='[#[100w以下金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox124'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=17.1715
+					Top=12.3825
+					Width=3
+					Height=0.608542
+					Text='[#[1000w以上金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox125'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.1613
+					Top=11.8004
+					Width=3.62
+					Height=0.608542
+					Text='[#小计笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox126'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=20.1613
+					Top=12.3825
+					Width=3.62
+					Height=0.608542
+					Text='[#小计金额#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox127'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=8.67833
+					Top=12.991
+					Width=2.75
+					Height=0.608542
+					Text='[#[50w以下手续费]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox128'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=11.43
+					Top=12.991
+					Width=2.9
+					Height=0.608542
+					Text='[#[100w以下手续费]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox129'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=14.3404
+					Top=12.991
+					Width=2.83
+					Height=0.608542
+					Text='[#[1000w以下手续费]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox130'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=17.1715
+					Top=12.991
+					Width=3
+					Height=0.608542
+					Text='[#[1000w以上手续费]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox131'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+					Left=20.1613
+					Top=12.991
+					Width=3.62479
+					Height=0.608542
+					Text='[#小计手续费#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox77'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.68854
+					Top=11.1919
+					Width=2.98979
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='1-10万(含10万)'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox132'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.68854
+					Top=11.8004
+					Width=2.98979
+					Height=0.608542
+					Text='[#[10w以下笔数]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox133'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=5.68854
+					Top=12.3825
+					Width=2.98979
+					Height=0.608542
+					Text='[#[10w以下金额]#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox134'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=5.68854
+					Top=12.991
+					Width=2.98979
+					Height=0.608542
+					Text='[#[10w以下手续费]#]'
+				End
+				Item
+					Type=FieldBox
+					Name='FieldBox3'
+					Left=17.4096
+					Top=1.19063
+					Width=2.59292
+					Height=0.608542
+					DataField='打印日期'
+				End
+				Item
+					Type=FieldBox
+					Name='FieldBox4'
+					Left=20.7963
+					Top=1.19063
+					Width=2.59292
+					Height=0.608542
+					DataField='结束日期'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox78'
+					Object Font
+						Name='宋体'
+						Size=112500,0
+						Weight=400
+						Charset=134
+					End
+					Left=20.0025
+					Top=1.19063
+					Width=0.582083
+					Height=0.608542
+					Text='-'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="开始日期" para_name="PRINT_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="结束日期" para_name="END_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="所属区划" para_name="ADMDIV_CODE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="1" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>请选择</value>
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

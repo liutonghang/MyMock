@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="003130" id="5822" name="支付转账查询" type="3" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="1" isUnion="0"><DataSources><DataSource name="支付转账查询" is_subDataSource="False" memoryName=""><QuerySql>select 
+TRANS_LOG_ID,--交易流水
+TRANS_AMOUNT,--交易金额
+VOUCHER_NO, --凭证编码
+case when VT_CODE='8202' then '授权支付' 
+when VT_CODE='5201' then '直接支付' 
+when VT_CODE='2203' then '直接支付退款'  
+when VT_CODE='2204' then '授权支付退款' 
+end as VT_CODE,--支付方式
+CREATE_DATE,--创建时间
+PAY_ACCOUNT_NAME,--付款人
+PAY_ACCOUNT_NO,--付款人账号
+PAYEE_ACCOUNT_NAME,--收款人
+PAYEE_ACCOUNT_NO--收款人账号
+from PB_TRANS_LOG
+where 1=1
+[? and VT_CODE IN (#VT_CODE#)?]
+[? and CREATE_DATE =#CREATE_DATE#?]
+[? and ADMDIV_CODE=#ADMDIV_CODE#?]
+
+ 
+</QuerySql><Fields><Field name = "TRANS_LOG_ID" cnname="交易流水" fieldType="1" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "TRANS_AMOUNT" cnname="交易金额" fieldType="2" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "VOUCHER_NO" cnname="凭证编码" fieldType="1" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "VT_CODE" cnname="支付方式" fieldType="1" object_code="CREATE_DATE" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "CREATE_DATE" cnname="创建时间" fieldType="1" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "PAY_ACCOUNT_NAME" cnname="付款账户" fieldType="1" object_code="PAY_ACCOUNT" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "PAY_ACCOUNT_NO" cnname="付款人账号" fieldType="1" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "PAYEE_ACCOUNT_NAME" cnname="收款人账户" fieldType="1" object_code="PAYEE_ACCOUNT" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<Field name = "PAYEE_ACCOUNT_NO" cnname="收款人账号" fieldType="1" object_code="" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos><UnionGroupInfo IsSameField="False" OccupiedColumn="" GroupName="付款账户,收款人账户"><GroupBys><GroupBy><Field name = "PAY_ACCOUNT_NAME" cnname="付款账户" fieldType="1" object_code="PAY_ACCOUNT" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<OccupiedColumns></OccupiedColumns><GroupBys></GroupBys></GroupBy><GroupBy><Field name = "PAYEE_ACCOUNT_NAME" cnname="收款人账户" fieldType="1" object_code="PAYEE_ACCOUNT" tablename="支付转账查询" olapType="0" olapGroupName=""/>
+<OccupiedColumns></OccupiedColumns><GroupBys></GroupBys></GroupBy></GroupBys></UnionGroupInfo></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.2'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Size=256
+		Width=45.94
+		Height=43.18
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='CREATE_TIME创建时间'
+					Tag='支付转账查询'
+					Type=DateTime
+					DBFieldName='CREATE_TIME'
+				End
+				Item
+					Name='TRANS_LOG_ID交易流水'
+					Tag='支付转账查询'
+					DBFieldName='TRANS_LOG_ID'
+				End
+				Item
+					Name='TRANS_AMOUNT交易金额'
+					Tag='支付转账查询'
+					Type=Float
+					DBFieldName='TRANS_AMOUNT'
+				End
+				Item
+					Name='VOUCHER_NO凭证编码'
+					Tag='支付转账查询'
+					DBFieldName='VOUCHER_NO'
+				End
+				Item
+					Name='VT_CODE支付方式'
+					Tag='支付转账查询'
+					DBFieldName='VT_CODE'
+				End
+				Item
+					Name='CREATE_DATE创建时间'
+					Tag='支付转账查询'
+					Type=DateTime
+					DBFieldName='CREATE_DATE'
+				End
+				Item
+					Name='PAY_ACCOUNT_NAME付款账户'
+					Tag='支付转账查询'
+					DBFieldName='PAY_ACCOUNT_NAME'
+				End
+				Item
+					Name='PAY_ACCOUNT_NO付款人账号'
+					Tag='支付转账查询'
+					DBFieldName='PAY_ACCOUNT_NO'
+				End
+				Item
+					Name='PAYEE_ACCOUNT_NAME收款人账户'
+					Tag='支付转账查询'
+					DBFieldName='PAYEE_ACCOUNT_NAME'
+				End
+				Item
+					Name='PAYEE_ACCOUNT_NO收款人账号'
+					Tag='支付转账查询'
+					DBFieldName='PAYEE_ACCOUNT_NO'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=4.57729
+			End
+			Item
+				Name='Column2'
+				Width=4.57729
+			End
+			Item
+				Name='Column3'
+				Width=4.20688
+			End
+			Item
+				Name='Column4'
+				Width=3.96875
+			End
+			Item
+				Name='Column5'
+				Width=3.01625
+			End
+			Item
+				Name='Column6'
+				Width=4.41854
+			End
+			Item
+				Name='Column7'
+				Width=4.20688
+			End
+			Item
+				Name='Column8'
+				Width=4.20688
+			End
+			Item
+				Name='Column9'
+				Width=5.58271
+			End
+		End
+		Object ColumnContent
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					TextAlign=MiddleCenter
+					DataField='TRANS_LOG_ID交易流水'
+				End
+				Item
+					Column='Column2'
+					TextAlign=MiddleCenter
+					DataField='VOUCHER_NO凭证编码'
+				End
+				Item
+					Column='Column3'
+					TextAlign=BottomRight
+					DataField='TRANS_AMOUNT交易金额'
+				End
+				Item
+					Column='Column4'
+					TextAlign=MiddleCenter
+					DataField='CREATE_DATE创建时间'
+				End
+				Item
+					Column='Column5'
+					TextAlign=MiddleCenter
+					DataField='VT_CODE支付方式'
+				End
+				Item
+					Column='Column6'
+					TextAlign=MiddleCenter
+					DataField='PAY_ACCOUNT_NAME付款账户'
+				End
+				Item
+					Column='Column7'
+					TextAlign=MiddleCenter
+					DataField='PAY_ACCOUNT_NO付款人账号'
+				End
+				Item
+					Column='Column8'
+					TextAlign=MiddleCenter
+					DataField='PAYEE_ACCOUNT_NAME收款人账户'
+				End
+				Item
+					Column='Column9'
+					TextAlign=MiddleCenter
+					DataField='PAYEE_ACCOUNT_NO收款人账号'
+				End
+			End
+		End
+		Object ColumnTitle
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					TextAlign=MiddleCenter
+					Text='交易流水'
+				End
+				Item
+					GroupTitle=F
+					Column='Column2'
+					TextAlign=MiddleCenter
+					Text='凭证编码'
+				End
+				Item
+					GroupTitle=F
+					Column='Column3'
+					TextAlign=MiddleCenter
+					Text='交易金额'
+				End
+				Item
+					GroupTitle=F
+					Column='Column4'
+					TextAlign=MiddleCenter
+					Text='创建日期'
+				End
+				Item
+					GroupTitle=F
+					Column='Column5'
+					TextAlign=MiddleCenter
+					Text='支付方式'
+				End
+				Item
+					GroupTitle=F
+					Column='Column6'
+					TextAlign=MiddleCenter
+					Text='付款人'
+				End
+				Item
+					GroupTitle=F
+					Column='Column7'
+					TextAlign=MiddleCenter
+					Text='付款人账号'
+				End
+				Item
+					GroupTitle=F
+					Column='Column8'
+					TextAlign=MiddleCenter
+					Text='收款人'
+				End
+				Item
+					GroupTitle=F
+					Column='Column9'
+					TextAlign=MiddleCenter
+					Text='收款人账号'
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='VT_CODE'
+			Value='8202'
+		End
+		Item
+			Name='CREATE_DATE'
+			Value='2015-02-12'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox3'
+					Left=17.0127
+					Top=0.608542
+					Width=6.40292
+					Height=1.40229
+					Object Font
+						Name='宋体'
+						Size=217500,0
+						Weight=400
+						Charset=134
+					End
+					Text='支付转账查询'
+				End
+			End
+		End
+		Item
+			Type=ReportFooter
+			Name='ReportFooter1'
+			Height=1.32292
+			Items Control
+				Item
+					Type=SummaryBox
+					Name='SummaryBox1'
+					Left=6.58813
+					Top=0.211667
+					Width=6.00604
+					Height=0.608542
+					DataField='TRANS_AMOUNT交易金额'
+					Format='#,##0.##'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox2'
+					Left=0.79375
+					Top=0.211667
+					Width=4.60375
+					Height=0.608542
+					Text='合计'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="支付方式" para_name="VT_CODE" object_code="" is_showOnQueryPanel="True" control_type="1" enum_value="5201#直接支付+8202#授权支付+2203#直接支付退款+2204#授权支付退款" condition_type="1">
+<values object_field_name="">
+<value>8202</value>
+</values></QueryCondition><QueryCondition cnname="创建时间" para_name="CREATE_DATE" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>2015-02-12</value>
+</values></QueryCondition><QueryCondition cnname="" para_name="ADMDIV_CODE" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

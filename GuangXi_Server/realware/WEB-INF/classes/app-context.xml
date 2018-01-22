@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<import resource="classpath:common-context.xml" />
+	
+	<import resource="classpath:public-context.xml" />
+	
+	<import resource="classpath:workflow-context.xml"/>
+	
+	<import resource="classpath:billtype-context.xml"/>
+	
+	<import resource="classpath:dm-context.xml"/>
+	
+	<import resource="classpath:pb-context.xml"/>
+	
+	<import resource="classpath:uiview-context.xml"/>
+		
+	<!-- import resource="classpath:exinterface-context.xml" /> -->
+	
+	<import resource="classpath:balance-context.xml"/>
+	<!-- 增加个性化代码需要的service context  -->
+	
+	
+	<import resource="classpath:gx-context.xml"/>
+	
+	<!-- 广西农行格式化收、付款人账号  -->
+	<import resource="classpath:gxabc-context.xml"/>	
+	
+	<import resource="classpath:report-context.xml"/>
+	
+	<import resource="classpath:pbss-context.xml"/>
+	
+	<import resource="classpath:pb-context-gxboc.xml"/>
+	
+	<import resource="classpath:gxbbw-context.xml"/>
+	
+	<import resource="classpath:pb_nontax_context.xml"/> 
+
+</beans>
+

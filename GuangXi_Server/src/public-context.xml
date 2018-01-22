@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                 ">
+	<!-- 
+		此文件定义上下文内容，各模块需各自按以下指定的文件名在各模块的src文件夹下维护、管理上下文内容。
+		此文件只作管理用途，不允许随意修改！
+	-->
+
+	<!-- 多数据源定义 以下是以sql数据库举例-->
+	<!-- postgresql连接 -->
+ 	<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">	
+		<property name="driverClassName" value="com.cownew.cownewsql.imsql.jdbc.DBDriver" />
+		<property name="url" value="jdbc:cownewsql:postgresql:org.postgresql.Driver:jdbc:postgresql://192.168.1.241:5432/pb01181" />
+		<property name="username" value="pb" />
+		<property name="password" value="1" />
+	</bean>	
+	 -->
+	<!-- 单数据源定义com.ibm.db2.jcc.DB2Driver 		
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="url" value="jdbc:db2://192.168.1.180:50000/DB2CS" />
+		<property name="username" value="db2admin" />
+		<property name="password" value="123456" />
+		<property name="initialSize" value="10"/>
+      	<property name="maxActive" value="100"/>  
+     	<property name="maxIdle" value="50"/>  
+      	<property name="minIdle" value="10"/>
+		</bean> 
+-->
+		<!-- bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="url" value="jdbc:db2://localhost:50000/SAMPLE" />
+		<property name="username" value="db2admin" />
+		<property name="password" value="1" />
+		</bean-->
+	
+	    
+<!--  配置数据源dataSource  dbcp连接池方式连接数据源  
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+      <property name="username" value="system" />
+      <property name="password" value="Dongdong_1989" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean>
+ --> 
+
+<!--  配置数据源dataSource  dbcp连接池方式连接数据源  --> 
+	 <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@10.2.240.205:1521:gkjzzf"/>
+      <property name="username" value="pbank" />
+      <property name="password" value="pbank123" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean>  -->
+   	
+   	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+      <property name="username" value="beibuwan3" />
+      <property name="password" value="1" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean>
+   	
+   	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@192.168.1.40:1521:orcl"/>
+      <property name="username" value="pb083002" />
+      <property name="password" value="a" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean> -->
+
+ 
+	<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="url" value="jdbc:db2://192.168.1.48:50001/pb_0830" />
+		<property name="username" value="db2inst1" />
+		<property name="password" value="db2inst1" />
+		<property name="maxActive" value="500" />
+		<property name="minIdle" value="10" />
+		<property name="maxIdle" value="50" />
+		<property name="initialSize" value="10" />
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="10" />
+		<property name="maxWait" value="1000" />
+		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="minEvictableIdleTimeMillis" value="10000" />
+      	<property name="poolPreparedStatements" value="true" />
+	</bean>  
+-->
+	<!--
+	 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      	<property name="driverClassName" value="com.sybase.jdbc4.jdbc.SybDriver" />
+	  	<property name="url" value="jdbc:sybase:Tds:192.168.1.201:4444/tokendb?DYNAMIC_PREPARE=true&amp;JCONNECT_VERSION=6.05"/>
+      	<property name="username" value="pb0715" />
+      	<property name="password" value="123456" />
+		<property name="maxActive" value="500" />
+		<property name="minIdle" value="10" />
+		<property name="maxIdle" value="50" />
+		<property name="initialSize" value="10" />
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="10" />
+		<property name="maxWait" value="1000" />
+		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="minEvictableIdleTimeMillis" value="10000" />
+      	<property name="poolPreparedStatements" value="true" />    
+   	</bean> 
+-->
+ <!--
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      	<property name="driverClassName" value="com.sybase.jdbc4.jdbc.SybDriver" />
+	  	<property name="url" value="jdbc:sybase:Tds:192.168.1.201:4444/tokendb?DYNAMIC_PREPARE=true&amp;JCONNECT_VERSION=6.05"/>
+      	<property name="username" value="pb0426" />
+      	<property name="password" value="123456" />
+		<property name="maxActive" value="500" />
+		<property name="minIdle" value="10" />
+		<property name="maxIdle" value="50" />
+		<property name="initialSize" value="10" />
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="10" />
+		<property name="maxWait" value="1000" />
+		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="minEvictableIdleTimeMillis" value="10000" />
+      	<property name="poolPreparedStatements" value="true" />    
+   	</bean>-->
+   	<!-- &amp;jconnect_version=4 -->
+   	
+   	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="com.sybase.jdbc4.jdbc.SybDriver" />
+	  <property name="url" value="jdbc:sybase:Tds:192.168.1.201:4444/tokendb?DYNAMIC_PREPARE=true&amp;JCONNECT_VERSION=6.05"/>
+      <property name="username" value="pb_083002" />
+      <property name="password" value="123456" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>   
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>
+      <property name="poolPreparedStatements" value="true" />    
+   	</bean> -->
+
+ <!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@192.168.1.241:1521:orcl"/>
+      <property name="username" value="pb0830" />
+      <property name="password" value="1" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean>
+--> 
+
+<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" value="jdbc:oracle:thin:@192.168.1.241:1521:orcl"/>
+      <property name="username" value="pb_2015083002" />
+      <property name="password" value="1" />
+      <property name="initialSize" value="10"/>
+      <property name="maxActive" value="200"/>  
+      <property name="maxIdle" value="50"/>  
+      <property name="minIdle" value="10"/>    
+   	</bean>
+ -->
+	<!--
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+			<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+			<property name="url" value="jdbc:oracle:thin:@192.168.1.241:1521:orcl" />
+			<property name="username" value="pb0930" />
+			<property name="password" value="1" />
+		</bean>
+	-->
+	  <!-- 配置数据源 
+
+	<bean id="dataSource"
+	   class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	   destroy-method="close">
+	  
+	   <property name="driverClass" value="com.cownew.cownewsql.imsql.jdbc.DBDriver"></property>
+	   <property name="jdbcUrl" value="jdbc:cownewsql:postgresql:org.postgresql.Driver:jdbc:postgresql://192.168.1.241:5432/pb01181"></property>
+	   <property name="user" value="pb"></property>
+	   <property name="password" value="1"></property> -->
+
+	   <!-- 详细参数说明参见database-config.properties 
+	   <property name="initialPoolSize" value="8"></property>
+	   <property name="minPoolSize" value="4"></property>
+	   <property name="maxPoolSize" value="16"></property>
+	   <property name="maxIdleTime" value="60"></property>
+	   <property name="acquireIncrement" value="5"></property>
+	   <property name="idleConnectionTestPeriod" value="60"></property>
+	   <property name="acquireRetryAttempts" value="20"></property>
+	   <property name="breakAfterAcquireFailure" value="true"></property>
+	   <property name="maxStatements" value="0"></property>
+	   <property name="testConnectionOnCheckout" value="false"></property>
+	</bean>
+	  	 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 不使用JTA事务管理 -->
+	<!--  -->
+		<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		</bean>
+	<bean id="baseDAO" class="grp.pt.util.BaseDAO">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+    <bean id="transactionInterceptor"     
+        class="org.springframework.transaction.interceptor.TransactionInterceptor">     
+        <property name="transactionManager" ref="transactionManager" />     
+        <!-- 配置事务属性 -->     
+        <property name="transactionAttributes">     
+            <props>   
+            	<prop key="insert*">PROPAGATION_REQUIRED</prop>
+           		<prop key="remove*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="create*">PROPAGATION_REQUIRED</prop>
+           		<prop key="update*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="edit*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="add*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="delete*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="import*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="batch*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="grant*">PROPAGATION_REQUIRED</prop>  
+           		<prop key="save*">PROPAGATION_REQUIRED</prop>
+           		<prop key="accept*">PROPAGATION_REQUIRED</prop>
+				<prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="signalProcessInstance">PROPAGATION_REQUIRED,-Exception</prop>
+           		<prop key="notSupportedTransExecute">PROPAGATION_NOT_SUPPORTED,-Exception</prop>  
+           		<prop key="newTransExecute">PROPAGATION_REQUIRES_NEW,-Exception</prop>
+           		<!-- 支持当前事务，如果当前没有事务，就以非事务方式执行 -->
+                <prop key="reqMoney">PROPAGATION_SUPPORTS</prop>
+                <prop key="batchReqMoney">PROPAGATION_SUPPORTS</prop>
+                <prop key="ReqPayout">PROPAGATION_SUPPORTS</prop>
+                <prop key="batchRepeatReqMoney">PROPAGATION_SUPPORTS</prop>   
+                <prop key="artificialtransferPayVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptCommonSignPayVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptCommonSignPayVoucherNotFlow">PROPAGATION_SUPPORTS</prop>
+                <prop key="sepcialPay">PROPAGATION_SUPPORTS</prop>
+                <prop key="accepBankTransferVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptTransVouhcerByThread">PROPAGATION_SUPPORTS</prop>
+                <prop key="writeoffVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="batchRepeatReqPayout">PROPAGATION_SUPPORTS</prop>
+                <prop key="requsetPayout">PROPAGATION_SUPPORTS</prop>
+                <prop key="writeoffVoucherAndtask">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptCommonSignPayVoucherSucc">PROPAGATION_SUPPORTS</prop>
+                <prop key="writeoffVoucherCash">PROPAGATION_SUPPORTS</prop>
+                
+                
+                <prop key="checkinClearVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="refundZeroToAdvance">PROPAGATION_SUPPORTS</prop>
+                <prop key="transAdvanceToZeroClear">PROPAGATION_SUPPORTS</prop>
+                <prop key="transferPayClearVoucher">PROPAGATION_SUPPORTS</prop>
+                <prop key="writeoffVoucherCQBOC">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptRealPayVoucher4Sign">PROPAGATION_SUPPORTS</prop>
+                <prop key="writeoffVoucherCQBOC">PROPAGATION_SUPPORTS</prop>
+                <prop key="acceptRealPayVoucher4Sign">PROPAGATION_SUPPORTS</prop>
+                
+                <prop key="*">PROPAGATION_REQUIRED,-Exception</prop>
+            </props>     
+        </property>     
+    </bean>   
+         
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">     
+        <property name="beanNames">     
+            <list>     
+                <value>*Service</value>   
+            </list>     
+        </property>     
+        <property name="interceptorNames">     
+            <list>     
+                <value>transactionInterceptor</value>
+            </list>     
+        </property>     
+    </bean>
+    
+	<bean id="smallTranService" class="grp.pt.util.transation.SmallTransService"></bean>
+    
+ 	<bean id="nativeJdbcExtractor" 
+		class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"
+		lazy-init="true"/>
+	<bean id="lobHandler" 
+		class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
+	</bean>
+</beans>

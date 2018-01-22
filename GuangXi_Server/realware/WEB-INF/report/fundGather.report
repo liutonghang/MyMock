@@ -1,0 +1,566 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="32000003" id="184" name="退款明细汇总" type="5" org_id="0" group_id="92" sys_id="110" monetary_unit="1" job_id="0" enable="1" isUnion="0"><DataSources><DataSource name="2" is_subDataSource="False" memoryName=""><QuerySql>select [?#start_date#?] start_date,--起始日期
+       [?#end_date#?] end_date,--结束日期
+       substr(#start_date#,0,4) as 起始年,
+       substr(#start_date#,5,2) as 起始月,
+       substr(#start_date#,7,2) as 起始日,
+       substr(#end_date#,0,4) as 结束年,
+       substr(#end_date#,5,2) as 结束月,
+       substr(#end_date#,7,2) as 结束日,
+       v.sup_dep_code,
+       v.sup_dep_name,
+       v.exp_func_code1,
+       v.exp_func_code2,
+       v.exp_func_code3,
+       v.exp_func_name,
+      v.agency_name,
+      v.agency_code,
+      v.ori_payvoucher_code,
+       c.fund_type_name,
+       c.pay_type_name,
+       v.vt_code,
+       sum(v.pay_amount) as zchj--支出合计
+      
+  from pb_pay_voucher v, pb_pay_clear_voucher c
+ where v.pay_clear_voucher_id=c.pay_clear_voucher_id
+   and c.admdiv_code=[?#admdiv_code#?]
+      [? and  to_char(v.pay_date,'yyyymmdd')&gt;=#start_date# ?]
+   [? and  to_char(v.pay_date,'yyyymmdd')&lt;=#end_date# ?]
+   [? and c.fund_type_code=#zzxzbm#?]
+and v.vt_code=[?#pzlx#?]
+ group by v.exp_func_code1,
+          v.exp_func_code2,
+          v.exp_func_code3,
+          v.sup_dep_code,
+          v.sup_dep_name,
+          v.exp_func_name,
+       v.vt_code,
+         v.agency_name,
+         v.agency_code,
+         v.ori_payvoucher_code,
+          c.fund_type_name,
+          c.pay_type_name</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.6.0.0'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+		TopMargin=1.0583
+		BottomMargin=1.0054
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='功能科目名称'
+					DBFieldName='exp_func_name'
+				End
+				Item
+					Name='支出合计'
+					DBFieldName='zchj'
+				End
+				Item
+					Name='起始日期'
+					DBFieldName='start_date'
+				End
+				Item
+					Name='结束日期'
+					DBFieldName='end_date'
+				End
+				Item
+					Name='类'
+					DBFieldName='exp_func_code1'
+				End
+				Item
+					Name='款'
+					DBFieldName='exp_func_code2'
+				End
+				Item
+					Name='项'
+					DBFieldName='exp_func_code3'
+				End
+				Item
+					Name='支付方式名称'
+					DBFieldName='pay_type_name'
+				End
+				Item
+					Name='资金性质'
+					DBFieldName='fund_type_name'
+				End
+				Item
+					Name='起始年'
+				End
+				Item
+					Name='起始月'
+				End
+				Item
+					Name='起始日'
+				End
+				Item
+					Name='结束年'
+				End
+				Item
+					Name='结束月'
+				End
+				Item
+					Name='结束日'
+				End
+				Item
+					Name='一级预算单位名称'
+					DBFieldName='sup_dep_name'
+				End
+				Item
+					Name='一级预算单位编码'
+					DBFieldName='sup_dep_code'
+				End
+				Item
+					Name='基层预算单位名称'
+					DBFieldName='agency_name'
+				End
+				Item
+					Name='基层预算单位编码'
+					DBFieldName='agency_code'
+				End
+				Item
+					Name='原支付凭证号'
+					DBFieldName='ori_payvoucher_code'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=0.978958
+			End
+			Item
+				Name='Column3'
+				Width=3.38667
+			End
+			Item
+				Name='Column4'
+				Width=1.19063
+			End
+			Item
+				Name='Column6'
+				Width=1.5875
+			End
+			Item
+				Name='Column7'
+				Width=0.978958
+			End
+			Item
+				Name='Column8'
+				Width=1.61396
+			End
+			Item
+				Name='Column9'
+				Width=3.67771
+			End
+			Item
+				Name='Column13'
+				Width=3.38667
+			End
+			Item
+				Name='Column14'
+				Width=2.2225
+			End
+			Item
+				Name='Column16'
+				Width=4.18042
+			End
+			Item
+				Name='Column17'
+				Width=1.40229
+			End
+		End
+		Object ColumnContent
+			Height=0.79375
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox9'
+							Anchor=[Left|Top|Right|Bottom]
+							Dock=Fill
+							Text='[#SystemVar(RowNo):000#]'
+						End
+					End
+				End
+				Item
+					Column='Column3'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					DataField='一级预算单位名称'
+				End
+				Item
+					Column='Column4'
+					DataField='一级预算单位编码'
+				End
+				Item
+					Column='Column6'
+					TextAlign=MiddleCenter
+					DataField='款'
+				End
+				Item
+					Column='Column7'
+					TextAlign=MiddleCenter
+					DataField='类'
+				End
+				Item
+					Column='Column8'
+					TextAlign=MiddleCenter
+					DataField='项'
+				End
+				Item
+					Column='Column9'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					TextAlign=MiddleCenter
+					DataField='功能科目名称'
+				End
+				Item
+					Column='Column13'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox19'
+							Left=-0.582083
+							Width=3.81
+							Height=0.608542
+							TextAlign=MiddleRight
+							Text='[#支出合计:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column14'
+					WordWrap=T
+					DataField='原支付凭证号'
+				End
+				Item
+					Column='Column16'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					DataField='基层预算单位名称'
+				End
+				Item
+					Column='Column17'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					DataField='基层预算单位编码'
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.79375
+			RepeatStyle=OnPage
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='序号'
+				End
+				Item
+					GroupTitle=T
+					Name='Column15'
+					Items ColumnTitleCell
+						Item
+							GroupTitle=F
+							Column='Column16'
+							TextAlign=MiddleCenter
+							Text='名称'
+						End
+						Item
+							GroupTitle=F
+							Column='Column17'
+							TextAlign=MiddleCenter
+							Text='编码'
+						End
+					End
+					TextAlign=MiddleCenter
+					Text='基层预算单位'
+				End
+				Item
+					GroupTitle=T
+					Name='Column2'
+					Items ColumnTitleCell
+						Item
+							GroupTitle=F
+							Column='Column3'
+							TextAlign=MiddleCenter
+							Text='名称'
+						End
+						Item
+							GroupTitle=F
+							Column='Column4'
+							TextAlign=MiddleCenter
+							Text='编码'
+						End
+					End
+					TextAlign=MiddleCenter
+					Text='预算单位'
+				End
+				Item
+					GroupTitle=T
+					Name='Column5'
+					Items ColumnTitleCell
+						Item
+							GroupTitle=F
+							Column='Column7'
+							TextAlign=MiddleCenter
+							Text='类'
+						End
+						Item
+							GroupTitle=F
+							Column='Column6'
+							TextAlign=MiddleCenter
+							Text='款'
+						End
+						Item
+							GroupTitle=F
+							Column='Column8'
+							TextAlign=MiddleCenter
+							Text='项'
+						End
+					End
+					Object Font
+						Name='宋体'
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='功能科目编码'
+				End
+				Item
+					GroupTitle=F
+					Column='Column9'
+					TextAlign=MiddleCenter
+					Text='功能科目名称'
+				End
+				Item
+					GroupTitle=T
+					Name='Column10'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='经济科目'
+				End
+				Item
+					GroupTitle=F
+					Column='Column13'
+					Object Font
+						Name='宋体'
+						Size=90000,0
+						Weight=400
+						Charset=134
+					End
+					WordWrap=T
+					TextAlign=MiddleCenter
+					Text='金额'
+				End
+				Item
+					GroupTitle=F
+					Column='Column14'
+					Text='凭证编号'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				PageGroup=T
+				Object GroupHeader
+					Height=0
+				End
+				Object GroupFooter
+					Height=0.608542
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox14'
+							BorderStyles=[DrawRight]
+							Width=18.9971
+							Height=0.61
+							Text='本页小计'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox15'
+							BorderStyles=[DrawRight]
+							Left=19
+							Width=3.39
+							Height=0.61
+							TextAlign=MiddleRight
+							Text='[#Sum(支出合计):#,##0.00#]'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=3.20146
+			Items Control
+				Item
+					Type=MemoBox
+					Name='MemoBox1'
+					Left=5.79438
+					Top=0.396875
+					Width=7.59354
+					Height=0.608542
+					TextAlign=MiddleCenter
+					Text='财政[#支付方式名称#]退款明细汇总([#资金性质#])'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox2'
+					Top=1.19063
+					Width=2.59292
+					Height=1.21708
+					Text='代理银行签章：'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox3'
+					Left=6.00604
+					Top=1.19063
+					Width=11.9856
+					Height=0.608542
+					Text='日期：[#起始年#]年[#起始月#]月[#起始日#]日—[#结束年#]年[#结束月#]月[#结束日#]日'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox4'
+					Left=17.4096
+					Top=2.19604
+					Width=2.59292
+					Height=0.608542
+					Text='单位：元'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox5'
+					Left=13.5996
+					Top=2.19604
+					Width=3.59833
+					Height=0.608542
+					Text='第 [#SystemVar(PageNumber)#]页  共 [#SystemVar(PageCount)#]页'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox18'
+					Left=2.19604
+					Top=2.40771
+					Width=2.59292
+					Height=0.608542
+					Text='[#count(SystemVar(RowNo))#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Left=0.211667
+					Top=2.40771
+					Width=1.40229
+					Height=0.608542
+					Text='总笔数:'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox16'
+					Left=5.79438
+					Top=2.40771
+					Width=6.58813
+					Height=0.608542
+					Text='总金额:[#sum(支出合计)#]'
+				End
+			End
+			RepeatOnPage=T
+		End
+		Item
+			Type=ReportFooter
+			Name='ReportFooter2'
+			Height=1.19063
+			Items Control
+				Item
+					Type=MemoBox
+					Name='MemoBox11'
+					BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+					Width=19.02
+					Height=0.61
+					Text='合计'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox12'
+					BorderStyles=[DrawRight|DrawBottom]
+					Left=19.02
+					Width=3.39
+					Height=0.61
+					TextAlign=MiddleRight
+					Text='[#Sum(支出合计):#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox13'
+					BorderStyles=[DrawRight|DrawBottom]
+					Left=21.68
+					Width=2.98979
+					Height=0.61
+					TextAlign=MiddleRight
+				End
+			End
+			RepeatOnPage=T
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="开始时间" para_name="START_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="结束时间" para_name="END_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="资金性质" para_name="ZZXZBM" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="1" enum_value="1#预算内资金+9#其他" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="所属区划" para_name="ADMDIV_CODE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="1" enum_value="1#扬州市财政局" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="凭证类型" para_name="PZLX" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="1" enum_value="2203#直接支付退款+2204#授权支付退款" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

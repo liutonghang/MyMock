@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                 ">
+	
+	 <bean name="pb.trans.bs.GXBOCBLRealPayServiceImpl" class="grp.pb.branch.gxboc.service.GXBOCBLRealPayServiceImpl">
+		<property name="baseDao" ref="baseDAO"></property>
+		<property name="bankNoService" ref="pb.common.impl.BankNoService"></property>
+		<property name="smallTrans" ref="smallTranService"></property>
+		<property name="transServiceForGXBOC" ref="transForGXBOCServiceImpl"></property>
+	</bean>
+	
+	<bean name="transForGXBOCServiceImpl" class="grp.pb.branch.gxboc.service.TransForGXBOCServiceImpl">
+		<property name="billEngine" ref="bill.engine.billengineimpl" />
+		<property name="bankTransService" ref="pb.trans.TransService"></property>
+		<property name="balanceService" ref="pay.core.impl.balanceserviceimpl" />
+		<property name="baseBizService" ref="pb.common.baseBizService"></property>
+		<property name="transDAO" ref="pb.trans.transDAO"></property>
+		<property name="workflow" ref="gap.workflowRunService" />
+		<property name="smallTrans" ref="smallTranService"></property>
+		<property name="conditionService" ref="pb.pt.VoucherConditionService"></property>
+	</bean>
+	
+	<bean id="gx.psfaBocPayService" class="grp.pb.branch.gxboc.header.ss.PsfaBocPayServiceImpl">
+		<property name="payService" ref="pb.payment.impl.payService"/>
+		<property name="smallTrans" ref="smallTranService"></property>
+		<property name="baseDao" ref="baseDAO"/>
+		<property name="billEngine" ref = "bill.engine.billengineimpl"></property>
+		<property name="transService" ref = "pb.trans.TransService"></property>
+		<property name="payCommonService" ref="payCommonService"></property>
+	</bean>
+	
+	<!-- 以下为支付配置的COPY -->
+	
+	
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames"> 
+			<list>
+				<value>pb.trans.bs.GXBOCBLRealPayServiceImpl</value>
+				<value>transForGXBOCServiceImpl</value>			
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>sessionInterceptor</value>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

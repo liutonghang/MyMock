@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="001100" id="5322" name="预算执行查询" type="5" org_id="0" group_id="1" sys_id="100" monetary_unit="1" job_id="201" enable="1" isUnion="0"><DataSources><DataSource name="单位指标执行情况查询" is_subDataSource="False" memoryName="">
+<QuerySql>select 
+t. mt_flag_code,--监控标示编码
+t. mt_flag_name,--监控标示名称
+t.OPT_ORG_name,--编制机构
+ t.app_type_code,--拨款期间属性编码  
+ t.app_type_name,--拨款期间属性
+t.doc_no_id,--文号编码
+  t.DOC_NO_NAME, --文号名称
+  t.MOF_DEP_NAME, --业务处室名称
+  t.MOF_DEP_code, --业务处室编码
+  t.EXP_FUNC_NAME, --功能分类名称
+  t.EXP_FUNC_code, --功能分类编码
+  t.fund_type_NAME, --资金性质名称
+  t.fund_type_code, --资金性质编码
+  t.agency_NAME, --预算单位名称
+  t.agency_code, --预算单位编码
+  t.budget_amount,--指标金额
+  t.add_amount,--在途追加金额
+  t.sub_amount,--在途追减金额
+  t.freezed_amount  ,--冻结指标金额
+  t.REPLIED_PLAN_AMOUNT,--已批复计划
+  t. ADD_PLAN_AMOUNT,--已申请计划
+  t.ADD_PAY_AMOUNT,--已申请支付
+  t. ACCEPT_PAY_AMOUNT, --已支付金额
+  t. DEP_PRO_NAME, --预算项目名称 
+  t.DEP_PRO_code, --预算项目编码
+  t. BGT_SOURCE_NAME, --指标来源
+  t.BGT_SOURCE_code, --指标来源编码
+  t.PAY_TYPE_NAME, --支付方式
+  t.PAY_TYPE_code, --支付方式编码
+  t.BP_NAME ,--指标特性名称
+  t.bgt_source_level_name,--指标来源级次
+  t.exp_str_code,--政府支出结构编码
+  t.exp_str_name,--政府支出结构名称
+t.bgt_source_level_id,--指标来源级次编码
+t.budget_id,--指标ID
+t.create_date,
+ t.top_org_id,
+(t.budget_amount-t.add_plan_amount-t.real_pay_amount) bgt_bal,--指标余额
+(t.accept_pay_amount+t.real_pay_amount)/(t.budget_amount)  as zfjd,--支付进度
+t.real_pay_amount  --实拨数
+ 
+
+from vw_budget_exec_bal_4_report t
+where 1=1 and  t.year=[?#SET_YEAR#?]
+and t.top_org_id=[?#TOP_ORG#?]  and t.budget_amount&gt;0
+[? and t.app_type_code in (#app_type_code#)?]
+[? and t.exp_func_code in (#exp_func_code#)?]
+[?and budget_id in(#budget_id#)?]
+  [?and t.agency_code in  (#agency_code#)?]
+  [?and  t.fund_type_code in (#fund_type_code#)?]
+  [?and t.bgt_source_level_id in (#bgt_source_level_id#)?]
+  [?and  t.bgt_source_code in (#bgt_source_code#)?]
+  [?and t.pay_type_code in (#pay_type_code#)?]
+  [?and t.mof_dep_code in (#mof_dep_code#)?]
+  [?and t.doc_no_id = (#doc_no_id#)?]
+  [?and t.create_date&gt;= #begin_date#?]
+  [?and t.create_date&lt;= #end_date#?]
+  [?and t.DEP_PRO_code in (#DEP_PRO_code#)?]
+  [?and  t.bp_code in (#bp_code#)?]
+  [?and  t.exp_str_code in (#exp_str_code#)?]
+  [?and  t.mt_flag_code in (#mt_flag_code#)?]
+
+
+[#vw_budget_exec_bal_4_report|t#]
+
+</QuerySql><Fields><Field name = "MT_FLAG_CODE" cnname="监控标示" fieldType="1" object_code="MT_FLAG" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "MT_FLAG_NAME" cnname="监控标示" fieldType="1" object_code="MT_FLAG" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "OPT_ORG_NAME" cnname="编制机构" fieldType="1" object_code="OPT_ORG" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "APP_TYPE_CODE" cnname="拨款期间属性" fieldType="1" object_code="APP_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "APP_TYPE_NAME" cnname="拨款期间属性" fieldType="1" object_code="APP_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "DOC_NO_ID" cnname="指标文号" fieldType="2" object_code="DOC_NO" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "DOC_NO_NAME" cnname="指标文号" fieldType="1" object_code="DOC_NO" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "MOF_DEP_NAME" cnname="业务处室名称" fieldType="1" object_code="MOF_DEP" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "MOF_DEP_CODE" cnname="业务处室编码" fieldType="1" object_code="MOF_DEP" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "EXP_FUNC_NAME" cnname="功能分类名称" fieldType="1" object_code="EXP_FUNC" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "EXP_FUNC_CODE" cnname="功能分类编码" fieldType="1" object_code="EXP_FUNC" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "FUND_TYPE_NAME" cnname="资金性质名称" fieldType="1" object_code="FUND_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "FUND_TYPE_CODE" cnname="资金性质编码" fieldType="1" object_code="FUND_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "AGENCY_NAME" cnname="预算单位名称" fieldType="1" object_code="AGENCY" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "AGENCY_CODE" cnname="预算单位编码" fieldType="1" object_code="AGENCY" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BUDGET_AMOUNT" cnname="正式指标总金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "ADD_AMOUNT" cnname="在途追加金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "SUB_AMOUNT" cnname="在途追减金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "FREEZED_AMOUNT" cnname="冻结指标金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "REPLIED_PLAN_AMOUNT" cnname="已批复计划" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "ADD_PLAN_AMOUNT" cnname="在途计划" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "ADD_PAY_AMOUNT" cnname="申请拨款金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "ACCEPT_PAY_AMOUNT" cnname="已支付金额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "DEP_PRO_NAME" cnname="预算项目名称" fieldType="1" object_code="DEP_PRO" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "DEP_PRO_CODE" cnname="预算项目编码" fieldType="1" object_code="DEP_PRO" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BGT_SOURCE_NAME" cnname="指标来源名称" fieldType="1" object_code="BGT_SOURCE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BGT_SOURCE_CODE" cnname="指标来源编码" fieldType="1" object_code="BGT_SOURCE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "PAY_TYPE_NAME" cnname="支付方式名称" fieldType="1" object_code="PAY_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "PAY_TYPE_CODE" cnname="支付方式编码" fieldType="1" object_code="PAY_TYPE" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BP_NAME" cnname="指标特性" fieldType="1" object_code="BP" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BGT_SOURCE_LEVEL_NAME" cnname="指标来源级次" fieldType="1" object_code="BGT_SOURCE_LEVEL" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "EXP_STR_CODE" cnname="政府支出结构" fieldType="1" object_code="EXP_STR" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "EXP_STR_NAME" cnname="政府支出管理结构名称" fieldType="1" object_code="EXP_STR" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BGT_SOURCE_LEVEL_ID" cnname="指标来源级次" fieldType="2" object_code="BGT_SOURCE_LEVEL" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BUDGET_ID" cnname="指标ID" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "CREATE_DATE" cnname="录入时间" fieldType="3" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "TOP_ORG_ID" cnname="quhua " fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "BGT_BAL" cnname="指标余额" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "ZFJD" cnname="支付进度" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+<Field name = "REAL_PAY_AMOUNT" cnname="实拨数" fieldType="2" object_code="" tablename="单位指标执行情况查询" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations>
+<GridppReport><![CDATA[Object Report
+	Version='5.6.0.0'
+	Tag='001111'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Size=256
+		Width=100
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='MT_FLAG_CODE监控标示'
+					Tag='单位指标执行情况查询'
+					DBFieldName='MT_FLAG_CODE'
+				End
+				Item
+					Name='MT_FLAG_NAME监控标示'
+					Tag='单位指标执行情况查询'
+					DBFieldName='MT_FLAG_NAME'
+				End
+				Item
+					Name='OPT_ORG_NAME编制机构'
+					Tag='单位指标执行情况查询'
+					DBFieldName='OPT_ORG_NAME'
+				End
+				Item
+					Name='APP_TYPE_CODE拨款期间属性'
+					Tag='单位指标执行情况查询'
+					DBFieldName='APP_TYPE_CODE'
+				End
+				Item
+					Name='APP_TYPE_NAME拨款期间属性'
+					Tag='单位指标执行情况查询'
+					DBFieldName='APP_TYPE_NAME'
+				End
+				Item
+					Name='DOC_NO_ID指标文号'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='DOC_NO_ID'
+				End
+				Item
+					Name='DOC_NO_NAME指标文号'
+					Tag='单位指标执行情况查询'
+					DBFieldName='DOC_NO_NAME'
+				End
+				Item
+					Name='MOF_DEP_NAME业务处室名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='MOF_DEP_NAME'
+				End
+				Item
+					Name='MOF_DEP_CODE业务处室编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='MOF_DEP_CODE'
+				End
+				Item
+					Name='EXP_FUNC_NAME功能分类名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='EXP_FUNC_NAME'
+				End
+				Item
+					Name='EXP_FUNC_CODE功能分类编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='EXP_FUNC_CODE'
+				End
+				Item
+					Name='FUND_TYPE_NAME资金性质名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='FUND_TYPE_NAME'
+				End
+				Item
+					Name='FUND_TYPE_CODE资金性质编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='FUND_TYPE_CODE'
+				End
+				Item
+					Name='AGENCY_NAME预算单位名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='AGENCY_NAME'
+				End
+				Item
+					Name='AGENCY_CODE预算单位编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='AGENCY_CODE'
+				End
+				Item
+					Name='BUDGET_AMOUNT正式指标总金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='BUDGET_AMOUNT'
+				End
+				Item
+					Name='ADD_AMOUNT在途追加金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='ADD_AMOUNT'
+				End
+				Item
+					Name='SUB_AMOUNT在途追减金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='SUB_AMOUNT'
+				End
+				Item
+					Name='FREEZED_AMOUNT冻结指标金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='FREEZED_AMOUNT'
+				End
+				Item
+					Name='REPLIED_PLAN_AMOUNT已批复计划'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='REPLIED_PLAN_AMOUNT'
+				End
+				Item
+					Name='ADD_PLAN_AMOUNT在途计划'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='ADD_PLAN_AMOUNT'
+				End
+				Item
+					Name='ADD_PAY_AMOUNT申请拨款金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='ADD_PAY_AMOUNT'
+				End
+				Item
+					Name='ACCEPT_PAY_AMOUNT已支付金额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='ACCEPT_PAY_AMOUNT'
+				End
+				Item
+					Name='DEP_PRO_NAME预算项目名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='DEP_PRO_NAME'
+				End
+				Item
+					Name='DEP_PRO_CODE预算项目编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='DEP_PRO_CODE'
+				End
+				Item
+					Name='BGT_SOURCE_NAME指标来源名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='BGT_SOURCE_NAME'
+				End
+				Item
+					Name='BGT_SOURCE_CODE指标来源编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='BGT_SOURCE_CODE'
+				End
+				Item
+					Name='PAY_TYPE_NAME支付方式名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='PAY_TYPE_NAME'
+				End
+				Item
+					Name='PAY_TYPE_CODE支付方式编码'
+					Tag='单位指标执行情况查询'
+					DBFieldName='PAY_TYPE_CODE'
+				End
+				Item
+					Name='BP_NAME指标特性'
+					Tag='单位指标执行情况查询'
+					DBFieldName='BP_NAME'
+				End
+				Item
+					Name='BGT_SOURCE_LEVEL_NAME指标来源级次'
+					Tag='单位指标执行情况查询'
+					DBFieldName='BGT_SOURCE_LEVEL_NAME'
+				End
+				Item
+					Name='EXP_STR_CODE政府支出结构'
+					Tag='单位指标执行情况查询'
+					DBFieldName='EXP_STR_CODE'
+				End
+				Item
+					Name='EXP_STR_NAME政府支出管理结构名称'
+					Tag='单位指标执行情况查询'
+					DBFieldName='EXP_STR_NAME'
+				End
+				Item
+					Name='BUDGET_ID指标ID'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='BUDGET_ID'
+				End
+				Item
+					Name='CREATE_DATE录入时间'
+					Tag='单位指标执行情况查询'
+					Type=DateTime
+					DBFieldName='CREATE_DATE'
+				End
+				Item
+					Name='TOP_ORG_IDquhua '
+					Tag='单位指标执行情况查询'
+					Type=Float
+					DBFieldName='TOP_ORG_ID'
+				End
+				Item
+					Name='BGT_BAL指标余额'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='BGT_BAL'
+				End
+				Item
+					Name='ZFJD支付进度'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='0.00%'
+					DBFieldName='ZFJD'
+				End
+				Item
+					Name='REAL_PAY_AMOUNT实拨数'
+					Tag='单位指标执行情况查询'
+					Type=Float
+					Format='#,##0.00'
+					DBFieldName='REAL_PAY_AMOUNT'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='预算单位'
+				Width=4.20688
+			End
+			Item
+				Name='指标来源级次'
+				Width=1.40229
+			End
+			Item
+				Name='支出功能分类科目'
+				Width=6.00604
+			End
+			Item
+				Name='正式指标总金额'
+				Width=4.39208
+			End
+			Item
+				Name='已申请计划数'
+				Width=3.38667
+			End
+			Item
+				Name='已批复计划数'
+				Width=3.41313
+			End
+			Item
+				Name='已申请支付数'
+				Width=3.38667
+			End
+			Item
+				Name='支付方式'
+				Width=2.61938
+			End
+			Item
+				Name='资金性质'
+				Width=3.175
+			End
+			Item
+				Name='业务处室'
+				Width=2.61938
+			End
+			Item
+				Name='编制机构'
+				Width=3.38667
+			End
+			Item
+				Name='项目分类'
+				Width=2.40771
+			End
+			Item
+				Name='指标特性'
+				Width=3.20146
+			End
+			Item
+				Name='指标来源'
+				Width=3.59833
+			End
+			Item
+				Name='指标文号'
+				Width=4
+			End
+			Item
+				Name='序号'
+				Width=1.16417
+			End
+			Item
+				Name='Column4'
+				Width=3.38667
+			End
+			Item
+				Name='Column5'
+				Width=2.61938
+			End
+			Item
+				Name='支出进度'
+				Width=1.69333
+			End
+			Item
+				Name='Column6'
+				Width=3.25438
+			End
+		End
+		Object ColumnContent
+			Height=0.608542
+			Items ColumnContentCell
+				Item
+					Column='预算单位'
+					DataField='AGENCY_NAME预算单位名称'
+				End
+				Item
+					Column='指标来源级次'
+					TextAlign=MiddleCenter
+					DataField='BGT_SOURCE_LEVEL_NAME指标来源级次'
+				End
+				Item
+					Column='支出功能分类科目'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox1'
+							Dock=Fill
+							Text='[#EXP_FUNC_CODE功能分类编码#]  [#EXP_FUNC_NAME功能分类名称#]'
+						End
+					End
+				End
+				Item
+					Column='正式指标总金额'
+					TextAlign=MiddleRight
+					DataField='BUDGET_AMOUNT正式指标总金额'
+				End
+				Item
+					Column='已申请计划数'
+					TextAlign=MiddleRight
+					DataField='ADD_PLAN_AMOUNT在途计划'
+				End
+				Item
+					Column='已批复计划数'
+					TextAlign=MiddleRight
+					DataField='REPLIED_PLAN_AMOUNT已批复计划'
+				End
+				Item
+					Column='已申请支付数'
+					TextAlign=MiddleRight
+					DataField='ADD_PAY_AMOUNT申请拨款金额'
+				End
+				Item
+					Column='支付方式'
+					DataField='PAY_TYPE_NAME支付方式名称'
+				End
+				Item
+					Column='资金性质'
+					DataField='FUND_TYPE_NAME资金性质名称'
+				End
+				Item
+					Column='业务处室'
+					DataField='MOF_DEP_NAME业务处室名称'
+				End
+				Item
+					Column='编制机构'
+					DataField='OPT_ORG_NAME编制机构'
+				End
+				Item
+					Column='项目分类'
+					DataField='EXP_STR_NAME政府支出管理结构名称'
+				End
+				Item
+					Column='指标特性'
+					DataField='BP_NAME指标特性'
+				End
+				Item
+					Column='指标来源'
+					DataField='BGT_SOURCE_NAME指标来源名称'
+				End
+				Item
+					Column='指标文号'
+					DataField='DOC_NO_NAME指标文号'
+				End
+				Item
+					Column='序号'
+					FreeCell=T
+					Items Control
+						Item
+							Type=SystemVarBox
+							Name='SystemVarBox1'
+							Dock=Fill
+							TextAlign=MiddleCenter
+							SystemVar=RecordNo
+						End
+					End
+				End
+				Item
+					Column='Column4'
+					TextAlign=MiddleRight
+					DataField='BGT_BAL指标余额'
+				End
+				Item
+					Column='Column5'
+					DataField='CREATE_DATE录入时间'
+				End
+				Item
+					Column='支出进度'
+					TextAlign=MiddleRight
+					DataField='ZFJD支付进度'
+				End
+				Item
+					Column='Column6'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox2'
+							Dock=Fill
+							TextAlign=MiddleRight
+							Text='[#ACCEPT_PAY_AMOUNT已支付金额+REAL_PAY_AMOUNT实拨数:#,##0.00#]'
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='序号'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='序号'
+				End
+				Item
+					GroupTitle=F
+					Column='预算单位'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='预算单位'
+				End
+				Item
+					GroupTitle=F
+					Column='指标文号'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='指标文号'
+				End
+				Item
+					GroupTitle=F
+					Column='支出功能分类科目'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='支出功能分类科目'
+				End
+				Item
+					GroupTitle=F
+					Column='资金性质'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='资金性质'
+				End
+				Item
+					GroupTitle=F
+					Column='正式指标总金额'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='正式指标总金额'
+				End
+				Item
+					GroupTitle=F
+					Column='已申请计划数'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='已申请计划数'
+				End
+				Item
+					GroupTitle=F
+					Column='已批复计划数'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='已批复计划数'
+				End
+				Item
+					GroupTitle=F
+					Column='已申请支付数'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='已申请支付数'
+				End
+				Item
+					GroupTitle=F
+					Column='Column4'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='指标余额'
+				End
+				Item
+					GroupTitle=F
+					Column='Column6'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='已支付数'
+				End
+				Item
+					GroupTitle=F
+					Column='支出进度'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='支出进度'
+				End
+				Item
+					GroupTitle=F
+					Column='支付方式'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='支付方式'
+				End
+				Item
+					GroupTitle=F
+					Column='编制机构'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='编制机构'
+				End
+				Item
+					GroupTitle=F
+					Column='项目分类'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='政府支出结构'
+				End
+				Item
+					GroupTitle=F
+					Column='指标特性'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='指标特性'
+				End
+				Item
+					GroupTitle=F
+					Column='指标来源'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='指标来源'
+				End
+				Item
+					GroupTitle=F
+					Column='业务处室'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='业务处室'
+				End
+				Item
+					GroupTitle=F
+					Column='指标来源级次'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='指标来源级次'
+				End
+				Item
+					GroupTitle=F
+					Column='Column5'
+					BackColor=Silver
+					TextAlign=MiddleCenter
+					Text='录入时间'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='ALL_REPORT_SUBTOTAL'
+				Object GroupHeader
+					Height=0.6
+					Items Control
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_正式指标总金额_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='正式指标总金额'
+							Left=18.5208
+							Width=4.41854
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='BUDGET_AMOUNT正式指标总金额'
+							Format='#,##0.00'
+						End
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_已申请计划数_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='已申请计划数'
+							Left=22.9129
+							Width=3.41313
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='ADD_PLAN_AMOUNT在途计划'
+							Format='#,##0.00'
+						End
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_已批复计划数_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='已批复计划数'
+							Left=26.2996
+							Width=3.43958
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='REPLIED_PLAN_AMOUNT已批复计划'
+							Format='#,##0.00'
+						End
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_已申请支付数_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='已申请支付数'
+							Left=29.7127
+							Width=3.41313
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='ADD_PAY_AMOUNT申请拨款金额'
+							Format='#,##0.00'
+						End
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_Column4_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='Column4'
+							Left=33.0994
+							Width=3.41313
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='BGT_BAL指标余额'
+							Format='#,##0.00'
+						End
+						Item
+							Type=SummaryBox
+							Name='ALL_REPORT_SUBTOTAL_Column6_SUMMARYBOX'
+							BorderStyles=[DrawLeft|DrawRight]
+							Anchor=[Left|Top|Right|Bottom]
+							AlignColumn='Column6'
+							Left=36.486
+							Width=3.28083
+							Height=0.6
+							TextAlign=MiddleRight
+							DataField='MemoBox2'
+							Format='#,##0.00'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox3'
+							BorderStyles=[DrawRight]
+							AlignColumn='支出进度'
+							Left=39.7669
+							Width=1.69333
+							Height=0.582083
+							TextAlign=MiddleRight
+							Text='[#(Sum(ACCEPT_PAY_AMOUNT已支付金额)+Sum(REAL_PAY_AMOUNT实拨数))/Sum(BUDGET_AMOUNT正式指标总金额):0.00%#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox2'
+							Width=2.59292
+							Height=0.608542
+							Text='合计'
+						End
+					End
+				End
+				Object GroupFooter
+					Height=0
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='MOF_DEP_code'
+		End
+		Item
+			Name='file_name'
+		End
+		Item
+			Name='FUND_TYPE_code'
+		End
+		Item
+			Name='AGENCY_code'
+		End
+		Item
+			Name='PRO_CAT_code'
+		End
+		Item
+			Name='bp_code'
+		End
+		Item
+			Name='DEP_PRO_code'
+		End
+		Item
+			Name='gb_code'
+		End
+		Item
+			Name='BGT_SOURCE_code'
+		End
+		Item
+			Name='PAY_TYPE_code'
+		End
+		Item
+			Name='bo_code'
+		End
+		Item
+			Name='bal_version'
+		End
+		Item
+			Name='EXP_FUNC_code'
+		End
+		Item
+			Name='hold3_code'
+		End
+		Item
+			Name='en_code'
+		End
+		Item
+			Name='MOF_DEP_CODE'
+		End
+		Item
+			Name='FILE_NAME'
+		End
+		Item
+			Name='FUND_TYPE_CODE'
+		End
+		Item
+			Name='AGENCY_CODE'
+		End
+		Item
+			Name='PRO_CAT_CODE'
+		End
+		Item
+			Name='BP_CODE'
+		End
+		Item
+			Name='DEP_PRO_CODE'
+		End
+		Item
+			Name='GB_CODE'
+		End
+		Item
+			Name='BGT_SOURCE_CODE'
+		End
+		Item
+			Name='PAY_TYPE_CODE'
+		End
+		Item
+			Name='BO_CODE'
+		End
+		Item
+			Name='BAL_VERSION'
+		End
+		Item
+			Name='EXP_FUNC_CODE'
+		End
+		Item
+			Name='HOLD3_CODE'
+		End
+		Item
+			Name='EN_CODE'
+		End
+		Item
+			Name='agency_id'
+		End
+		Item
+			Name='mt_flag_id'
+		End
+		Item
+			Name='fund_type_id'
+		End
+		Item
+			Name='bgt_source_id'
+		End
+		Item
+			Name='pay_type_id'
+		End
+		Item
+			Name='mof_dep_id'
+		End
+		Item
+			Name='pro_cat_id'
+		End
+		Item
+			Name='doc_no_id'
+		End
+		Item
+			Name='begin_date'
+		End
+		Item
+			Name='end_date'
+		End
+		Item
+			Name='DEP_PRO_id'
+		End
+		Item
+			Name='bp_id'
+		End
+		Item
+			Name='app_type_id'
+		End
+		Item
+			Name='app_type_code'
+		End
+		Item
+			Name='bgt_source_level_code'
+		End
+		Item
+			Name='doc_no_name'
+		End
+		Item
+			Name='budget_id'
+		End
+		Item
+			Name='exp_str_code'
+		End
+		Item
+			Name='mt_flag_code'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Tag='001111'
+			Height=0.994833
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Object Font
+						Name='宋体'
+						Size=217500,0
+						Bold=T
+						Charset=134
+					End
+					Center=Both
+					Left=44.2648
+					Top=-0.105833
+					Width=6.50875
+					Height=1.21708
+					TextAlign=MiddleCenter
+					Text='预算执行查询列表'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport>
+<OrderByFields><OrderByField name="AGENCY_CODE" cnname="预算单位编码"/>
+<OrderByField name="DOC_NO_ID" cnname="指标文号"/>
+<OrderByField name="EXP_FUNC_CODE" cnname="功能分类编码"/>
+</OrderByFields>
+<QueryConditions>
+<QueryCondition cnname="预算单位" para_name="AGENCY_CODE" object_code="AGENCY" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="资金性质" para_name="FUND_TYPE_CODE" object_code="FUND_TYPE" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="指标来源" para_name="BGT_SOURCE_CODE" object_code="BGT_SOURCE" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="支付方式" para_name="PAY_TYPE_CODE" object_code="PAY_TYPE" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="业务科室" para_name="MOF_DEP_CODE" object_code="MOF_DEP" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="开始日期" para_name="BEGIN_DATE" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+<value></value>
+</values></QueryCondition>
+<QueryCondition cnname="截止日期" para_name="END_DATE" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition>
+<QueryCondition cnname="指标特性" para_name="BP_CODE" object_code="BP" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="拨款期间属性" para_name="APP_TYPE_CODE" object_code="APP_TYPE" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="功能分类" para_name="EXP_FUNC_CODE" object_code="EXP_FUNC" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="指标来源级次" para_name="BGT_SOURCE_LEVEL_CODE" object_code="BGT_SOURCE_LEVEL" is_showOnQueryPanel="False" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="预算项目" para_name="DEP_PRO_CODE" object_code="DEP_PRO" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="政府支出结构" para_name="EXP_STR_CODE" object_code="EXP_STR" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="监控标示" para_name="MT_FLAG_CODE" object_code="MT_FLAG" is_showOnQueryPanel="False" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="CODE">
+</values></QueryCondition>
+<QueryCondition cnname="指标文号" para_name="DOC_NO_ID" object_code="DOC_NO" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="1">
+<values object_field_name="ID">
+</values></QueryCondition>
+<QueryCondition cnname="指标来源级次" para_name="BGT_SOURCE_LEVEL_ID" object_code="BGT_SOURCE_LEVEL" is_showOnQueryPanel="True" control_type="5" enum_value="" condition_type="2">
+<values object_field_name="ID">
+</values></QueryCondition>
+</QueryConditions>
+<TraceReportConfigs><TraceReportConfig BtnName="明细执行情况" ReportCode="001111" ParaFields="BUDGET_ID#BUDGET_ID"></TraceReportConfig>
+</TraceReportConfigs></Report>

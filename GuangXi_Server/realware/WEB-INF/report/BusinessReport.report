@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="523123333331" id="5521" name="new" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="0" isUnion="0"><DataSources><DataSource name="" is_subDataSource="False" memoryName="241"><QuerySql>select vt_code          as code,
+       batchreq_date        as 日期,
+       pay_voucher_code as 凭证号,
+       pay_account_no   as 付款银行,
+       k.agency_code      as 单位编码,
+       paykind          as 支付方式,
+       set_mode_name    as 结算方式,
+       pay_amount       as 支付金额,
+        (case 
+       when status =1 then '未请款'
+       when status =2 then '已请款未支付'
+       when status =3 then '已支付未发送'
+       when status =4 then '已发送'  
+       end)             as 状态,
+       is_show          as isshow
+  from (
+        --分状态查询
+        select vt_code,
+                batchreq_date,
+                pay_voucher_code,
+                pay_account_no,
+                agency_code,
+                paykind,
+                set_mode_name,
+                pay_amount,
+                status,
+                is_show
+          from ( --未请款
+                 select vt_code,
+                         batchreq_date,
+                         pay_voucher_code,
+                         pay_account_no,
+                         agency_code,
+                         (case
+                           when manual_trans_flag = 0 then
+                            '正常支付'
+                           when manual_trans_flag = 1 then
+                            '手工支付'
+                         end) as paykind, --支付方式
+                         set_mode_name, --结算方式
+                         pay_amount, --支付金额
+                         '1' as status,
+                         '0' as is_show
+                   from pb_pay_voucher p
+                  where  p.batchreq_status = '0'
+                    and pay_date is null
+                 union all
+                 --已请款未支付
+                 select vt_code,
+                        batchreq_date,
+                        pay_voucher_code,
+                        pay_account_no,
+                        agency_code,
+                        (case
+                          when manual_trans_flag = 0 then
+                           '正常支付'
+                          when manual_trans_flag = 1 then
+                           '手工支付'
+                        end) as paykind, --支付方式
+                        set_mode_name, --结算方式
+                        pay_amount, --支付金额
+                        '2' as status,
+                        '0' as is_show
+                   from pb_pay_voucher p
+                  where p.batchreq_status = '1'
+                    and pay_date is null
+		    [? and p.batchreq_date&gt;= to_char(#date_begin#,'yyyymmdd')?]
+	            [? and p.batchreq_date&gt;= to_char(#date_end#,'yyyymmdd')?]
+                 union all
+                 --已支付未发送
+                 select vt_code,
+                        batchreq_date,
+                        pay_voucher_code,
+                        pay_account_no,
+                        agency_code,
+                        (case
+                          when manual_trans_flag = 0 then
+                           '正常支付'
+                          when manual_trans_flag = 1 then
+                           '手工支付'
+                        end) as paykind, --支付方式
+                        set_mode_name, --结算方式
+                        pay_amount, --支付金额
+                        '3' as status,
+                        '0' as is_show
+                   from pb_pay_voucher p
+                  where  
+		       pay_date is not null
+                    and send_flag = 0    	    
+           [?and p.pay_date &gt;= #date_begin# ?]
+           [?and p.pay_date &lt;= #date_end# ?]
+                 union all
+                 --已发送
+                 select vt_code,
+                        (case
+                     when vt_code=8202 then batchreq_date
+                     when vt_code=2204 then to_char(pay_date,'yyyymmdd')
+                  end) as batchreq_date,
+                        pay_voucher_code,
+                        pay_account_no,
+                        agency_code,
+                        (case
+                          when manual_trans_flag = 0 then
+                           '正常支付'
+                          when manual_trans_flag = 1 then
+                           '手工支付'
+                        end) as paykind, --支付方式
+                        set_mode_name, --结算方式
+                        pay_amount, --支付金额
+                        '4' as status,
+                        '0' as is_show
+                   from pb_pay_voucher p
+                  where 
+		        pay_date is not null
+                    and send_flag = 1
+                   	    
+           [?and p.pay_date &gt;= #date_begin# ?]
+           [?and p.pay_date &lt;= #date_end# ?]
+          )
+         where 1=1
+	[? and status = #status#?]
+	[? and is_show != #status#?]
+        union all
+        --全部查询
+        select vt_code,
+               batchreq_date,
+               pay_voucher_code,
+               pay_account_no,
+               agency_code,
+               paykind,
+               set_mode_name,
+               pay_amount,
+               status,
+               is_show
+          from ( --未请款
+                select vt_code,
+                        batchreq_date,
+                        pay_voucher_code,
+                        pay_account_no,
+                        agency_code,
+                        (case
+                          when manual_trans_flag = 0 then
+                           '正常支付'
+                          when manual_trans_flag = 1 then
+                           '手工支付'
+                        end) as paykind, --支付方式
+                        set_mode_name, --结算方式
+                        pay_amount, --支付金额
+                        '1' as status,
+                        '5' as is_show
+                  from pb_pay_voucher p
+                 where p.batchreq_status = '0'
+                   and pay_date is null
+                union all
+                --已请款未支付
+                select vt_code,
+                       batchreq_date,
+                       pay_voucher_code,
+                       pay_account_no,
+                       agency_code,
+                       (case
+                         when manual_trans_flag = 0 then
+                          '正常支付'
+                         when manual_trans_flag = 1 then
+                          '手工支付'
+                       end) as paykind, --支付方式
+                       set_mode_name, --结算方式
+                       pay_amount, --支付金额
+                       '2' as status,
+                       '5' as is_show
+                  from pb_pay_voucher p
+                 where p.batchreq_status = '1'
+                   and pay_date is null
+                  	    [? and p.batchreq_date&gt;= to_char(#date_begin#,'yyyymmdd')?]
+	            [? and p.batchreq_date&gt;= to_char(#date_end#,'yyyymmdd')?]
+                union all
+                --已支付未发送
+                select vt_code,
+                       batchreq_date,
+                       pay_voucher_code,
+                       pay_account_no,
+                       agency_code,
+                       (case
+                         when manual_trans_flag = 0 then
+                          '正常支付'
+                         when manual_trans_flag = 1 then
+                          '手工支付'
+                       end) as paykind, --支付方式
+                       set_mode_name, --结算方式
+                       pay_amount, --支付金额
+                       '3' as status,
+                       '5' as is_show
+                  from pb_pay_voucher p
+                 where 
+	                      pay_date is not null
+                   and send_flag = 0	    
+           [?and p.pay_date &gt;= #date_begin# ?]
+           [?and p.pay_date &lt;= #date_end# ?]
+                union all
+                --已发送
+                select vt_code,
+                       (case
+                    when vt_code=8202 then batchreq_date
+                    when vt_code=2204 then to_char(pay_date,'yyyymmdd')
+                 end) as batchreq_date,
+                       pay_voucher_code,
+                       pay_account_no,
+                       agency_code,
+                       (case
+                         when manual_trans_flag = 0 then
+                          '正常支付'
+                         when manual_trans_flag = 1 then
+                          '手工支付'
+                       end) as paykind, --支付方式
+                       set_mode_name, --结算方式
+                       pay_amount, --支付金额
+                       '4' as status,
+                       '5' as is_show
+                  from pb_pay_voucher p
+                 where 
+                    pay_date is not null
+                   and send_flag = 1
+  	
+           [?and p.pay_date &gt;= #date_begin# ?]
+           [?and p.pay_date &lt;= #date_end# ?]
+  )  
+         where 1=1
+   [? and is_show = #status#?]
+        )
+         k 
+
+  where 1=1 and exists (select 1 from pb_ele_account t where t.account_no = k.pay_account_no and t.bank_code = '网点编码')
+
+</QuerySql><Fields><Field name = "VT_CODE" cnname="8202" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "日期" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "AGENCY_CODE" cnname="预算单位" fieldType="1" object_code="AGENCY" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "凭证号" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "收款人账号" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "收款人名称" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "收款人开户行" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "付款人名称" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "付款人账号" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "支付方式" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "结算方式" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "支付金额" cnname="" fieldType="2" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "状态" cnname="" fieldType="1" object_code="" tablename="" olapType="0" olapGroupName=""/>
+<Field name = "STATUS" cnname="" fieldType="2" object_code="" tablename="" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.6'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='VT_CODE8202'
+					DBFieldName='VT_CODE'
+				End
+				Item
+					Name='日期'
+				End
+				Item
+					Name='AGENCY_CODE预算单位'
+					DBFieldName='AGENCY_CODE'
+				End
+				Item
+					Name='凭证号'
+				End
+				Item
+					Name='收款人账号'
+				End
+				Item
+					Name='收款人名称'
+				End
+				Item
+					Name='收款人开户行'
+				End
+				Item
+					Name='付款人名称'
+				End
+				Item
+					Name='付款人账号'
+				End
+				Item
+					Name='支付方式'
+				End
+				Item
+					Name='结算方式'
+				End
+				Item
+					Name='支付金额'
+					Type=Float
+				End
+				Item
+					Name='状态'
+				End
+				Item
+					Name='STATUS'
+					Type=Float
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=24.7385
+			End
+		End
+		Object ColumnContent
+			Height=0.79375
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox11'
+							BorderStyles=[DrawRight]
+							Width=4.18042
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='[#日期#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox15'
+							BorderStyles=[DrawRight]
+							Left=4.20688
+							Width=4.78896
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='[#凭证号#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox16'
+							BorderStyles=[DrawRight]
+							Left=8.99583
+							Width=4.39208
+							Height=0.79375
+							TextAlign=MiddleRight
+							Text='[#支付金额:#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox18'
+							BorderStyles=[DrawRight]
+							Left=13.3879
+							Width=4.41854
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='[#结算方式#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox20'
+							BorderStyles=[DrawRight]
+							Left=17.8065
+							Width=3.78354
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='[#状态#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox21'
+							BorderStyles=[DrawRight]
+							Left=21.59
+							Width=3.20146
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleCenter
+							Text='[#支付方式#]'
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			RepeatStyle=OnPage
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox1'
+							BorderStyles=[DrawRight]
+							Left=-0.0264583
+							Width=4.18042
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='请款日期'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox2'
+							BorderStyles=[DrawRight]
+							Left=4.20688
+							Width=4.78896
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='凭证号'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox3'
+							BorderStyles=[DrawRight]
+							Left=8.99583
+							Width=4.39208
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='支付金额'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox4'
+							BorderStyles=[DrawRight]
+							Left=13.3879
+							Width=4.41854
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='结算方式'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox9'
+							BorderStyles=[DrawRight]
+							Left=21.59
+							Width=3.20146
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='支付方式'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox19'
+							BorderStyles=[DrawRight]
+							Left=17.8065
+							Width=3.78354
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='凭证状态'
+						End
+					End
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				Object GroupHeader
+					Height=0
+				End
+				Object GroupFooter
+					Height=0.608542
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox2'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=8.99583
+							Width=5.90021
+							Height=0.608542
+							TextAlign=MiddleCenter
+							Text='支付金额合计'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox22'
+							BorderStyles=[DrawRight|DrawBottom]
+							Left=14.949
+							Width=9.76313
+							Height=0.608542
+							TextAlign=MiddleRight
+							Text='[#SystemVar(RowNo)#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox3'
+							BorderStyles=[DrawRight]
+							Left=0.15875
+							Width=4.02167
+							Height=0.582083
+							TextAlign=MiddleCenter
+							Text='笔数合计'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox23'
+							Left=4.23333
+							Width=3.06917
+							Height=0.582083
+							Text='[#SystemVar(RowNo)#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox4'
+							Left=7.3025
+							Width=1.56104
+							Height=0.582083
+							Text='笔'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='status'
+		End
+		Item
+			Name='BELONG_ORG'
+		End
+		Item
+			Name='date_begin'
+		End
+		Item
+			Name='date_end'
+		End
+		Item
+			Name='Parameter1'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=1.19063
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Left=6.40292
+					Top=0.185208
+					Width=9.36625
+					Height=1.03188
+					Object Font
+						Name='宋体'
+						Size=150000,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='中国建设银行业务量统计表'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="开始时间" para_name="DATE_BEGIN" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="20141117" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="结束时间" para_name="DATE_END" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="20141117" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="状态" para_name="STATUS" object_code="" is_showOnQueryPanel="True" control_type="1" enum_value="5#全部+1#未请款+2#已请款未支付+3#已支付未发送+4#已发送" condition_type="1">
+<values object_field_name="">
+<value>5#</value>
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

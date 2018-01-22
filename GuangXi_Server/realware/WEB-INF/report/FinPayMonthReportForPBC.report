@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="8200000 " id="7821" name="820211" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="0" isUnion="0"><DataSources><DataSource name="820211" is_subDataSource="False" memoryName=""><QuerySql>select p3.pay_amount,
+       (case
+         when p3.vt_code = '2301' then
+          '正常'
+         when p3.vt_code = '2302' then
+          '退款'
+       end) as business_type_name,
+       to_char(p3.create_date, 'yyyymmdd') vou_date,
+       p3.year,
+       to_char(p3.create_date, 'mm') mounth
+ 
+  from  pb_pay_clear_voucher p3
+ where 1 = 1
+[?and p3.create_date &gt;= #date_begin# ?]
+[?and p3.create_date &lt;= #date_end# ?]
+
+order by vou_date asc
+</QuerySql><Fields><Field name = "PAY_AMOUNT" cnname="金额" fieldType="2" object_code="" tablename="820211" olapType="0" olapGroupName=""/>
+<Field name = "BUSINESS_TYPE_NAME" cnname="业务类型" fieldType="1" object_code="" tablename="820211" olapType="0" olapGroupName=""/>
+<Field name = "VOU_DATE" cnname="录入日期" fieldType="1" object_code="" tablename="820211" olapType="0" olapGroupName=""/>
+<Field name = "YEAR" cnname="年" fieldType="2" object_code="" tablename="820211" olapType="0" olapGroupName=""/>
+<Field name = "MOUNTH" cnname="月" fieldType="1" object_code="" tablename="820211" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.6'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='PAY_AMOUNT金额'
+					Tag='820211'
+					Type=Float
+					DBFieldName='PAY_AMOUNT'
+				End
+				Item
+					Name='BUSINESS_TYPE_NAME业务类型'
+					Tag='820211'
+					DBFieldName='BUSINESS_TYPE_NAME'
+				End
+				Item
+					Name='VOU_DATE录入日期'
+					Tag='820211'
+					DBFieldName='VOU_DATE'
+				End
+				Item
+					Name='YEAR年'
+					Tag='820211'
+					Type=Float
+					DBFieldName='YEAR'
+				End
+				Item
+					Name='MOUNTH月'
+					Tag='820211'
+					DBFieldName='MOUNTH'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=4.57729
+			End
+			Item
+				Name='Column2'
+				Width=6.00604
+			End
+			Item
+				Name='Column3'
+				Width=5.37104
+			End
+		End
+		Object ColumnContent
+			Height=0.608542
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					TextAlign=MiddleCenter
+					DataField='VOU_DATE录入日期'
+				End
+				Item
+					Column='Column2'
+					TextAlign=MiddleCenter
+					DataField='BUSINESS_TYPE_NAME业务类型'
+				End
+				Item
+					Column='Column3'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox5'
+							Width=5.3975
+							Height=0.608542
+							TextAlign=MiddleRight
+							Text='[#PAY_AMOUNT金额:#,##0.00#]'
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			RepeatStyle=OnGroupHeader
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					TextAlign=MiddleCenter
+					Text='录入日期'
+				End
+				Item
+					GroupTitle=F
+					Column='Column2'
+					TextAlign=MiddleCenter
+					Text='支付调整类型'
+				End
+				Item
+					GroupTitle=F
+					Column='Column3'
+					TextAlign=MiddleCenter
+					Text='汇总划款金额'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				ByFields='YEAR年;MOUNTH月'
+				Object GroupHeader
+					Height=2.01083
+					PrintGridBorder=F
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox17'
+							Left=6.40292
+							Top=0.396875
+							Width=0.635
+							Height=0.79375
+							Object Font
+								Name='宋体'
+								Size=150000,0
+								Weight=400
+								Charset=134
+							End
+							Text='年'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox4'
+							Left=7.01146
+							Top=0.396875
+							Width=0.582083
+							Height=0.79375
+							Object Font
+								Name='宋体'
+								Size=150000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#MOUNTH月#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox3'
+							Left=5.00063
+							Top=0.396875
+							Width=1.48167
+							Height=0.79375
+							Object Font
+								Name='宋体'
+								Size=150000,0
+								Weight=400
+								Charset=134
+							End
+							Text='[#YEAR年#]'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox18'
+							Left=7.59354
+							Top=0.396875
+							Width=5.21229
+							Height=0.79375
+							Object Font
+								Name='宋体'
+								Size=150000,0
+								Weight=400
+								Charset=134
+							End
+							Text='月财政支付月报表'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox12'
+							Left=0.079375
+							Top=1.37583
+							Width=10.1865
+							Height=0.79375
+							Text='编报单位：吉林省建行 '
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox13'
+							Left=10.6363
+							Top=1.37583
+							Width=5.87375
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='单位：元'
+						End
+					End
+					RepeatOnPage=T
+					NewPageColumn=Before
+				End
+				Object GroupFooter
+					Height=0.79375
+					Items Control
+						Item
+							Type=StaticBox
+							Name='StaticBox10'
+							BorderStyles=[DrawRight|DrawBottom]
+							Width=10.6098
+							Height=0.79375
+							TextAlign=MiddleCenter
+							Text='合计'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox1'
+							BorderStyles=[DrawBottom]
+							Left=10.5833
+							Width=5.34458
+							Height=0.8
+							TextAlign=MiddleRight
+							Text='[#Sum(PAY_AMOUNT金额):#,##0.00#]'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='Parameter1'
+		End
+		Item
+			Name='date_begin'
+		End
+		Item
+			Name='date_end'
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="起始日期" para_name="DATE_BEGIN" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="截止日期" para_name="DATE_END" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<import resource="classpath:common-remote.xml" />
+	
+	<import resource="classpath:workflow-remote.xml"/>
+	
+	<import resource="classpath:billtype-remote.xml"/>
+	
+	<import resource="classpath:dm-remote.xml"/>
+	
+	<import resource="classpath:pb-remote.xml"/>
+	
+	<import resource="classpath:uiview-remote.xml"/>
+	
+	<!-- import resource="classpath:exinterface-remote.xml" /> -->
+	
+	 <import resource="classpath:balance-remote.xml"/>
+	 
+	 <import resource="classpath:report-remote.xml"/>
+	 
+	 <import resource="classpath:pbss-remote.xml"/>
+	
+</beans>

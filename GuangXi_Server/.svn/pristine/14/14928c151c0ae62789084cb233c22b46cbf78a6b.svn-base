@@ -1,0 +1,15 @@
+####页码明细数
+BL.PageSize =20
+
+BL.PLTransferVoucherMenuId = 200200
+BL.PATransferVoucherMenuId = 200108
+BL.PLRefundCheckVoucherMenuId = 200102
+BL.PARefundCheckVoucherMenuId =200203
+BL.RPVoucherAckownFormMenuId = 202702
+BL.RefundInputRealPayVoucherFormMenuId = 203604
+
+BL.EndOfBusinessTime =15
+
+
+#虚拟柜员
+virtual.user.code = 

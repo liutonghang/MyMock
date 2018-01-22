@@ -1,0 +1,385 @@
+package grp.pb.branch.beibuwan.trans;
+
+import grp.pb.branch.beibuwan.trans.util.BBWMsgConstant;
+import grp.pb.branch.beibuwan.trans.util.FTPUtils;
+import grp.pt.idgen.IdGen;
+import grp.pt.pb.exception.PbException;
+import grp.pt.pb.payment.IVoucher;
+import grp.pt.pb.payment.PayClearVoucher;
+import grp.pt.pb.payment.PayVoucher;
+import grp.pt.pb.tips.TipsMessageDTO;
+import grp.pt.pb.trans.bs.BankTransServiceAdapter;
+import grp.pt.pb.trans.bs.TransDAO;
+import grp.pt.pb.trans.ex.PbTransException;
+import grp.pt.pb.trans.model.MsgResBody.SerialNo;
+import grp.pt.pb.trans.model.TransLogDTO;
+import grp.pt.pb.trans.model.TransReturnDTO;
+import grp.pt.pb.trans.util.Context;
+import grp.pt.pb.util.ChangeUtil;
+import grp.pt.pb.util.PropertiesHander;
+import grp.pt.pb.util.StaticApplication;
+import grp.pt.pb.util.TradeConstant;
+import grp.pt.util.BaseDAO;
+import grp.pt.util.CollectionUtils;
+import grp.pt.util.ComplexMapper;
+import grp.pt.util.PlatformUtils;
+import grp.pt.util.StringUtil;
+import grp.pt.util.model.Session;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
+public class BBWServiceImpl extends BankTransServiceAdapter {
+	 
+	 private static Logger log = Logger.getLogger(BBWServiceImpl.class);
+	 private static Properties pros = PropertiesHander.getProByClassPath("trans.properties");
+	 TransDAO transDAO = null;
+	 /**
+	  * 转账
+	  */
+	@Override
+	public TransReturnDTO trans(Session sc, Context context, IVoucher t)throws Exception {
+		int tradeType = t.getTrade_type();
+		//转账类别,默认核心转账
+		String traCode = BBWMsgConstant.PAYTRANS_TRACODE;
+
+        //零余额-->垫支户（冲销）
+        if (tradeType == TradeConstant.PAY2ADVANCE_WRITEOFF) {
+  		  	traCode = BBWMsgConstant.REVERSAL;
+  		  	
+  		  //查询最近一次请款，并赋值到hold7中
+  		  searchLastTransId(sc, t);
+  		  	
+		}
+	    BBWMsgResBody resBody=this.doBankInterface(sc, context, t, traCode);
+	    PlatformUtils.setProperty(t, "request_type",  resBody.getUserSerial());//将柜员流水号保存到request_type中
+	    
+        return new TransReturnDTO(resBody.getResStatus(),resBody.getResMsg(), t.getTransId(),resBody.getBankTransId());
+	 }
+	 /**
+	  * 查询最近一次请款的柜面流水，并赋值到hold7中
+	  */
+	private void searchLastTransId(Session sc, IVoucher t) throws Exception {
+		transDAO = (TransDAO)StaticApplication.getBean("pb.trans.transDAO");
+  		  List<TransLogDTO> tranList = transDAO.loadTransLogByVouNo(sc, t
+  				.getVouNo(), TradeConstant.ADVANCE2PAY, t.getAdmdivCode(), t
+  				.getVtCode(),t.getYear());
+  		  if(CollectionUtils.isListEmpty(tranList)){
+  			  throw new Exception("当前没有请款成功的记录");
+  		  }
+  		  String hold7 = tranList.get(0).getTrans_log_id();
+  		  PlatformUtils.setProperty(t, "hold7", hold7);
+	}
+
+	 /**
+	  * 查询交易
+	  */
+	@Override
+	  public TransReturnDTO queryTrans(Session sc, Context context, IVoucher t,Object... objects) throws Exception {
+		if (objects!=null && objects.length != 0 && objects[0]!=null) {
+            
+            boolean isSaveLog = false;
+            TransLogDTO logDTO = (TransLogDTO)objects[0];  
+            //本地日志表记录转账成功，则直接返回
+            if(logDTO.getTrans_succ_flag() == 1 ){
+                return new TransReturnDTO(TransReturnDTO.SUCESS, isSaveLog);
+            }
+			String trans_code = BBWMsgConstant.PAYTRANS_QUERYCODE;
+			BBWMsgResBody resBody = null;
+            
+            resBody = this.doBankInterface(sc, context, t, trans_code,logDTO);
+            if(TransReturnDTO.FAILURE == resBody.getResStatus()){
+            	throw new PbException("查询交易状态失败，原因："+resBody.getResMsg());
+            }
+            TransReturnDTO resLog = null;
+            if(TransReturnDTO.SUCESS == resBody.getResult()){//支付成功
+                resLog = new TransReturnDTO(TransReturnDTO.SUCESS,resBody.getResMsg(),t.getTransId(),isSaveLog);
+                resLog.setBankTransId(resBody.getBankTransId());
+            }else if (TransReturnDTO.FAILURE == resBody.getResult()){
+            	resLog = getNewTransIdReturnDTO(t);
+            }
+            return resLog;
+        }else{//未交易过，需要保存交易日志
+            return getNewTransIdReturnDTO(t);
+        }           
+    }
+	/**
+     * 查询余额
+     * @return 返回余额
+     */
+    @Override
+    public BigDecimal queryAcctBalance(Session sc, Context context, IVoucher t)throws Exception{/*
+    	 BBWMsgResBody res = doBankInterface(sc, context, t, BBWMsgConstant.QUERY_ACCTBALANCE_TRACODE,t.getPayAcctNo());
+        if(res.getAcctBalance() != null){
+            return res.getAcctBalance();
+        }else{
+        	 throw new PbException("查询余额失败，"+res.getResMsg());
+        }
+    */	return null;
+    	}
+    
+	/**
+	 * 实现对账，对账结果下载功能
+	 */
+	@SuppressWarnings("static-access")
+	@Override
+	public List<SerialNo> checkSerialno(Session sc, Context context,
+			IVoucher t, String queryDate) throws Exception {
+		List<SerialNo> serialList = null;
+		String traCode = BBWMsgConstant.CHECK_SERIAL_NO;
+		BBWMsgResBody msgResBody = this.doBankInterface(sc, context, t, traCode, queryDate);
+		String fileNameString = msgResBody.getFileName();
+		if (StringUtil.isNotBlank(fileNameString)) {//已对账
+			
+				FTPUtils ftpCU = new FTPUtils();
+				String savePath = pros.getProperty("ftp.localTipsPath");
+				String relPath = pros.getProperty("ftp.remoteTipsPath");
+				String fileName = fileNameString;
+				boolean flag =ftpCU.downFile(savePath, relPath, fileName);
+				log.info("+++文件下载成功！+++flag:"+flag);
+				if (flag) {//下载成功，读取文件
+					serialList = readFile(savePath+"/"+fileName);
+				}else{//下载失败，抛出异常
+					throw new PbException("下载文件失败，请检查文件"+fileName+"是否存在！");
+				}
+			}else {
+				throw new PbException("没有查询到相应的记录，请做日切操作！");
+			}
+			
+			return serialList;
+	}
+	
+	public List<SerialNo> readFile(String fileName){
+		log.info("+++开始读取文件++");
+		List<SerialNo> serialList = new ArrayList<SerialNo>();
+		BufferedReader reader = null;
+		FileInputStream in = null;
+		InputStreamReader isReader = null;
+		try {
+			File file = new File(fileName);
+			in = new FileInputStream(file);
+			isReader = new InputStreamReader(in,"gbk");
+			reader = new BufferedReader(isReader);
+			String line = null;
+			SerialNo dto = null;
+			
+			while ((line = reader.readLine()) != null) {	
+			dto = new SerialNo();
+			String[] l = line.split("\\|");
+			//交易日期
+			dto.setTransDate(l[0].trim());
+			//外围流水
+			dto.setTransId(l[1].trim());
+			//金额
+			dto.setTransAmt(new BigDecimal(l[2].trim()));
+			serialList.add(dto);
+			}
+
+			log.info("+++读取文件结束！++");
+		}catch (Exception e) {
+			throw new PbException("读取"+fileName+"文件异常！");
+		}finally{
+			//关闭流
+			IOUtils.closeQuietly(reader);
+			IOUtils.closeQuietly(isReader);
+			IOUtils.closeQuietly(in);
+			
+		}
+		return serialList;
+	}
+	/**
+	 * 调用银行核心
+	 * @param sc
+	 * @param context
+	 * @param t
+	 * @param traCode
+	 * @param objects
+	 * @return
+	 * @throws Exception
+	 */
+	public BBWMsgResBody doBankInterface(Session sc, Context context,
+			IVoucher t, String traCode, Object... objects) throws Exception {
+		if(StringUtil.isTrimEmpty(t.getTransId())){
+			t.setTransId(seqReq());
+		}
+		log.info("当前的交易码是：【"+traCode+"】");
+		//解析对象
+		BBWMsgParser parser = new BBWMsgParser();
+		//拼装报文
+		byte[]	reqByte = parser.doAssemble(sc, context, t, traCode,objects);
+		log.info("发送报文："+new String(reqByte,BBWMsgConstant.GBK));
+		//发送报文
+		byte[] respBtye = parser.doSend(context, reqByte);
+		log.info("接收报文："+new String(respBtye,BBWMsgConstant.GBK));
+		//解析报文
+		BBWMsgResBody resBody = parser.doParser(sc, t, respBtye,traCode);
+		
+		return resBody;
+	}
+	  /**
+	     * 获得新TransId并新增日志的TransReturnDTO
+	     * @param t,is_transed
+	     * @return
+	     */
+	    private TransReturnDTO getNewTransIdReturnDTO(IVoucher t){
+
+	    	String seqReq = seqReq();
+	        t.setTransId(seqReq);
+	        
+	        TransReturnDTO resLog = new TransReturnDTO(TransReturnDTO.FAILURE, true);
+	        return resLog;
+	    }
+
+	    /**
+	     * 生成流水
+	     * @param 
+	     * @return
+	     */
+	    public String seqReq() {
+			// 流水ID
+			StringBuffer flowIdSb = new StringBuffer(16);
+			String id = IdGen.genStrId("SEQ_TRANS_FLOW_ID");
+			if (id.length() > 8) {
+				id = id.substring(id.length() - 8);
+			} else {
+				id = ChangeUtil.getFixlenStr(id, 8);
+			}
+			flowIdSb.append(id);
+			return flowIdSb.toString();
+	    }
+	    /**
+	     * Tips上传到服务器后，需要再发送报文通知核心上传成功
+	     * @param context 
+	     * @param tmDTO 
+	     * @param 
+	     * @return
+	     * @throws Exception 
+	     */
+		public void sendTipsMessage(Session sc, List<PayClearVoucher> list, TipsMessageDTO tmDTO) throws Exception {
+			String traCode = null;
+			Context context = new Context();
+			PayClearVoucher t = list.get(0);
+			String ori_tips_file_name =  null;
+			BigDecimal payAmount = (BigDecimal) PlatformUtils.getProperty(t, "pay_amount");
+			//1.判断正逆向
+			if(payAmount.compareTo(BigDecimal.ZERO)>0){
+				traCode = BBWMsgConstant.SEND_TIPS;
+				
+			}else{
+				traCode = BBWMsgConstant.SEND_REFUND_TIPS;
+				ori_tips_file_name = getOriTipsFileName(t);
+
+			}
+			BBWMsgResBody resBody=this.doBankInterface(sc, context, t, traCode, tmDTO, ori_tips_file_name);
+			//如果失败，则抛出异常出来，且打出日志
+			if(TransReturnDTO.FAILURE==resBody.getResStatus()){
+				log.error("tips发送核心报文异常，当前的交易码："+traCode);
+				throw new PbException("tips发送核心报文异常，当前的交易码："+traCode);
+			}
+		}
+	    /**
+	     * 获取正向的tips文件名
+	     */
+		private String getOriTipsFileName(PayClearVoucher t) {
+			String tipsFileName = null;
+			try{
+			BaseDAO baseDao = StaticApplication.getBaseDAO();
+			String sql1 = "select * from pb_pay_voucher where PAY_CLEAR_VOUCHER_CODE = ? ";
+			List<PayVoucher> refundPayVoucherList = baseDao.queryForList(sql1, new Object[]{t.getPay_clear_voucher_code()}, new ComplexMapper(PayVoucher.class));
+			String sql2 = "select * from pb_pay_voucher where pay_voucher_code = ? ";
+			List<PayVoucher> payVoucherList = baseDao.queryForList(sql2,new Object[]{refundPayVoucherList.get(0).getOri_pay_voucher_code()},new ComplexMapper(PayVoucher.class));
+			String sql3 = "select * from pb_pay_clear_voucher where pay_clear_voucher_code = ? ";
+			List<PayClearVoucher> payClearVoucherList = baseDao.queryForList(sql3, new Object[]{payVoucherList.get(0).getPay_clear_voucher_code()}, new ComplexMapper(PayClearVoucher.class));
+			tipsFileName = payClearVoucherList.get(0).getTips_file_name().trim();
+			if(tipsFileName.endsWith(".txt")){
+				tipsFileName = tipsFileName.substring(0, tipsFileName.length()-4);
+			}
+			
+			}catch (Exception e) {
+				log.error("获取正向的tips文件名失败，原因",e);
+				throw new PbException("获取正向的tips文件名失败");
+			}
+			return tipsFileName;
+		}
+		
+	    /**
+	     * 柜员网点同步，返回文件名
+	     * @return fileNames ，其中第一个是柜员文件，第二个是网点文件
+	     * @throws Exception 
+	     */
+		public List<String> getPbUserAndNetworkFileName(Session sc) throws Exception {
+			String traCode = BBWMsgConstant.UPDATE_PBUSER;
+			PayVoucher t = new PayVoucher();
+			Context context = new Context();
+			BBWMsgResBody msgResBody = this.doBankInterface(sc, context, t, traCode);
+			if(TransReturnDTO.FAILURE==msgResBody.getResStatus()){
+				log.error("柜员同步报文异常，当前的交易码："+traCode);
+				throw new PbException("柜员同步报文异常，当前的交易码："+traCode);
+			}
+			if(StringUtil.isEmpty(msgResBody.getFileName())){
+				log.error("未返回同步柜员所需文件，当前的交易码："+traCode);
+				throw new PbException("未返回同步柜员所需文件，当前的交易码："+traCode);
+			}
+			List<String> fileNames = new ArrayList<String>();
+			fileNames.add(msgResBody.getFileName());//柜员文件
+			fileNames.add(msgResBody.getFileName1());//网点文件
+
+			return fileNames;
+		}
+		
+		
+	    /**
+	     * 远程授权
+	     * @param sc 
+	     * @param t 
+	     * @param flag 1表示申请授权；0表示查询
+	     * @throws Exception 
+	     */
+		public void remoteAuthorize(Session sc,IVoucher t,String flag) throws Exception {
+			
+			String traCode = BBWMsgConstant.REMOTE_AUTHORIZE;
+			BBWMsgResBody msgResBody = this.doRemoteAuthorizeInterface(sc, t, traCode, flag);
+			if(BBWMsgConstant.GET_REMOTE_AUTHORIZE_RESULT.equals(flag) && 
+					!BBWMsgConstant.REMOTE_AUTHORIZE_SUCCESS.equals(msgResBody.getResCode())){
+				throw new PbException("远程授权尚未通过，原因："+msgResBody.getResMsg());
+				
+			}
+
+		}
+		/**
+	     * 远程授权接口
+	     * @throws Exception 
+	     */
+		private BBWMsgResBody doRemoteAuthorizeInterface(Session sc,IVoucher t,
+				String traCode, String flag) throws Exception {
+			
+			if(StringUtil.isTrimEmpty(t.getTransId())){
+				t.setTransId(seqReq());
+			}
+			log.info("当前的交易码是：【"+traCode+"】");
+			//解析对象
+			BBWMsgParser parser = new BBWMsgParser();
+			//拼装报文
+			byte[]	reqByte = parser.assembleAuthorize(sc, t, traCode,flag);
+			log.info("发送报文："+new String(reqByte,BBWMsgConstant.GBK));
+			
+			//发送报文
+			byte[] respBtye = parser.sendAuthorize(reqByte);
+			log.info("接收报文："+new String(respBtye,BBWMsgConstant.GBK));
+			//解析报文
+			BBWMsgResBody resBody = parser.authorizeParser(sc, t, respBtye,traCode);
+			
+			return resBody;
+		}
+
+}

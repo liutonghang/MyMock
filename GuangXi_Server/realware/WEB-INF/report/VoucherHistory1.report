@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="zbh" id="5422" name="历史凭证查询" type="3" org_id="0" group_id="8" sys_id="201" monetary_unit="1" job_id="201" enable="1" isUnion="0"><DataSources><DataSource name="8202授权支付交易情况查询" is_subDataSource="False" memoryName=""><QuerySql>
+
+SELECT
+     
+    aa.city,    
+    '财政授权支付' AS PAY_TYPE_NAME ,
+    COUNT(*) AS pay_count,
+    aa.paydate,
+    SUM(pay_amount) AS pay_sum_amount
+FROM
+    (
+        SELECT
+            CONVERT(VARCHAR(4),PAY_DATE,121)||CONVERT(VARCHAR(2),PAY_DATE,101)||CONVERT
+            (VARCHAR(2 ),PAY_DATE,103) AS PAYDATE,
+               (
+        CASE
+            WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '0%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '0%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '0%') 				  
+            THEN '南宁'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '1%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '1%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '1%') 				  
+            THEN '柳州'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '2%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '2%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '2%') 				  
+            THEN '桂林'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '3%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '3%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '3%') 				  
+            THEN '梧州'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '4%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '4%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '4%') 				  
+            THEN '玉林'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '5%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '5%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '5%') 				  
+            THEN '河池'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '6%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '6%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '6%') 				  
+            THEN '百色'
+			WHEN (LEN(pay_account_no)=15 and substring(pay_account_no,1,4) like '7%') 
+			      or (LEN(pay_account_no)=17 and substring(pay_account_no,3,4) like '7%')
+                  or (LEN(pay_account_no)=18 and substring(pay_account_no,4,4) like '7%') 				  
+            THEN '钦州'
+
+        END
+      ) AS city,
+            *
+        FROM
+            pb_pay_voucher
+        WHERE
+            pay_date IS NOT NULL) aa
+WHERE
+    1=1
+AND aa.pay_type_code LIKE '12%'
+AND aa.paydate IS NOT NULL
+[? AND aa.paydate = #PAYDATE#?]
+and pay_amount<0
+GROUP BY
+    aa.paydate,aa.city
+ORDER BY
+    aa.paydate DESC
+</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![Object Report
+	Version='5.6.0.0'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='YEAR'
+				End
+				Item
+					Name='PAY_TYPE_NAME'
+				End
+				Item
+					Name='PAY_COUNT'
+				End
+				Item
+					Name='PAYDATE'
+				End
+				Item
+					Name='PAY_SUM_AMOUNT'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='年度'
+				Width=2.77813
+			End
+			Item
+				Name='支付类型'
+				Width=3.78354
+			End
+			Item
+				Name='支付数量'
+				Width=3.41313
+			End
+			Item
+				Name='支付日期'
+				Width=3.20146
+			End
+			Item
+				Name='支付总金额'
+				Width=3.01625
+			End
+		End
+		Object ColumnContent
+			Height=1.19063
+			Items ColumnContentCell
+				Item
+					Column='年度'
+					DataField='YEAR'
+				End
+				Item
+					Column='支付类型'
+					DataField='PAY_TYPE_NAME'
+				End
+				Item
+					Column='支付数量'
+					WordWrap=T
+					DataField='PAY_COUNT'
+				End
+				Item
+					Column='支付日期'
+					TextAlign=MiddleRight
+					DataField='PAY_SUM_AMOUNT'
+				End
+				Item
+					Column='支付总金额'
+					WordWrap=T
+					DataField='PAYDATE'
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='年度'
+					WordWrap=T
+					TextAlign=MiddleCenter
+					Text='年度'
+				End
+				Item
+					GroupTitle=F
+					Column='支付类型'
+					TextAlign=MiddleCenter
+					Text='支付类型'
+				End
+				Item
+					GroupTitle=F
+					Column='支付数量'
+					WordWrap=T
+					TextAlign=MiddleCenter
+					Text='支付数量'
+				End
+				Item
+					GroupTitle=F
+					Column='支付总金额'
+					TextAlign=MiddleCenter
+					Text='支付日期'
+				End
+				Item
+					GroupTitle=F
+					Column='支付日期'
+					TextAlign=MiddleCenter
+					Text='支付总金额'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='合计分组'
+				Object GroupHeader
+					Visible=F
+					CanGrow=T
+					Height=0.635
+				End
+				Object GroupFooter
+					Height=1.19063
+					Items Control
+						Item
+							Type=SummaryBox
+							Name='SummaryBox1'
+							Left=12.8058
+							Top=0.211667
+							Width=2.59292
+							Height=0.608542
+							DataField='PAY_SUM_AMOUNT'
+						End
+						Item
+							Type=StaticBox
+							Name='staticBox1'
+							Left=9.2075
+							Top=0.211667
+							Width=3.38667
+							Height=0.582083
+							Text='合计金额'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='VT_CODE'
+		End
+		Item
+			Name='BATCHREQ_DATE'
+			Value='2015-02-12'
+		End
+		Item
+			Name='PAYDATE_S'
+			Value='2014-09-01'
+		End
+		Item
+			Name='PAYDATE'
+		End
+		Item
+			Name='PAY_VOUCHER_CODE'
+		End
+		Item
+			Name='ADMDIV_CODE'
+		End
+		Item
+			Name='conditon'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			BookmarkText='直接支付情况查询'
+			Items Control
+				Item
+					Type=MemoBox
+					Name='MemoBox1'
+					Object Font
+						Name='宋体'
+						Size=120000,0
+						Bold=T
+						Charset=134
+					End
+					Center=Both
+					Left=9.07521
+					Top=1.08479
+					Width=6.58813
+					Height=0.79375
+					TextAlign=MiddleCenter
+					Text='历史凭证查询报表\r\n'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions>
+<QueryCondition cnname="凭证日期" para_name="PAYDATE" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>2014-09-01</value>
+</values></QueryCondition><QueryCondition cnname="区划" para_name="ADMDIV_CODE" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>123</value>
+</values></QueryCondition>
+</QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

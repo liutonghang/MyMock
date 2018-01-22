@@ -1,0 +1,155 @@
+ #############公用的配置############
+#银行接口IP#127.0.0.1
+IP= 10.16.2.160
+#银行接口端口号#9252
+Port= 60028
+#调银行接口超时时间 单位：毫秒#
+OutTime=65000
+
+#核心系统转账接口配置参数,开发创建解析和业务类路径是固定的,此参数请咨询开发
+#脱机模式 ：Offline
+#公司标准版：Standard
+#银行版，例如农行：branch.trans.bs.ABC134
+#			建行：branch.trans.bs.GXCCB Offline
+TransInterface= branch.trans.rcbtuxedo.GXRCBTuxedo
+
+#自助柜面接口配置参数：
+###自助柜面服务端口####
+selfCounterPort = 9898
+#使用header.abc.selfCounter.ABC
+#使用公司自助柜面：CTJ
+SelfCounterInterface=CTJ
+
+#tips接口配置参数：
+#Offline脱机版
+#建行：branch.tips.TBS
+#农行：branch.tips.ABC
+TIPSInterface= branch.trans.rcbtuxedo.GXBank
+#branch.baoDing.service.BDB
+#Offline
+
+#登录接口URL:
+#建行登录url ：ccblogin.do
+LoginDispatchURL=
+
+#不拦截的URL，用于二次开发时，拦截器中不拦截的.do,存在多个时，使用&分隔，例如：loginCheck.do&loginCheckBank.do
+NoFilters=
+
+#文件路径#
+FileDir=f:/tipsFiles
+#其他监听端口#
+otherPort=20106
+
+#调核心转账方法 目录已有的值 SOCKET、SO、CICS... 默认SOCKET#
+transferType =CICS
+#上传tips模式ftp ,report(报表服务器上传)#
+tipsuploadmode=ftp
+#上传tips生成的文件格式：xml文件格式，tbs文件格式（南宁建行）
+tipsFormatMode=xml
+
+tipsServerPort = 9003
+
+msgHeadSecurity = 11111111
+
+###############农行公用配置###############
+##省市代码
+abc.city.code=18
+##CICS客户端IP，格式必须为：tcp://+IP，如：tcp://10.93.10.51
+ctgClient.protocalIP=tcp://10.93.10.51
+##CICS客户端Port
+ctgClient.port=2006
+##CICS调用的服务名
+cics.serverName=TULA
+##CICS调用的程序名
+cics.programName=CAABIBTZ
+##CICS用户
+cics.userName=NETUSER
+##CICS密码
+cics.userPasswd=USERNET
+##CICS发送数据时采用的字符集
+cics.charsetName=cp936
+
+##农行aftstcp配置#################
+##Windows下aftstcp命令需要的dll，存放目录
+aftstcp.dll = C\:\\Windows\\SysWOW64\\libaftsclient.dll
+##aftstcp文件类型
+aftstcp.fileType = ABIBFILE
+##aftstcp远程访问报表服务器，01@000为总行
+aftstcp.remoteNd = 01@000
+##aftstcp访问本分行报表服务器，如：18为湖南分行
+aftstcp.localNd = 18@000
+aftstcp.serverIp = 10.91.12.12
+##本地目录
+aftstcp.localPath = /opt/IBM/WebSphere/checkdata
+##命令绝对路径
+aftstcp.binpath = 
+##环境变量
+aftstcp.env = 
+#aftstcp.localPath = D\:\\tips
+
+###############个性化配置#################
+###湖南建行####
+#获取验证码SOCKET服务#
+userverify.serversocket.port=9002
+
+###宁夏农行###
+#退款端口监听服务
+refServerPort=9009
+
+
+#ftp配置
+ftp.serverIp = 10.16.2.2
+ftp.serverPort = 2723
+ftp.username = test6
+ftp.pwd = test6
+ftp.localTipsPath = d\:/tipsFiles/
+ftp.remoteTipsPath = /testcore/test6/
+# 
+#行号导入配置
+dbUserName = pb_new_530
+dbUserPW = 1
+dbIddr = 22.104.23.49
+dbSchema = orcl
+localBFPath = e:/ftp/bf
+BFNAME = IBPS_RCTCBK.dmp
+#退款流水文件导入配置
+localTSPath=e:/ftp/ts/
+prefixFN=TR
+###湖南农行###
+bcg.userid = 
+bcg.pwd = 
+bcg.transId = 
+
+###广西中行服务###
+specialPort = 9216
+##BL获取待确认数据有效时间 精确到毫秒
+bl.data.OutTime = 300000
+tipsUploadRemoteOrLocal=local
+
+#####################公务卡维护相关参数#######################
+### 公务卡卡信息文件
+## 公务卡卡信息文件存放路径
+sh.ccb.card.ready = /home/mw/weblogic/card/ready
+## 公务卡卡信息匹配成功文件存放路径
+sh.ccb.card.right = /home/mw/weblogic/card/right
+## 公务卡卡信息匹配失败文件存放路径
+sh.ccb.card.error = /home/mw/weblogic/card/error
+###########################end###############################
+
+####################PDF文件下载参数维护#####################################
+
+## 电子凭证PDF存放方式  0：本地   1：远程FTP
+pdf.save.type = 1
+pdf.local.directory = d:/new/
+
+pdf.ftp.serverIp = 192.168.253.75
+pdf.ftp.serverPort = 21
+pdf.ftp.username = ftp
+pdf.ftp.pwd = ftp
+pdf.ftp.remoteFilePath =
+###########################end###############################
+
+####################çµå­æä»¶æåæ°ç»´æ¤#####################################
+
+
+

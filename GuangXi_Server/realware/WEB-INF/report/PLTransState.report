@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="zbh" id="5422" name="直接支付情况查询报表" type="3" org_id="0" group_id="8" sys_id="201" monetary_unit="1" job_id="201" enable="1" isUnion="0"><DataSources><DataSource name="5201直接支付情况查询报表" is_subDataSource="False" memoryName=""><QuerySql>select BATCHREQ_DATE, --请款日期
+       PAY_DATE, --支付日期
+       PAY_VOUCHER_CODE,--单号
+       PAYEE_ACCOUNT_NAME,--收款人
+       PAY_AMOUNT, --金额
+       PAY_BANK_CODE --付款网点
+  from pb_pay_voucher
+ where VT_CODE='5201'
+[?and BATCHREQ_DATE =#BATCHREQ_DATE#?]
+[?and PAY_DATE #PAY_DATE_S#?]
+[?and PAY_VOUCHER_CODE=#PAY_VOUCHER_CODE#?]
+[?and ADMDIV_CODE=#ADMDIV_CODE#?]
+[?and #conditon#?]
+</QuerySql><Fields><Field name = "BATCHREQ_DATE" cnname="请款日期" fieldType="1" object_code="" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+<Field name = "PAY_DATE" cnname="支付日期" fieldType="3" object_code="" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+<Field name = "PAY_VOUCHER_CODE" cnname="单号" fieldType="1" object_code="" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+<Field name = "PAYEE_ACCOUNT_NAME" cnname="收款人账户" fieldType="1" object_code="PAYEE_ACCOUNT" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+<Field name = "PAY_AMOUNT" cnname="金额" fieldType="2" object_code="" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+<Field name = "PAY_BANK_CODE" cnname="付款银行" fieldType="1" object_code="PAY_BANK" tablename="5201直接支付情况查询报表" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.5'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='BATCHREQ_DATE'
+				End
+				Item
+					Name='PAY_DATE'
+				End
+				Item
+					Name='PAY_VOUCHER_CODE'
+				End
+				Item
+					Name='PAYEE_ACCOUNT_NAME'
+				End
+				Item
+					Name='PAY_AMOUNT'
+				End
+				Item
+					Name='PAY_BANK_CODE'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='请款日期'
+				Width=3.38667
+			End
+			Item
+				Name='支付日期'
+				Width=2.59292
+			End
+			Item
+				Name='单号'
+				Width=3.38667
+			End
+			Item
+				Name='收款人'
+				Width=4.60375
+			End
+			Item
+				Name='金额'
+				Width=2.40771
+			End
+			Item
+				Name='付款网点'
+				Width=3.20146
+			End
+		End
+		Object ColumnContent
+			Items ColumnContentCell
+				Item
+					Column='请款日期'
+					DataField='BATCHREQ_DATE'
+				End
+				Item
+					Column='支付日期'
+					DataField='PAY_DATE'
+				End
+				Item
+					Column='单号'
+					DataField='PAY_VOUCHER_CODE'
+				End
+				Item
+					Column='收款人'
+					DataField='PAYEE_ACCOUNT_NAME'
+				End
+				Item
+					Column='金额'
+					TextAlign=MiddleRight
+					DataField='PAY_AMOUNT'
+				End
+				Item
+					Column='付款网点'
+					DataField='PAY_BANK_CODE'
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='请款日期'
+					TextAlign=MiddleCenter
+					Text='请款日期'
+				End
+				Item
+					GroupTitle=F
+					Column='支付日期'
+					TextAlign=MiddleCenter
+					Text='支付日期'
+				End
+				Item
+					GroupTitle=F
+					Column='单号'
+					TextAlign=MiddleCenter
+					Text='单号'
+				End
+				Item
+					GroupTitle=F
+					Column='收款人'
+					TextAlign=MiddleCenter
+					Text='收款人'
+				End
+				Item
+					GroupTitle=F
+					Column='金额'
+					TextAlign=MiddleCenter
+					Text='金额'
+				End
+				Item
+					GroupTitle=F
+					Column='付款网点'
+					TextAlign=MiddleCenter
+					Text='付款网点'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='合计分组'
+				Object GroupHeader
+					Visible=F
+					Height=0.635
+				End
+				Object GroupFooter
+					Height=1.19063
+					Items Control
+						Item
+							Type=SummaryBox
+							Name='SummaryBox1'
+							Left=12.8058
+							Top=0.211667
+							Width=2.59292
+							Height=0.608542
+							DataField='PAY_AMOUNT'
+						End
+						Item
+							Type=StaticBox
+							Name='staticBox1'
+							Left=9.2075
+							Top=0.211667
+							Width=3.38667
+							Height=0.582083
+							Text='合计金额'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='VT_CODE'
+		End
+		Item
+			Name='BATCHREQ_DATE'
+			Value='2015-02-12'
+		End
+		Item
+			Name='PAY_DATE_S'
+			Value='2014-09-01'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			BookmarkText='直接支付情况查询'
+			Items Control
+				Item
+					Type=MemoBox
+					Name='MemoBox1'
+					Center=Both
+					Left=4.70958
+					Top=1.08479
+					Width=6.58813
+					Height=0.79375
+					Object Font
+						Name='宋体'
+						Size=120000,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='直接支付情况查询报表\r\n'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="请款日期" para_name="BATCHREQ_DATE" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>2015-02-12</value>
+</values></QueryCondition><QueryCondition cnname="支付日期" para_name="PAY_DATE_S" object_code="" is_showOnQueryPanel="True" control_type="6" enum_value="" condition_type="3">
+<values object_field_name="">
+<value>2014-09-01</value>
+</values></QueryCondition><QueryCondition cnname="单号" para_name="PAY_VOUCHER_CODE" object_code="" is_showOnQueryPanel="True" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>312</value>
+</values></QueryCondition><QueryCondition cnname="区划" para_name="ADMDIV_CODE" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>123</value>
+</values></QueryCondition><QueryCondition cnname="转账状态" para_name="CONDITON" object_code="" is_showOnQueryPanel="True" control_type="1" enum_value="batchreq_status = 1 and pay_amount &gt;0#已请款+batchreq_status = 1 and pay_date is null and pay_amount &gt;0#已请款未转账+pay_date is not  null and pay_amount &gt;0#已转账+pay_date is not null and send_flag = 0 and pay_amount &gt;0#已转账未发送+send_flag = 1 and pay_amount &gt;0#已发送+send_flag = 1#已发送未清算+clear_flag = 1#已清算" condition_type="2">
+<values object_field_name="">
+<value>batchreq_status = 1 and pay_date is null and pay_amount &gt;0</value>
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

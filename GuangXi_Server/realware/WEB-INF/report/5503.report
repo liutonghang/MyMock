@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="2504" id="5621" name="2504对账单" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="1" isUnion="0"><DataSources><DataSource name="2504对账单" is_subDataSource="False" memoryName="">
+<QuerySql>
+select
+       m.voucher_no,
+       m.voucher_check_no,--凭证号
+       m.vou_date,--年度
+       m.cur_pack_no,--凭证类型
+       d.check_detail_id str_voucher_id,--子包数量
+       '不符'check_result,--月份
+       d.check_reason
+  from pb_check_detail d,pb_check_main m
+ where d.check_voucher_id = m.check_voucher_id
+  and d.check_result='1'
+   [? and m.voucher_check_id=#voucher_check_id#?]
+
+</QuerySql><Fields><Field name = "VOUCHER_NO" cnname="凭证号" fieldType="1" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "YEAR" cnname="年度" fieldType="2" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "VT_CODE" cnname="凭证类型" fieldType="1" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "CURR_PACKNUM" cnname="子包数量" fieldType="2" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "MONTH" cnname="月份" fieldType="1" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "PAY_AMT" cnname="金额" fieldType="2" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "CHECK_RESULT" cnname="对账结果" fieldType="1" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+<Field name = "VOUCHER_CHECK_ID" cnname="对账单id" fieldType="2" object_code="" tablename="2504对账单" olapType="0" olapGroupName=""/>
+</Fields><DataSourceConditions><DataSourceCondition relation="AND" field_name="VOUCHER_CHECK_ID" operation="=" frontBracket="" backBracket="">
+<values type="1">
+<value>voucher_check_id</value>
+</values>
+</DataSourceCondition></DataSourceConditions></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[
+Object Report
+	Version='6.0.0.2'
+	Title='你的报表标题'
+	PrintAsDesignPaper=F
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer 
+	  LeftMargin=1.2
+	  RightMargin=1.2
+	End
+	Object DetailGrid
+		CenterView=T
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='凭证号'
+					Tag='2504对账单'
+					DBFieldName='VOUCHER_NO'
+				End
+				Item
+					Name='凭证日期'
+					Tag='2504对账单'
+					DBFieldName='vou_date'
+				End
+				Item
+					Name='凭证类型'
+					Tag='2504对账单'
+					DBFieldName='VT_CODE'
+				End
+				Item
+					Name='对账单号'
+					Tag='2504对账单'
+					DBFieldName='voucher_check_no'
+				End
+				Item
+					Name='本包序号'
+					Tag='2504对账单'
+					DBFieldName='cur_pack_no'
+				End
+				Item
+					Name='对账结果'
+					Tag='2504对账单'
+					DBFieldName='CHECK_RESULT'
+				End
+				Item
+					Name='不符原因'
+					Tag='2504对账单'
+					DBFieldName='check_reason'
+				End
+				Item
+					Name='明细id'
+					DBFieldName='str_voucher_id'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=5.5
+			End
+			Item
+				Name='Column2'
+				Width=5.2
+			End
+			Item
+				Name='Column3'
+				Width=2.8
+			End
+			Item
+				Name='Column7'
+				Width=2.8
+			End
+			Item
+				Name='Column8'
+				Width=6.8
+			End
+			Item
+				Name='Column9'
+				Width=3.1
+			End
+			Item
+				Name='Column10'
+				Width=2.9
+			End
+		End
+		Object ColumnContent
+			Height=0.608542
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+					TextAlign=MiddleLeft
+					DataField='凭证号'
+				End
+				Item
+					Column='Column2'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+                 	         	TextAlign=MiddleLeft
+					DataField='对账单号'
+				End
+				Item
+					Column='Column3'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+					TextAlign=MiddleCenter
+					DataField='本包序号'
+				End
+				Item
+					Column='Column7'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+					TextAlign=MiddleCenter
+					DataField='对账结果'
+				End
+				Item
+					Column='Column8'
+				Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+					TextAlign=MiddleLeft
+					DataField='不符原因'
+				End
+				Item
+					Column='Column9'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+				   	TextAlign=MiddleRight
+				
+					DataField='凭证日期'
+				End
+				Item
+					Column='Column10'
+					Object Font
+						Name='新宋体'
+						Size=95000,0
+						Weight=400
+					End
+					TextAlign=MiddleRight
+					DataField='明细id'
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0.608542
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox1'
+							Left=0.211667
+							Top=1.19063
+							Width=2.80458
+							Height=0.396875
+							DataField='凭证号'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox2'
+							Width=2.59292
+							Height=0.608542
+							Text='凭证号'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column2'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox2'
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+							DataField='不符原因'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox1'
+							Width=2.59292
+							Height=0.608542
+							Text='对账单号'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column3'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox3'
+							Left=0.79375
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox3'
+							Width=2.98979
+							Height=0.608542
+							Text='本包序号'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column7'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox4'
+							Left=0.79375
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox5'
+							Width=2.80458
+							Height=0.608542
+							Text='对账结果'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column8'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox5'
+							Left=0.79375
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox6'
+							Width=2.98979
+							Height=0.608542
+							Text='不符原因'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column9'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox6'
+							Left=0.79375
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox7'
+							Width=2.98979
+							Height=0.608542
+							Text='凭证日期'
+						End
+					End
+				End
+				Item
+					GroupTitle=F
+					Column='Column10'
+					FreeCell=T
+					Items Control
+						Item
+							Type=FieldBox
+							Name='FieldBox7'
+							Left=0.79375
+							Top=1.00542
+							Width=2.59292
+							Height=0.608542
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox8'
+							Width=2.98979
+							Height=0.608542
+							Text='明细id'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='voucher_check_id'
+		End
+	End
+	Items ReportHeader
+		Item
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox4'
+                                        Center=Both
+					Left=2.98979
+					Top=1.19063
+					Width=9.2075
+					Height=1.21708
+					Object Font
+						Name='宋体'
+						Size=162500,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='5503对账单异常排查结果列表'
+				End
+			End
+		End
+	End
+End
+
+
+End
+]]></GridppReport><OrderByFields></OrderByFields>
+<QueryConditions><QueryCondition cnname="对账单ID" para_name="VOUCHER_CHECK_ID" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="2">
+<values object_field_name="">
+</values>
+</QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

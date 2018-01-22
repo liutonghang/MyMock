@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="231412" id="6022" name="111111111111" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="0" enable="0" isUnion="0"><DataSources><DataSource name="11" is_subDataSource="False" memoryName=""><QuerySql>
+select 
+(case when p.pay_amount&gt;0 then '7836'  else '7809' end) tran_code,
+'31000'||lg.user_code user_code,
+lg.create_date,
+lg.accthost_seqid,
+p.pay_voucher_code,
+p.agent_business_no,
+p.pay_account_no,
+p.pay_account_name,
+p.payee_account_no,
+p.payee_account_name,
+(case p.CASHTRANSFLAG
+ 		   when 1 then '现金'
+ 		   when 2 then '网点操作用户'
+ 		   when 3 then 'ABIS91'
+ 		   when 4 then 'ABIS内核户'
+ 		   when 5 then '零余额'
+ 		   end ) cashTransFlag,
+p.pay_amount,
+(case when p.pay_amount&gt;0 then p.pay_summary_name  else p.ORI_PAY_VOUCHER_CODE ||'  退款' end) pay_summary_name,
+(case when p.pay_amount&gt;0 then p.PAY_TYPE_NAME||'令支付' else p.PAY_TYPE_NAME||'令退款' end) reprot_kind,
+p.majorUserCode majorUserCode,
+p.cash_no,
+p.tellerCode tellerCode
+from pb_pay_voucher p,pb_trans_log lg where 1=1
+and lg.TRANS_SUCC_FLAG = 1
+and p.pay_voucher_code = lg.VOUCHER_NO
+[? and p.pay_voucher_code = #pay_voucher_code#?]
+[? and p.pay_voucher_id = #pay_voucher_id#?]
+</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.6.0.0'
+	Title='你的报表标题'
+	PrintAsDesignPaper=T
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	Object Printer
+		LeftMargin=1.1167
+		TopMargin=2
+		RightMargin=1.1167
+		BottomMargin=16.0602
+	End
+	Object DetailGrid
+		BorderStyles=[]
+		ShowRowLine=F
+		Object Recordset
+			Items Field
+				Item
+					Name='create_date'
+					Format='yyyy/MM/dd'
+				End
+				Item
+					Name='tran_code'
+				End
+				Item
+					Name='user_code'
+				End
+				Item
+					Name='cash_no'
+				End
+				Item
+					Name='tellerCode'
+				End
+				Item
+					Name='accthost_seqid'
+				End
+				Item
+					Name='majorUserCode'
+				End
+				Item
+					Name='pay_voucher_code'
+				End
+				Item
+					Name='reprot_kind'
+				End
+				Item
+					Name='agent_business_no'
+				End
+				Item
+					Name='pay_account_no'
+				End
+				Item
+					Name='pay_account_name'
+				End
+				Item
+					Name='payee_account_no'
+				End
+				Item
+					Name='payee_account_name'
+				End
+				Item
+					Name='cashTransFlag'
+				End
+				Item
+					Name='pay_amount'
+					Type=Float
+					Format='#,##0.00'
+				End
+				Item
+					Name='pay_summary_name'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='bill'
+				Width=18.6002
+			End
+		End
+		Object ColumnContent
+			Height=11.5888
+			Items ColumnContentCell
+				Item
+					Column='bill'
+					FreeCell=T
+					CanGrow=T
+					Items Control
+						Item
+							Type=StaticBox
+							Name='controlname24'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=0.396875
+							Top=0.370417
+							Width=1.76887
+							Height=0.661458
+							TextAlign=MiddleRight
+							Text='会计日期：'
+						End
+						Item
+							Type=FieldBox
+							Name='controlname38'
+							BackStyle=Normal
+							Left=2.19604
+							Top=0.370417
+							Width=2.77813
+							Height=0.661458
+							DataField='create_date'
+						End
+						Item
+							Type=StaticBox
+							Name='controlname52'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=9.45
+							Top=0.370417
+							Width=1.53458
+							Height=0.66
+							Text='用户:'
+						End
+						Item
+							Type=FieldBox
+							Name='controlname64'
+							BackStyle=Normal
+							Left=11.0067
+							Top=0.370417
+							Width=2.78302
+							Height=0.661458
+							DataField='user_code'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox1'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=5
+							Top=0.370417
+							Width=1.77
+							Height=0.66
+							TextAlign=MiddleRight
+							Text='交易码：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox1'
+							Left=6.8
+							Top=0.370417
+							Width=2.59
+							Height=0.66
+							DataField='tran_code'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox2'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=13.81
+							Top=0.370417
+							Width=1.59
+							Height=0.66
+							Text='传票号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox2'
+							BackStyle=Normal
+							Left=15.45
+							Top=0.370417
+							Width=2.78
+							Height=0.66
+							DataField='cash_no'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox3'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=0.396875
+							Top=1.21708
+							Width=1.76887
+							Height=0.661458
+							TextAlign=MiddleRight
+							Text='终端号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox3'
+							BackStyle=Normal
+							Left=2.19604
+							Top=1.21708
+							Width=2.77813
+							Height=0.661458
+							DataField='tellerCode'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox4'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=5
+							Top=1.21708
+							Width=1.77
+							Height=0.66
+							TextAlign=MiddleRight
+							Text='日志号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox4'
+							Left=6.79979
+							Top=1.21708
+							Width=2.59
+							Height=0.66
+							DataField='accthost_seqid'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox5'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=100000,0
+								Bold=T
+								Charset=134
+							End
+							Left=9.45
+							Top=1.21708
+							Width=1.53
+							Height=0.66
+							Text='授权：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox5'
+							BackStyle=Normal
+							Left=11.0067
+							Top=1.21708
+							Width=2.78302
+							Height=0.661458
+							DataField='majorUserCode'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox6'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=0.396875
+							Top=2.09021
+							Width=17.8065
+							Height=0.661458
+							TextAlign=MiddleCenter
+							DataField='reprot_kind'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox6'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=3.28083
+							Width=1.76887
+							Height=0.582083
+							Text='凭证编号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox7'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.01146
+							Top=3.28083
+							Width=6.79979
+							Height=0.582083
+							DataField='pay_voucher_code'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox7'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=4.04813
+							Width=2.40771
+							Height=0.582083
+							Text='请求流水号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox8'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=4.04813
+							Width=6.79979
+							Height=0.582083
+							DataField='agent_business_no'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox8'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=4.97417
+							Width=2.40771
+							Height=0.582083
+							Text='付款人账号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox9'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=4.97417
+							Width=6.79979
+							Height=0.582083
+							DataField='pay_account_no'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox9'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=5.90021
+							Width=2.40771
+							Height=0.582083
+							Text='付款人户名：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox10'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=5.90021
+							Width=9.76313
+							Height=0.582083
+							DataField='pay_account_name'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox10'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=6.82625
+							Width=2.40771
+							Height=0.582083
+							Text='收款人账号：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox11'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=6.82625
+							Width=6.79979
+							Height=0.582083
+							DataField='payee_account_no'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox11'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=7.75229
+							Width=2.40771
+							Height=0.582083
+							Text='收款人户名：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox12'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=7.75229
+							Width=9.76313
+							Height=0.582083
+							DataField='payee_account_name'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox12'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=8.67833
+							Width=2.40771
+							Height=0.582083
+							Text='现转标志：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox13'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=8.67833
+							Width=6.79979
+							Height=0.582083
+							DataField='cashTransFlag'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox13'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=9.60438
+							Width=1.79917
+							Height=0.582083
+							Text='金额：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox14'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=9.60438
+							Width=6.79979
+							Height=0.582083
+							DataField='pay_amount'
+						End
+						Item
+							Type=StaticBox
+							Name='StaticBox14'
+							BackStyle=Normal
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=4.39208
+							Top=10.5304
+							Width=1.76887
+							Height=0.582083
+							Text='用途：'
+						End
+						Item
+							Type=FieldBox
+							Name='FieldBox15'
+							Object Font
+								Name='宋体'
+								Size=90000,0
+								Weight=400
+								Charset=134
+							End
+							Left=7.03792
+							Top=10.5304
+							Width=9.76313
+							Height=0.582083
+							DataField='pay_summary_name'
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=0
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='bill'
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='pay_voucher_code'
+		End
+		Item
+			Name='PAY_VOUCHER_CODE'
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="" para_name="PAY_VOUCHER_CODE" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition>
+<QueryCondition cnname="" para_name="pay_voucher_id" object_code="" is_showOnQueryPanel="False" control_type="0" enum_value="" condition_type="2">
+<values object_field_name="">
+</values></QueryCondition>
+</QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="50011111" id="9021" name="" type="4" org_id="0" group_id="1" sys_id="100" monetary_unit="2" job_id="201" enable="0" isUnion="0"><DataSources><DataSource name="直接支付" is_subDataSource="False" memoryName=""><QuerySql>select year,
+       bank_name,
+       sum(pay_num) pay_sum,
+       sum(pay_amount) pay_amount,
+       sum(refund_num) refund_sum,
+       (sum(pay_amount) + sum(refund_amount)) * 0.00035 as sxf,
+       sum(refund_amount) refund_amount,
+       (sum(pay_num) + sum(refund_num)) total_num,
+       (sum(pay_amount) + sum(refund_amount)) total_amount
+  from (select (select bank_name
+                  from pb_ele_account c
+                 where a.pay_account_no = c.account_no
+                   and rownum = 1) bank_name,
+               a.year year,
+               decode(a.vt_code, '8202', 1, '2204', 0) pay_num,
+               decode(a.vt_code, '8202', a.pay_amount, '2204', 0) pay_amount,
+               decode(a.vt_code, '8202', 0, '2204', 1) refund_num,
+               decode(a.vt_code, '8202', 0, '2204', a.pay_amount) refund_amount
+          from pb_pay_voucher a
+        
+         where 1=1
+             and exists  
+          (select 1 from  pb_pay_request p 
+            where p.pay_voucher_id=a.pay_voucher_id and p.clear_date is not 			null)
+	[? and a.year =#year#?])
+ group by bank_name, year
+</QuerySql><Fields><Field name = "YEAR" cnname="年" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "BANK_NAME" cnname="银行" fieldType="1" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "PAY_SUM" cnname="支付数量" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "PAY_AMOUNT" cnname="支付金额" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "REFUND_SUM" cnname="退款笔数" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "SXF" cnname="总金额手续费" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "REFUND_AMOUNT" cnname="退款金额" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "TOTAL_NUM" cnname="手续费笔数" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+<Field name = "TOTAL_AMOUNT" cnname="划款金额" fieldType="2" object_code="" tablename="直接支付" olapType="0" olapGroupName=""/>
+</Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.8.0.6'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	Object Printer
+		Oriention=Landscape
+		LeftMargin=1
+		TopMargin=1.5
+		RightMargin=1
+		BottomMargin=1.5
+	End
+	Object DetailGrid
+		Object Recordset
+			Items Field
+				Item
+					Name='SUM(REFUND_NUM)退款数量'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='SUM(REFUND_NUM)'
+				End
+				Item
+					Name='PAY_NUM退款数量'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='PAY_NUM'
+				End
+				Item
+					Name='YEAR年'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='YEAR'
+				End
+				Item
+					Name='BANK_NAME银行'
+					Tag='直接支付'
+					DBFieldName='BANK_NAME'
+				End
+				Item
+					Name='PAY_SUM支付数量'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='PAY_SUM'
+				End
+				Item
+					Name='PAY_AMOUNT支付金额'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='PAY_AMOUNT'
+				End
+				Item
+					Name='REFUND_SUM退款笔数'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='REFUND_SUM'
+				End
+				Item
+					Name='SXF总金额手续费'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='SXF'
+				End
+				Item
+					Name='REFUND_AMOUNT退款金额'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='REFUND_AMOUNT'
+				End
+				Item
+					Name='TOTAL_NUM手续费笔数'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='TOTAL_NUM'
+				End
+				Item
+					Name='TOTAL_AMOUNT划款金额'
+					Tag='直接支付'
+					Type=Float
+					DBFieldName='TOTAL_AMOUNT'
+				End
+			End
+		End
+		Items Column
+			Item
+				Name='Column1'
+				Width=4.60375
+			End
+			Item
+				Name='Column2'
+				Width=2.2225
+			End
+			Item
+				Name='Column3'
+				Width=3.38667
+			End
+			Item
+				Name='Column4'
+				Width=1.61396
+			End
+			Item
+				Name='Column5'
+				Width=3.175
+			End
+			Item
+				Name='Column6'
+				Width=1.61396
+			End
+			Item
+				Name='Column7'
+				Width=3.59833
+			End
+			Item
+				Name='Column8'
+				Width=2.16958
+			End
+			Item
+				Name='Column9'
+				Width=3.59833
+			End
+		End
+		Object ColumnContent
+			Height=0.79375
+			Items ColumnContentCell
+				Item
+					Column='Column1'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox12'
+							BorderStyles=[DrawBottom]
+							Width=4.60375
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleCenter
+							Text='[#BANK_NAME银行#]'
+						End
+					End
+				End
+				Item
+					Column='Column2'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox13'
+							BorderStyles=[DrawBottom]
+							Width=2.19604
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#PAY_SUM支付数量#]'
+						End
+					End
+				End
+				Item
+					Column='Column3'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox14'
+							BorderStyles=[DrawTop|DrawBottom]
+							Top=1.00542
+							Width=3.41313
+							Height=0.79375
+							Text='[#SUM_ZHENG支出金额:#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox21'
+							BorderStyles=[DrawBottom]
+							Width=3.38667
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#PAY_AMOUNT支付金额:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column4'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox15'
+							BorderStyles=[DrawBottom]
+							Width=1.5875
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#REFUND_SUM退款笔数#]'
+						End
+					End
+				End
+				Item
+					Column='Column5'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox16'
+							BorderStyles=[DrawBottom]
+							Width=3.20146
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#REFUND_AMOUNT退款金额:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column6'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox17'
+							BorderStyles=[DrawBottom]
+							Width=1.5875
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#TOTAL_NUM手续费笔数#]'
+						End
+					End
+				End
+				Item
+					Column='Column7'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox18'
+							BorderStyles=[DrawBottom]
+							Width=3.59833
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#SXF总金额手续费:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column8'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox19'
+							BorderStyles=[DrawBottom]
+							Width=2.14313
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#2.5*TOTAL_NUM手续费笔数:#,##0.00#]'
+						End
+					End
+				End
+				Item
+					Column='Column9'
+					FreeCell=T
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox20'
+							BorderStyles=[DrawBottom]
+							Width=3.59833
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#SXF总金额手续费+(TOTAL_NUM手续费笔数*2.5):#,##0.00#]'
+						End
+					End
+				End
+			End
+		End
+		Object ColumnTitle
+			Height=1.00542
+			RepeatStyle=OnPage
+			Items ColumnTitleCell
+				Item
+					GroupTitle=F
+					Column='Column1'
+					TextAlign=MiddleCenter
+					Text='网点名称'
+				End
+				Item
+					GroupTitle=F
+					Column='Column2'
+					TextAlign=MiddleCenter
+					Text='支出笔数'
+				End
+				Item
+					GroupTitle=F
+					Column='Column3'
+					TextAlign=MiddleCenter
+					Text='支出金额'
+				End
+				Item
+					GroupTitle=F
+					Column='Column4'
+					TextAlign=MiddleCenter
+					Text='退款笔数'
+				End
+				Item
+					GroupTitle=F
+					Column='Column5'
+					TextAlign=MiddleCenter
+					Text='退款金额'
+				End
+				Item
+					GroupTitle=F
+					Column='Column6'
+					TextAlign=MiddleCenter
+					Text='总笔数'
+				End
+				Item
+					GroupTitle=F
+					Column='Column7'
+					WordWrap=T
+					TextAlign=MiddleCenter
+					Text='代理量手续费(支出金额x3.5/10000)'
+				End
+				Item
+					GroupTitle=F
+					Column='Column8'
+					TextAlign=MiddleCenter
+					Text='笔数手续费'
+				End
+				Item
+					GroupTitle=F
+					Column='Column9'
+					TextAlign=MiddleCenter
+					Text='手续费合计'
+				End
+			End
+		End
+		Items Group
+			Item
+				Name='Group1'
+				Object GroupHeader
+					Height=0
+				End
+				Object GroupFooter
+					Height=0.608542
+					Items Control
+						Item
+							Type=MemoBox
+							Name='MemoBox22'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=4.60375
+							Width=2.2225
+							Height=0.8
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(PAY_SUM支付数量)#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox23'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=6.79979
+							Width=3.43958
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(PAY_AMOUNT支付金额):#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox24'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=10.2129
+							Width=1.64042
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(REFUND_SUM退款笔数)#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox25'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=11.8269
+							Width=3.20146
+							Height=0.79375
+							TextAlign=MiddleRight
+							Text='[#Sum(REFUND_AMOUNT退款金额):#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox26'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=15.0019
+							Width=1.64042
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(TOTAL_NUM手续费笔数)#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox27'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=16.6158
+							Width=3.62479
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(SXF总金额手续费):#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox28'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=20.2142
+							Width=2.19604
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(TOTAL_NUM手续费笔数)*2.5:#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox29'
+							BorderStyles=[DrawLeft|DrawRight|DrawBottom]
+							Left=22.3838
+							Width=3.62479
+							Height=0.79375
+							ShrinkFontToFit=T
+							TextAlign=MiddleRight
+							Text='[#Sum(SXF总金额手续费)+(2.5*Sum(TOTAL_NUM手续费笔数)):#,##0.00#]'
+						End
+						Item
+							Type=MemoBox
+							Name='MemoBox30'
+							BorderStyles=[DrawRight|DrawBottom]
+							Width=4.63021
+							Height=0.8
+							TextAlign=MiddleCenter
+							Text='合计'
+						End
+					End
+				End
+			End
+		End
+	End
+	Items Parameter
+		Item
+			Name='date_begin'
+		End
+		Item
+			Name='date_end'
+		End
+		Item
+			Name='Parameter1'
+		End
+		Item
+			Name='DATE_BEGIN'
+		End
+		Item
+			Name='DATE_END'
+		End
+		Item
+			Name='years'
+		End
+		Item
+			Name='Parameter2'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Name='ReportHeader1'
+			Height=1.40229
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Left=8.38729
+					Top=0.211667
+					Width=10.1865
+					Height=0.978958
+					Object Font
+						Name='宋体'
+						Size=157500,0
+						Bold=T
+						Charset=134
+					End
+					TextAlign=MiddleCenter
+					Text='年代理吉林省级授权支付明细统计表'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox31'
+					Left=6.56167
+					Top=0.211667
+					Width=1.77271
+					Height=0.9525
+					Object Font
+						Name='宋体'
+						Size=157500,0
+						Bold=T
+						Charset=134
+					End
+					Text='[#YEAR年#]'
+				End
+			End
+			RepeatOnPage=T
+		End
+	End
+End
+]]></GridppReport><OrderByFields><OrderByField name="PAY_BANK_NAME" cnname="网点名称"/>
+<OrderByField name="YEAR" cnname="年度"/>
+</OrderByFields><QueryConditions><QueryCondition cnname="年度" para_name="YEAR" object_code="" is_showOnQueryPanel="True" control_type="0" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

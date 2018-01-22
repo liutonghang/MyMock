@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> <Report code="w3200002" id="125" name="财政汇总清算回执" type="5" org_id="0" group_id="92" sys_id="110" monetary_unit="1" job_id="0" enable="1" isUnion="0"><DataSources><DataSource name="3" is_subDataSource="False" memoryName=""><QuerySql>select sum(nvl(a,0)) as zjzfysnje ,sum(nvl(aa,0)) as zjzfysnbs,
+	sum(nvl(b,0)) as zjzfyswje ,sum(nvl(bb,0)) as zjzfyswbs,
+	sum(nvl(c,0)) as zjtkysnje ,sum(nvl(cc,0)) as zjtkysnbs,
+	sum(nvl(d,0)) as zjtkyswje ,sum(nvl(dd,0)) as zjtkyswbs,
+	sum(nvl(e,0)) as sqzfysnje ,sum(nvl(ee,0)) as sqzfysnbs,
+	sum(nvl(f,0)) as sqzfyswje ,sum(nvl(ff,0)) as sqzfyswbs,
+	sum(nvl(g,0)) as sqtkysnje ,sum(nvl(gg,0)) as sqtkysnbs,
+	sum(nvl(h,0)) as sqtkyswje ,sum(nvl(hh,0)) as sqtkyswbs,
+	[?#start_date#?] as start_date,
+	[?#end_date#?] as end_date
+
+from
+(
+select
+	case when fund_type_code='1' and pay_type_code='11' and vt_code='5201' then pay_amount end as a,
+	case when fund_type_code='1' and pay_type_code='11' and vt_code='5201' then 1 else 0 end as aa,
+	case when fund_type_code='2' and pay_type_code='11' and vt_code='5201' then pay_amount end as b,
+	case when fund_type_code='2' and pay_type_code='11' and vt_code='5201' then 1 else 0 end as bb,
+		
+	case when fund_type_code='1' and pay_type_code='11' and vt_code='2203' then pay_amount end as c,
+	case when fund_type_code='1' and pay_type_code='11' and vt_code='2203' then 1 else 0 end as cc,
+	case when fund_type_code='2' and pay_type_code='11' and vt_code='2203' then pay_amount end as d,
+	case when fund_type_code='2' and pay_type_code='11' and vt_code='2203' then 1 else 0 end as dd,
+		
+	case when fund_type_code='1' and pay_type_code='12' and vt_code in ('8202','8209') then pay_amount end as e,
+	case when fund_type_code='1' and pay_type_code='12' and vt_code in ('8202','8209') then 1 else 0 end as ee,
+	case when fund_type_code='2' and pay_type_code='12' and vt_code in ('8202','8209') then pay_amount end as f,
+	case when fund_type_code='2' and pay_type_code='12' and vt_code in ('8202','8209') then 1 else 0 end as ff,
+		
+	case when fund_type_code='1' and pay_type_code='12' and vt_code='2204' then pay_amount end as g,
+	case when fund_type_code='1' and pay_type_code='12' and vt_code='2204' then 1 else 0 end as gg,
+	case when fund_type_code='2' and pay_type_code='12' and vt_code='5201' then pay_amount end as h,
+	case when fund_type_code='2' and pay_type_code='12' and vt_code='5201' then 1 else 0 end as hh
+from
+(
+select fund_type_code,pay_type_code,vt_code,pay_amount from pb_pay_voucher m
+	
+where pay_clear_voucher_id&gt;0
+and exists
+	(select 1 from pb_pay_clear_voucher cv where m.pay_clear_voucher_id=cv.pay_clear_voucher_id
+	and cv.admdiv_code=[?#ADMDIV_CODE#?] and cv.vou_date&gt;=[?#start_date#?] and cv.vou_date&lt;=[?#end_date#?])
+)	
+)</QuerySql><Fields></Fields></DataSource></DataSources><UnionGroupInfos></UnionGroupInfos><ColumnExpands></ColumnExpands><ReportCharts></ReportCharts><DataSourceRelations></DataSourceRelations><GridppReport><![CDATA[Object Report
+	Version='5.6.0.0'
+	Title='你的报表标题'
+	Object Font
+		Name='宋体'
+		Size=105000,0
+		Weight=400
+		Charset=134
+	End
+	SkipQuery=T
+	Object Printer
+		Oriention=Landscape
+		LeftMargin=5
+		TopMargin=5
+		RightMargin=5
+		BottomMargin=5
+	End
+	Object DetailGrid
+		Object Recordset
+			SkipQuery=T
+			Items Field
+				Item
+					Name='日期'
+					DBFieldName='pay_date'
+				End
+				Item
+					Name='支付方式'
+					DBFieldName='pay_type_code'
+				End
+				Item
+					Name='资金性质'
+					DBFieldName='fund_type_code'
+				End
+				Item
+					Name='金额'
+					DBFieldName='pay_amount'
+				End
+				Item
+					Name='凭证类型'
+					DBFieldName='vt_code'
+				End
+				Item
+					Name='区划'
+					DBFieldName='admdiv_code'
+				End
+				Item
+					Name='直接支付预算内笔数'
+					DBFieldName='zjzfysnbs'
+				End
+				Item
+					Name='直接支付预算内金额'
+					DBFieldName='zjzfysnje'
+				End
+				Item
+					Name='开始日期'
+					DBFieldName='start_date'
+				End
+				Item
+					Name='直接支付预算外笔数'
+					DBFieldName='zjzfyswbs'
+				End
+				Item
+					Name='直接支付预算外金额'
+					DBFieldName='zjzfyswje'
+				End
+				Item
+					Name='直接退款预算内笔数'
+					DBFieldName='zjtkysnbs'
+				End
+				Item
+					Name='直接退款预算内金额'
+					DBFieldName='zjtkysnje'
+				End
+				Item
+					Name='直接退款预算外笔数'
+					DBFieldName='zjtkyswbs'
+				End
+				Item
+					Name='直接退款预算外金额'
+					DBFieldName='zjtkyswje'
+				End
+				Item
+					Name='授权支付预算内笔数'
+					DBFieldName='sqzfysnbs'
+				End
+				Item
+					Name='授权支付预算内金额'
+					DBFieldName='sqzfysnje'
+				End
+				Item
+					Name='授权支付预算外笔数'
+					DBFieldName='sqzfyswbs'
+				End
+				Item
+					Name='授权支付预算外金额'
+					DBFieldName='sqzfyswje'
+				End
+				Item
+					Name='授权退款预算内笔数'
+					DBFieldName='sqtkysnbs'
+				End
+				Item
+					Name='授权退款预算内金额'
+					DBFieldName='sqtkysnje'
+				End
+				Item
+					Name='授权退款预算外笔数'
+					DBFieldName='sqtkyswbs'
+				End
+				Item
+					Name='授权退款预算外金额'
+					DBFieldName='sqtkyswje'
+				End
+				Item
+					Name='结束日期'
+					DBFieldName='end_date'
+				End
+			End
+		End
+		Object ColumnContent
+			Height=5.3975
+		End
+		Object ColumnTitle
+		End
+	End
+	Items Parameter
+		Item
+			Name='start_date'
+		End
+		Item
+			Name='admdiv_code'
+		End
+		Item
+			Name='end_date'
+		End
+	End
+	Items Section
+		Item
+			Type=ReportHeader
+			Height=9.2075
+			Items Control
+				Item
+					Type=StaticBox
+					Name='StaticBox1'
+					Object Font
+						Name='宋体'
+						Size=150000,0
+						Bold=T
+						Charset=134
+					End
+					Left=7.80521
+					Top=0.396875
+					Width=5.18583
+					Height=0.79375
+					Text='财政汇总清算回执'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox2'
+					Left=2.59292
+					Top=1.40229
+					Width=13.9965
+					Height=1.00542
+					Text='江苏省财政厅：\r\n    下列款项，我行已通过各零余额账户划入指定收款人账户。'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox3'
+					Left=2.59292
+					Top=2.59292
+					Width=2.40771
+					Height=0.608542
+					Text='（银行盖章）'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox4'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=3.67771
+					Width=5
+					Height=0.6
+					Text='资金性质'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox5'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=4.28625
+					Width=5
+					Height=0.6
+					Text='直接支付(预算内)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox6'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=4.89479
+					Width=5
+					Height=0.6
+					Text='直接支付(预算外)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox7'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=5.47688
+					Width=5
+					Height=0.6
+					Text='直接支付退款(预算内)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox8'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=6.08542
+					Width=5
+					Height=0.6
+					Text='直接支付退款(预算外)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox10'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=6.69396
+					Width=5
+					Height=0.6
+					Text='授权支付(预算内)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox11'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=7.27604
+					Width=5
+					Height=0.6
+					Text='授权支付(预算外)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox12'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=2.51354
+					Top=7.88458
+					Width=5
+					Height=0.6
+					Text='授权支付退款(预算内)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox13'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=2.51354
+					Top=8.49313
+					Width=5
+					Height=0.6
+					Text='授权支付退款(预算外)'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox14'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=3.67771
+					Width=3.01625
+					Height=0.6
+					Text='笔数'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox2'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=4.28625
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接支付预算内笔数#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox15'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=3.67771
+					Width=6
+					Height=0.6
+					Text='汇总金额（元）'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox3'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=4.89479
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接支付预算外金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox4'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=4.89479
+					Width=3.01625
+					Height=0.6
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox5'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=5.47688
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接退款预算内金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox6'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=4.89479
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接支付预算外笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox7'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=4.28625
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接支付预算内金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox8'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=6.08542
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接退款预算外金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox9'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=6.08542
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接退款预算外笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox10'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=5.47688
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#直接退款预算内笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox11'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=6.69396
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权支付预算内笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox12'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=6.69396
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权支付预算内金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox13'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=7.27604
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权支付预算外笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox14'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=7.88458
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权退款预算内金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox16'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight]
+					Left=10.5304
+					Top=7.27604
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权支付预算外金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox17'
+					BorderStyles=[DrawLeft|DrawTop|DrawRight|DrawBottom]
+					Left=10.5304
+					Top=8.49313
+					Width=6
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权退款预算外金额:$#,##0.00#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox18'
+					BorderStyles=[DrawLeft|DrawTop|DrawBottom]
+					Left=7.51417
+					Top=8.49313
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权退款预算外笔数#]'
+				End
+				Item
+					Type=MemoBox
+					Name='MemoBox19'
+					BorderStyles=[DrawLeft|DrawTop]
+					Left=7.51417
+					Top=7.88458
+					Width=3.01625
+					Height=0.6
+					TextAlign=MiddleRight
+					Text='[#授权退款预算内笔数#]'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox16'
+					Left=8.59896
+					Top=2.59292
+					Width=1.79917
+					Height=0.608542
+					Text='交易日期：'
+				End
+				Item
+					Type=FieldBox
+					Name='FieldBox1'
+					Left=10.6098
+					Top=2.59292
+					Width=2.59292
+					Height=0.608542
+					DataField='开始日期'
+				End
+				Item
+					Type=FieldBox
+					Name='FieldBox2'
+					Left=13.9965
+					Top=2.59292
+					Width=2.59292
+					Height=0.608542
+					DataField='结束日期'
+				End
+				Item
+					Type=StaticBox
+					Name='StaticBox17'
+					Left=13.3879
+					Top=2.59292
+					Width=0.396875
+					Height=0.608542
+					Text='-'
+				End
+			End
+		End
+	End
+End
+]]></GridppReport><OrderByFields></OrderByFields><QueryConditions><QueryCondition cnname="开始日期" para_name="START_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="结束日期" para_name="END_DATE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="6" enum_value="" condition_type="1">
+<values object_field_name="">
+</values></QueryCondition><QueryCondition cnname="所属区划" para_name="ADMDIV_CODE" object_code="" relevanceWord="" is_showOnQueryPanel="True" is_bottomLevel="False" is_must_input="True" is_showCurrentDate="False" control_type="1" enum_value="" condition_type="1">
+<values object_field_name="">
+<value>请输入</value>
+</values></QueryCondition></QueryConditions><TraceReportConfigs></TraceReportConfigs></Report>

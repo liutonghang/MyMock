@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="GuangXi_Server"
+  id="myeclipse.1410766033512"
+  context-root="/realware"
+  j2ee-spec="6.0"
+  archive="GuangXi_Server.war">
+  <attributes>
+    <attribute name="webrootdir" value="realware" />
+  </attributes>
+</project-module>
+

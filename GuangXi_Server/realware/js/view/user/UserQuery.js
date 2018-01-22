@@ -1,0 +1,48 @@
+/**
+ * 查询  panel
+ */
+Ext.define('pb.view.user.UserQuery',{
+	extend:'Ext.panel.Panel',
+	alias:'widget.userQuery',
+	title:'查询区',
+	collapsible:true,
+	layout:{
+		type:'table',
+		columns:3
+	},
+	bodyPadding:5,
+	renderTo:Ext.getBody(),
+	items:[ {
+		id:'taskState',
+		fieldLabel:'状态',
+		xtype:'combo',
+		displayField:'status_name',
+		emptyText:'请选择',
+		valueFiels:'status_id',
+		editale:false,
+		queryMode:'local',
+		style:'margin-left:5px;margin-right:5px;',
+		store:'common.MenuStatus'
+	},{
+		id:'userName',
+		fieldLabel:'用户名称',
+		xtype:'textfield'
+	},{
+		id:'zeroNo',
+		fieldLabel:'零余额账户',
+		xtype:'textfield'
+	},{
+		id:'signDate',
+		fieldLabel:'签约日期',
+		xtype:'datefield',
+		format:'Ymd' 
+	}, {
+		id:'effectiveDate',
+		fieldLable:'生效日期',
+		xtype:'datefield',
+		format:'Ymd'
+	}],
+	initComponent:function(){
+		this.callParent(arguments);
+	}
+});
